@@ -66,7 +66,7 @@ const itemView = (arr, params, resolve) => {
 /**
  *
  * @param arr   数据数组 [{text:'显示值',其他参数随意}]
- * @param params  [text:显示字段名称,isCancel:是否显示取消按钮]
+ * @param params  [text:显示字段名称, isCancel:是否显示取消按钮]
  * @returns {Promise<>}
  */
 const select = (arr, params = {}) => {
