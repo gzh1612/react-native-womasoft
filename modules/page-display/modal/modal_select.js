@@ -30,10 +30,11 @@ const hide = () => {
  * @param arr   数据数组 [{text:'显示值',其他参数随意}]
  * @param resolve   选中返回方法，带参数
  * @param isCancel  是否显示取消按钮
+ * @param params
  * @returns {*}
  * @constructor
  */
-const SelectInit = (arr, resolve, isCancel = false) => {
+const SelectInit = (arr, params, resolve, isCancel = false) => {
     const css = theme.get();
     const style = styles(css);
     let cancelView = <View/>;
@@ -41,21 +42,23 @@ const SelectInit = (arr, resolve, isCancel = false) => {
         <Text style={style.selectItem}>取消</Text>
     </TouchableOpacity>;
     return <View style={style.selectView}>
-        {itemView(arr, resolve)}
+        {itemView(arr, params, resolve)}
         {cancelView}
     </View>
 };
 //循环item
-const itemView = (arr, resolve) => {
+const itemView = (arr, params, resolve) => {
     if (arr.length <= 0) return <View/>;
     const css = theme.get();
     const style = styles(css);
     return arr.map((item, key) => {
+        let text = item.text;
+        if (params.text) text = item[params.text];
         return <TouchableOpacity activeOpacity={.5} key={key} onPress={() => {
             if (typeof resolve === 'function') resolve(item);
             hide();
         }}>
-            <Text style={style.selectItem}>{item.text}</Text>
+            <Text style={style.selectItem}>{text}</Text>
         </TouchableOpacity>
     });
 };
@@ -64,14 +67,15 @@ const itemView = (arr, resolve) => {
  *
  * @param arr   数据数组 [{text:'显示值',其他参数随意}]
  * @param isCancel  是否显示取消按钮
- * @returns {Promise<unknown>}
+ * @param params  [text:显示字段名称]
+ * @returns {Promise<>}
  */
-const select = (arr, isCancel) => {
+const select = (arr, isCancel, params = {}) => {
     const css = theme.get();
     const style = styles(css);
     return new Promise((resolve, reject) => {
         if (!arr) return reject(false);
-        const select = SelectInit(arr, res => resolve(res), isCancel);
+        const select = SelectInit(arr, params, res => resolve(res), isCancel);
         // Modals.show({data: select, style: style.select});
         show(style.select, select);
     });
