@@ -27,18 +27,18 @@ const hide = () => {
 
 /**
  * 初始化
- * @param arr   数据数组 [{text:'显示值',其他参数随意}]
+ * @param arr   数据数组
+ * @param params    [text:显示字段名称,isCancel:是否显示取消按钮]
  * @param resolve   选中返回方法，带参数
- * @param isCancel  是否显示取消按钮
- * @param params
  * @returns {*}
  * @constructor
  */
-const SelectInit = (arr, params, resolve, isCancel = false) => {
+const SelectInit = (arr, params, resolve) => {
     const css = theme.get();
     const style = styles(css);
     let cancelView = <View/>;
-    if (!isCancel) cancelView = <TouchableOpacity activeOpacity={.5} onPress={() => hide()}>
+    if (!params.isCancel) params.isCancel = true;
+    if (params.isCancel) cancelView = <TouchableOpacity activeOpacity={.5} onPress={() => hide()}>
         <Text style={style.selectItem}>取消</Text>
     </TouchableOpacity>;
     return <View style={style.selectView}>
@@ -66,16 +66,15 @@ const itemView = (arr, params, resolve) => {
 /**
  *
  * @param arr   数据数组 [{text:'显示值',其他参数随意}]
- * @param isCancel  是否显示取消按钮
- * @param params  [text:显示字段名称]
+ * @param params  [text:显示字段名称,isCancel:是否显示取消按钮]
  * @returns {Promise<>}
  */
-const select = (arr, isCancel, params = {}) => {
+const select = (arr, params = {}) => {
     const css = theme.get();
     const style = styles(css);
     return new Promise((resolve, reject) => {
         if (!arr) return reject(false);
-        const select = SelectInit(arr, params, res => resolve(res), isCancel);
+        const select = SelectInit(arr, params, res => resolve(res));
         // Modals.show({data: select, style: style.select});
         show(style.select, select);
     });
