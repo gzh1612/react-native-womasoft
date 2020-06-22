@@ -35,8 +35,8 @@ export default class PageRender extends Component {
         const stateStyle = this.state.style ?? {};
         const {full, children, onPress, bg} = this.state;
 
-        let fullStyle = {paddingTop: css.headerBarHeight};
-        if (full) fullStyle = {};
+        let fullStyle = {};
+        if (Platform.OS === 'android' && !full) fullStyle = {paddingTop: css.headerBarHeight};
 
         let childrenView = <View style={[stateStyle, fullStyle, {
             backgroundColor: bg ?? css.page.bg,
