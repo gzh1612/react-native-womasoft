@@ -57,7 +57,6 @@ export default class PageRender extends Component {
         return <TouchableHighlight activeOpacity={1} style={{flex: 1}} onPress={() => {
             if (typeof onPress === "function") onPress();
         }}>
-
             {innerView}
         </TouchableHighlight>
     }
