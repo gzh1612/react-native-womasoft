@@ -48,12 +48,15 @@ export default class PageRender extends Component {
             {children}
         </View>;
         let innerView = childrenView;
-        if (Platform.OS === 'ios' && !full) innerView = <SafeAreaView style={[style.container, {
-            backgroundColor: bg ?? css.page.bg,
-            flex: 1
-        }]}>
-            {childrenView}
-        </SafeAreaView>;
+        if (Platform.OS === 'ios' && !full) innerView = <View style={{flex: 1}}>
+            <View style={{height: css.headerBarHeight, backgroundColor: barBg ?? css.page.bg}}/>
+            <SafeAreaView style={[style.container, {
+                backgroundColor: bg ?? css.page.bg,
+                flex: 1
+            }]}>
+                {childrenView}
+            </SafeAreaView>
+        </View>;
         return <TouchableHighlight activeOpacity={1} style={{flex: 1}} onPress={() => {
             if (typeof onPress === "function") onPress();
         }}>
