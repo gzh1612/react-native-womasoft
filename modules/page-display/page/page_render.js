@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {SafeAreaView, Platform, StyleSheet, TouchableHighlight, View} from 'react-native';
+import {SafeAreaView, Platform, StyleSheet, TouchableHighlight, StatusBar, View} from 'react-native';
 
 import theme from '../theme';
 import {page} from "../../index";
@@ -12,6 +12,8 @@ export default class PageRender extends Component {
         this.state = {
             full: props.full ?? false,//是否全面屏
             bg: props.bg,
+            barBg: props.barBg,
+            barStyle: props.barStyle ?? 'light-content',
             children: props.children,
             style: props.style,
             onPress: props.onPress,
@@ -33,7 +35,7 @@ export default class PageRender extends Component {
         const css = this.css;
         const style = this.style;
         const stateStyle = this.state.style ?? {};
-        const {full, children, onPress, bg} = this.state;
+        const {full, children, onPress, bg, barBg, barStyle} = this.state;
 
         let fullStyle = {};
         if (Platform.OS === 'android' && !full) fullStyle = {paddingTop: css.headerBarHeight};
@@ -43,12 +45,16 @@ export default class PageRender extends Component {
             flex: 1
         }]}>{children}</View>;
         let innerView = childrenView;
-        if (Platform.OS === 'ios' && !full) innerView = <SafeAreaView style={[style.container, {flex: 1}]}>
+        if (Platform.OS === 'ios' && !full) innerView = <SafeAreaView style={[style.container, {
+            backgroundColor: bg ?? css.page.bg,
+            flex: 1
+        }]}>
             {childrenView}
         </SafeAreaView>;
         return <TouchableHighlight activeOpacity={1} style={{flex: 1}} onPress={() => {
             if (typeof onPress === "function") onPress();
         }}>
+            <StatusBar backgroundColor={barBg ?? css.page.bg} translucent barStyle={barStyle}/>
             {innerView}
         </TouchableHighlight>
     }
