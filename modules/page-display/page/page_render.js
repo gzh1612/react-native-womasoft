@@ -23,10 +23,18 @@ export default class PageRender extends Component {
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         if (nextProps.children === this.state.children &&
+            nextProps.full === this.state.full &&
+            nextProps.bg === this.state.bg &&
+            nextProps.barBg === this.state.barBg &&
+            nextProps.barStyle === this.state.barStyle &&
             JSON.stringify(nextProps.style) === JSON.stringify(this.state.style)) return false;
         this.setState({
             children: nextProps.children,
             style: nextProps.style,
+            full: nextProps.full,
+            bg: nextProps.bg,
+            barBg: nextProps.barBg,
+            barStyle: nextProps.barStyle,
         });
         return true;
     }
