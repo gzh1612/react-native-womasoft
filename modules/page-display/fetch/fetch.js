@@ -16,6 +16,13 @@ const init = () => {
 };
 
 /**
+ * 获取token
+ */
+const getToken = () => {
+    return redux.get(authToken);
+};
+
+/**
  * 写入token
  * @param token
  */
@@ -39,7 +46,7 @@ const initStatus = (code, func) => {
     redux.update(fetchStatus, status);
 };
 
-const getToken = (isToken) => {
+const verifyToken = (isToken) => {
     return new Promise((resolve) => {
         if (typeof isToken === 'function') return resolve(isToken());
         if (!isToken) return resolve(undefined);
@@ -60,13 +67,13 @@ const getToken = (isToken) => {
 };
 
 const Get = (url, body, contentType, isToken = false) => {
-    return getToken(isToken).then(token => {
+    return verifyToken(isToken).then(token => {
         return dataRequestParams('get', url, body, contentType, token)
     });
 };
 
 const Post = (url, body, contentType, isToken = false) => {
-    return getToken(isToken).then(token => {
+    return verifyToken(isToken).then(token => {
         return dataRequestParams('post', url, body, contentType, token)
     });
 };
@@ -167,7 +174,7 @@ const dataRequest = (url, init) => {
 
 export default {
     token: authToken,
-    setToken,
+    setToken, getToken,
     init, initStatus,
     Get, Post, Put, Delete,
 }

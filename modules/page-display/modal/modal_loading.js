@@ -31,8 +31,8 @@ const write = (shortContent = '', icon) => {
 //小loading
 const small = (style = {}) => {
     if (!style.color) style.color = '#808080';
-    if (!style.marginTop) style.marginTop = 20;
-    if (!style.marginBottom) style.marginBottom = 20;
+    if (!style.marginTop && style.marginTop !== 0) style.marginTop = 20;
+    if (!style.marginBottom && style.marginBottom !== 0) style.marginBottom = 20;
     return <View style={style}>
         <ActivityIndicator size={'small'} color={style.color}/>
     </View>
