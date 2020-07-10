@@ -46,7 +46,7 @@ const all = (name) => {
 };
 
 const get = (name) => {
-    let language = all(name);
+    let language = all();
     if (!language) return;
     if (!name) return console.warn('获取语言时出错，请填写name值');
     const nameArr = name.split('.');
