@@ -1,6 +1,6 @@
 {
   "name": "react-native-womasoft",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,5 @@
   "dependencies": {
     "react-native": "^0.62.2"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
