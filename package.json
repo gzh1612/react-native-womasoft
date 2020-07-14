@@ -11,8 +11,6 @@
   ],
   "author": "gaozh",
   "license": "MIT",
-  "dependencies": {
-    "react-native": "^0.62.2"
-  },
+  "dependencies": {},
   "devDependencies": {}
 }
