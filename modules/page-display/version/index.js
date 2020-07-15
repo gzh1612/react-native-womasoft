@@ -64,14 +64,14 @@ const download = (content = '', isMust = false, isLink = false) => {
             modal.alert(content).then(() => {
                 let isAndroid = true;
                 if (Platform['OS'] === 'ios') isAndroid = false;
-                if (isLink) return Linking['openURL'](downloadLink);
+                if (isLink || !isAndroid) return Linking['openURL'](downloadLink);
                 return resolve(isAndroid);
             });
         } else {
             modal.confirm(content).then(() => {
                 let isAndroid = true;
                 if (Platform['OS'] === 'ios') isAndroid = false;
-                if (isLink) return Linking['openURL'](downloadLink);
+                if (isLink || !isAndroid) return Linking['openURL'](downloadLink);
                 return resolve(isAndroid);
             });
         }
