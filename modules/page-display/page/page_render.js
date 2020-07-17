@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {SafeAreaView, Platform, StyleSheet, TouchableHighlight, StatusBar, View} from 'react-native';
 
 import theme from '../theme';
-import {page} from "../../index";
 
 export default class PageRender extends Component {
     constructor(props) {
@@ -43,30 +42,30 @@ export default class PageRender extends Component {
         const css = this.css;
         const style = this.style;
         const stateStyle = this.state.style ?? {};
-        const {full, children, onPress, bg, barBg, barStyle} = this.state;
+        const state = this.state;
 
         let fullStyle = {};
-        if (Platform.OS === 'android' && !full) fullStyle = {paddingTop: css.headerBarHeight};
+        if (Platform.OS === 'android' && !state.full) fullStyle = {paddingTop: css.headerBarHeight};
 
         let childrenView = <View style={[stateStyle, fullStyle, {
-            backgroundColor: bg ?? css.page.bg,
+            backgroundColor: state.bg ?? css.page.bg,
             flex: 1
         }]}>
-            <StatusBar backgroundColor={barBg ?? css.page.bg} translucent barStyle={barStyle}/>
-            {children}
+            <StatusBar backgroundColor={state.barBg ?? css.page.bg} translucent barStyle={state.barStyle}/>
+            {state.children}
         </View>;
         let innerView = childrenView;
-        if (Platform.OS === 'ios' && !full) innerView = <View style={{flex: 1}}>
-            <View style={{height: css.headerBarHeight, backgroundColor: barBg ?? css.page.bg}}/>
+        if (Platform.OS === 'ios' && !state.full) innerView = <View style={{flex: 1}}>
+            <View style={{height: css.headerBarHeight, backgroundColor: state.barBg ?? css.page.bg}}/>
             <SafeAreaView style={[style.container, {
-                backgroundColor: bg ?? css.page.bg,
+                backgroundColor: state.bg ?? css.page.bg,
                 flex: 1
             }]}>
                 {childrenView}
             </SafeAreaView>
         </View>;
         return <TouchableHighlight activeOpacity={1} style={{flex: 1}} onPress={() => {
-            if (typeof onPress === "function") onPress();
+            if (typeof state.onPress === "function") state.onPress();
         }}>
             {innerView}
         </TouchableHighlight>
