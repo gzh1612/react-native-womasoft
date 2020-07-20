@@ -24,8 +24,11 @@ const hide = () => {
     });
 };
 
-
-module.exports = {
+const popup = {
     show,
     hide,
+};
+
+export {
+    popup
 };

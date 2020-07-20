@@ -2,7 +2,7 @@ import init from './init_modal';
 
 import {select} from "./modal_select";
 import {alert, confirm, confirmPwd} from './modal_prompt_box';
-import popup from './modal_popup';
+import {popup} from './modal_popup';
 
 import initLoading from './init_loading';
 import loading from './modal_loading';
