@@ -32,6 +32,7 @@ export default class PageA extends Component {
         if (nextProps.children === this.state.children &&
             nextProps.color === this.state.color &&
             nextProps.bgColor === this.state.bgColor &&
+            (JSON.stringify(nextProps.style ?? {}) === JSON.stringify(this.state.style ?? {})) &&
             nextProps.text === this.state.text &&
             nextProps.alert === this.state.alert &&
             nextProps.onPress === this.state.onPress) return false;
@@ -41,6 +42,7 @@ export default class PageA extends Component {
             bgColor: nextProps.bgColor ?? this.state.bgColor,
             text: nextProps.text ?? this.state.text,
             alert: nextProps.alert ?? this.state.alert,
+            style: nextProps.style ?? this.state.style,
             onPress: nextProps.onPress ?? this.state.onPress,
         });
         return true;

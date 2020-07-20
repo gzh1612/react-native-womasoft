@@ -26,7 +26,7 @@ export default class PageRender extends Component {
             nextProps.bg === this.state.bg &&
             nextProps.barBg === this.state.barBg &&
             nextProps.barStyle === this.state.barStyle &&
-            JSON.stringify(nextProps.style) === JSON.stringify(this.state.style)) return false;
+            JSON.stringify(nextProps.style ?? {}) === JSON.stringify(this.state.style ?? {})) return false;
         this.setState({
             children: nextProps.children,
             style: nextProps.style,

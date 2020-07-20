@@ -34,11 +34,13 @@ class Icons extends Component {
         if (nextProps.name === this.state.name &&
             nextProps.size === this.state.size &&
             nextProps.color === this.state.color &&
+            JSON.stringify(nextProps.style ?? {}) === JSON.stringify(this.state.style ?? {}) &&
             nextProps.onPress === this.state.onPress) return false;
         this.setState({
             name: nextProps.name,
             size: nextProps.size,
             color: nextProps.color,
+            style: nextProps.style,
             onPress: nextProps.onPress,
         });
         return true

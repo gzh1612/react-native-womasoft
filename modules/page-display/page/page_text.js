@@ -27,10 +27,12 @@ export default class PageText extends Component {
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         if (nextProps.color === this.state.color &&
             nextProps.bgColor === this.state.bgColor &&
+            JSON.stringify(nextProps.style ?? {}) === JSON.stringify(this.state.style ?? {}) &&
             nextProps.text === this.state.text) return false;
         this.setState({
             color: nextProps.color ?? this.state.color,
             bgColor: nextProps.bgColor ?? this.state.bgColor,
+            style: nextProps.style ?? this.state.style,
             text: nextProps.text ?? this.state.text,
         });
         return true;
