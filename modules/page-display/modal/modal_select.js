@@ -6,7 +6,7 @@ import theme from '../theme';
 import Modals from './init_modal';
 import redux from "../../data-storage/redux";
 
-const show = (style, data) => {
+const show = (data, style) => {
     redux.update(Modals.reduxName, {
         type: 2,
         display: true,
