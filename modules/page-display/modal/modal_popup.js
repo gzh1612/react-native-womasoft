@@ -1,11 +1,10 @@
 import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-// import language from '../language';
-import theme from '../theme';
+import {} from 'react-native';
 
 import Modals from './init_modal';
 import redux from "../../data-storage/redux";
 
+//显示
 const show = (data, style) => {
     redux.update(Modals.reduxName, {
         type: 2,
@@ -15,6 +14,7 @@ const show = (data, style) => {
     });
 };
 
+//隐藏
 const hide = () => {
     redux.update(Modals.reduxName, {
         type: 2,
@@ -25,12 +25,8 @@ const hide = () => {
     })
 };
 
-const getPopupName = () => {
-    return Modals.reduxName;
-};
 
-export default {
-    getPopupName,
+module.exports = {
     show,
     hide,
-}
+};
