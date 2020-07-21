@@ -1,4 +1,3 @@
-import React from 'react';
 import redux from '../../data-storage/redux';
 
 import Modals from './init_modal';
@@ -24,11 +23,7 @@ const hide = () => {
     });
 };
 
-const popup = {
-    show,
-    hide,
-};
 
 export {
-    popup
-};
+    show, hide
+}
