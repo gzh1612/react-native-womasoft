@@ -76,7 +76,7 @@ const select = (arr, params = {}) => {
         if (!arr) return reject(false);
         const select = SelectInit(arr, params, res => resolve(res));
         // Modals.show({data: select, style: style.select});
-        show(style.select, select);
+        show(select, style.select);
     });
 
 };
@@ -113,4 +113,6 @@ const styles = (css) => StyleSheet.create({
 
 export {
     select,
+    show,
+    hide,
 }
