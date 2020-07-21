@@ -1,10 +1,12 @@
-import redux from '../../data-storage/redux';
+import React from 'react';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+// import language from '../language';
+import theme from '../theme';
 
 import Modals from './init_modal';
+import redux from "../../data-storage/redux";
 
-const timer = 200;
-
-const show = (data, style = {}) => {
+const show = (data, style) => {
     redux.update(Modals.reduxName, {
         type: 2,
         display: true,
@@ -19,11 +21,16 @@ const hide = () => {
         display: false,
         style: {},
         data: null,
-        onPress: null
-    });
+        onPress: null,
+    })
 };
 
+const getPopupName = () => {
+    return Modals.reduxName;
+};
 
-export {
-    show, hide
+export default {
+    getPopupName,
+    show,
+    hide,
 }
