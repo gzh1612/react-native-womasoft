@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, TouchableHighlight, View, ScrollView, RefreshControl} from 'react-native';
+import {TouchableHighlight, View, ScrollView, RefreshControl} from 'react-native';
 
 import theme from '../theme';
 
@@ -7,7 +7,6 @@ export default class PageScroll extends Component {
     constructor(props) {
         super(props);
         this.css = theme.get() ?? {};
-        this.style = styles(this.css);
         this.state = {
             children: props.children,
             style: props.style,
@@ -44,4 +43,3 @@ export default class PageScroll extends Component {
         </ScrollView>
     }
 }
-const styles = (css) => StyleSheet.create({});
