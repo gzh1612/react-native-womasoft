@@ -9,10 +9,11 @@ export default class PageSlide extends Component {
         this.css = theme.get() ?? {};
         this.state = {
             children: props.children,
-            style: props.style ?? {},
-            slideStyle: props.slideStyle ?? {},
+            style: props.style,
+            slideStyle: props.slideStyle,
             onRefresh: props.onRefresh,
             refreshing: props.refreshing ?? false,
+            log: props.log ?? false,
         }
     }
 
@@ -22,6 +23,13 @@ export default class PageSlide extends Component {
             nextProps.refreshing === this.state.refreshing &&
             JSON.stringify(nextProps.style) === JSON.stringify(this.state.style) &&
             JSON.stringify(nextProps.slideStyle) === JSON.stringify(this.state.slideStyle)) return false;
+        if (this.state.log) {
+            console.log('children', nextProps.children === this.state.children);
+            console.log('refreshing', nextProps.refreshing === this.state.refreshing);
+            console.log('style', JSON.stringify(nextProps.style) === JSON.stringify(this.state.style));
+            console.log('slideStyle', JSON.stringify(nextProps.slideStyle) === JSON.stringify(this.state.slideStyle));
+            console.log('==================================');
+        }
         this.setState({
             children: nextProps.children,
             style: nextProps.style ?? this.state.style,
@@ -32,13 +40,13 @@ export default class PageSlide extends Component {
     }
 
     render() {
-        return <ScrollView style={this.state.slideStyle} refreshControl={
+        return <ScrollView style={this.state.slideStyle ?? {}} refreshControl={
             <RefreshControl refreshing={this.state.refreshing}
                             onRefresh={() => {
                                 if (typeof this.state.onRefresh === 'function') this.state.onRefresh();
                             }}/>}>
             <TouchableHighlight activeOpacity={1}>
-                <View style={this.state.style}>
+                <View style={this.state.style ?? {}}>
                     {this.state.children}
                 </View>
             </TouchableHighlight>
