@@ -3,7 +3,6 @@ import page_text from "./page_text";
 import page_a from "./page_a";
 import page_icon from './page_icon';
 import page_slide from "./page_slide";
-import page_scroll from "./page_scroll";
 
 export default {
     render: page_render,//页面最外层组件
@@ -11,5 +10,4 @@ export default {
     a: page_a,//简单的点击按钮
     icon: page_icon,//字体图标
     slide: page_slide,//滚动
-    scroll: page_scroll,//滚动
 }

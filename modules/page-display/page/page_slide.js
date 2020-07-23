@@ -3,13 +3,14 @@ import {TouchableHighlight, View, ScrollView, RefreshControl} from 'react-native
 
 import theme from '../theme';
 
-export default class PageScroll extends Component {
+export default class PageSlide extends Component {
     constructor(props) {
         super(props);
         this.css = theme.get() ?? {};
         this.state = {
             children: props.children,
-            style: props.style,
+            style: props.style ?? {},
+            slideStyle: props.slideStyle ?? {},
             onRefresh: props.onRefresh,
             refreshing: props.refreshing ?? false,
         }
@@ -19,24 +20,25 @@ export default class PageScroll extends Component {
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         if (nextProps.children === this.state.children &&
             nextProps.refreshing === this.state.refreshing &&
-            JSON.stringify(nextProps.style) === JSON.stringify(this.state.style)) return false;
+            JSON.stringify(nextProps.style) === JSON.stringify(this.state.style) &&
+            JSON.stringify(nextProps.slideStyle) === JSON.stringify(this.state.slideStyle)) return false;
         this.setState({
             children: nextProps.children,
-            style: nextProps.style,
+            style: nextProps.style ?? this.state.style,
+            slideStyle: nextProps.slideStyle ?? this.state.slideStyle,
             refreshing: nextProps.refreshing,
         });
         return true;
     }
 
     render() {
-        const stateStyle = this.state.style ?? {};
-        return <ScrollView refreshControl={
+        return <ScrollView style={this.state.slideStyle} refreshControl={
             <RefreshControl refreshing={this.state.refreshing}
                             onRefresh={() => {
                                 if (typeof this.state.onRefresh === 'function') this.state.onRefresh();
                             }}/>}>
             <TouchableHighlight activeOpacity={1}>
-                <View style={stateStyle}>
+                <View style={this.state.style}>
                     {this.state.children}
                 </View>
             </TouchableHighlight>
