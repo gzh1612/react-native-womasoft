@@ -67,7 +67,7 @@ export default class PageA extends Component {
         if (state.mTop) style.marginTop = state.mTop;
         if (state.mBottom) style.marginBottom = state.mBottom;
         if (state.mRight) style.marginRight = state.mRight;
-        if (state.marginRight) style.marginLeft = state.marginRight;
+        if (state.mLeft) style.marginLeft = state.mLeft;
         if (state.bgColor) {
             style.backgroundColor = state.bgColor;
             style.borderColor = state.bgColor;
