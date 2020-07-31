@@ -11,14 +11,6 @@
   ],
   "author": "gaozh",
   "license": "MIT",
-  "dependencies": {
-    "@react-native-community/async-storage": "^1.11.0",
-    "react": "16.13.1",
-    "react-native": "0.63.1",
-    "react-native-device-info": "^5.6.2",
-    "react-native-localize": "^1.4.0",
-    "react-native-vector-icons": "^7.0.0",
-    "redux": "^4.0.5"
-  },
+  "dependencies": {},
   "devDependencies": {}
 }
