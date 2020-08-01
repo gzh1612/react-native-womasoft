@@ -47,7 +47,7 @@ export default class PageSlide extends Component {
                                                onRefresh={() => {
                                                    if (typeof this.state.onRefresh === 'function') this.state.onRefresh();
                                                }}/>}>
-            <TouchableHighlight activeOpacity={1} style={{height: this.state.height}}>
+            <TouchableHighlight activeOpacity={1} style={{minHeight: this.state.height}}>
                 <View style={this.state.style ?? {}}>
                     {this.state.children}
                 </View>
