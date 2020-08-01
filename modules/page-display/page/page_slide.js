@@ -12,7 +12,7 @@ export default class PageSlide extends Component {
             style: props.style,
             slideStyle: props.slideStyle,
             onRefresh: props.onRefresh,
-            refreshing: props.refreshing ?? false,
+            refreshing: props.refreshing,
             log: props.log ?? false,
         }
     }
@@ -41,7 +41,7 @@ export default class PageSlide extends Component {
 
     render() {
         return <ScrollView style={this.state.slideStyle ?? {}} refreshControl={
-            <RefreshControl refreshing={this.state.refreshing}
+            <RefreshControl refreshing={this.state.refreshing ?? false}
                             onRefresh={() => {
                                 if (typeof this.state.onRefresh === 'function') this.state.onRefresh();
                             }}/>}>
