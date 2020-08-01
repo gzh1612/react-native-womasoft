@@ -40,12 +40,14 @@ export default class PageSlide extends Component {
     }
 
     render() {
-        return <ScrollView style={this.state.slideStyle ?? {}} refreshControl={
-            <RefreshControl refreshing={this.state.refreshing ?? false}
-                            onRefresh={() => {
-                                if (typeof this.state.onRefresh === 'function') this.state.onRefresh();
-                            }}/>}>
-            <TouchableHighlight activeOpacity={1}>
+        return <ScrollView style={this.state.slideStyle ?? {}}
+                           onLayout={(event) => this.setState({height: event['nativeEvent']['layout'].height})}
+                           refreshControl={
+                               <RefreshControl refreshing={this.state.refreshing ?? false}
+                                               onRefresh={() => {
+                                                   if (typeof this.state.onRefresh === 'function') this.state.onRefresh();
+                                               }}/>}>
+            <TouchableHighlight activeOpacity={1} style={{height: this.state.height}}>
                 <View style={this.state.style ?? {}}>
                     {this.state.children}
                 </View>
