@@ -1,12 +1,12 @@
 import React from 'react';
 import {} from 'react-native';
 
-import Modals from './init_popup';
+import Popups from './init_popup';
 import redux from "../../data-storage/redux";
 
 //显示
 const show = (data, style) => {
-    redux.update(Modals.reduxName, {
+    redux.update(Popups.reduxName, {
         type: 2,
         display: true,
         style: style,
@@ -16,7 +16,7 @@ const show = (data, style) => {
 
 //隐藏
 const hide = () => {
-    redux.update(Modals.reduxName, {
+    redux.update(Popups.reduxName, {
         type: 2,
         display: false,
         style: {},
@@ -27,6 +27,7 @@ const hide = () => {
 
 
 module.exports = {
+    init: Popups,
     show,
     hide,
 };
