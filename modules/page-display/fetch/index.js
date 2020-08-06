@@ -11,4 +11,8 @@ export default {
 
     token: fetch.token,
     setToken: fetch.setToken,
+    type: fetch.type,
+    getType: fetch.getType,
+    setType: fetch.setType,
+    setTime: fetch.setTime,
 }

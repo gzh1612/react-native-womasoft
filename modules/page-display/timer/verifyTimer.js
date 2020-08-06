@@ -3,6 +3,7 @@ import redux from '../../data-storage/redux';
 import unmount from '../unmount';
 
 const timerVerify = 'wocode_timer_verify';
+let defaultUnmount = '';
 
 //初始化
 const init = () => {
@@ -14,8 +15,9 @@ const init = () => {
 };
 
 //写入配置
-const set = (_this, text = '', time = 30) => {
+const set = (_this, text = '', time = 30, unmount = '') => {
     if (!_this) return console.warn('timerVerify init方法 this undefined');
+    defaultUnmount = unmount ?? _this.unmount ?? _this.name ?? '';
     _this.setState({
         verify_timer_json: {
             defText: text,
@@ -23,6 +25,7 @@ const set = (_this, text = '', time = 30) => {
             text: text,
             time: time,
             isOnPress: true,//是否可点击
+
         },
     });
 };
@@ -43,7 +46,7 @@ const onPress = (_this) => {
         //获取时间进行比对
         const startTime = new Date().getTime();
         const endTime = startTime + json.defTime * 1e3;
-        const historyTime = redux.get(timerVerify);
+        const historyTime = redux.get(timerVerify) ?? 0;
         //判断历史时间是否执行完毕
         if (historyTime > startTime) {
             let time = (historyTime - startTime) / 1e3;
@@ -63,7 +66,7 @@ const onPress = (_this) => {
 //写入循环
 const setTime = (_this) => {
     const interval = setInterval(() => {
-        if (!unmount.confirm(_this.unmount)) return clearInterval(interval);
+        if (!unmount.confirm(defaultUnmount)) return clearInterval(interval);
         const json = _this.state.verify_timer_json;
         if (json.time === 1) {
             json.text = json.defText;

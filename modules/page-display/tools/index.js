@@ -4,18 +4,18 @@
  * @param json
  * @returns {string|*}
  */
-const replaceUrl = (url, json) => {
+const replaceUrl = (url, json, isAdd = true) => {
     if (!url) return url;
     url = url.toString();
     if (!json && typeof json === 'undefined') return url;
-    url += isIndexOf(url, '?') ? url.lastIndexOf('&') === 0 ? '' : '&' : '?';
+    if (isAdd) url += isIndexOf(url, '?') ? url.lastIndexOf('&') === 0 ? '' : '&' : '?';
 
     for (const item in json) {
         if (!json.hasOwnProperty(item)) continue;
         if (url.indexOf('{' + item + '}') >= 0) {
             url = url.replace('{' + item + '}', json[item]);
         } else {
-            url += `${item}=${json[item]}&`;
+            if (isAdd) url += `${item}=${json[item]}&`;
         }
     }
     const last = lastLetter(url);

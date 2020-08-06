@@ -5,22 +5,32 @@ import storage from '../../data-storage/storage';
 
 const fetchStatus = 'fetchStatus';//错误状态处理
 const authToken = 'authToken';//权限 token
+const fetchType = 'fetchType';//默认类型，用于可切换式API
+const timeout = 'timeout'; //超时时间
 
 //初始化
-const init = () => {
+const init = (params) => {
+    if (!params || typeof params !== 'object') params = {};
     redux.add(fetchStatus, {});
-    redux.add(authToken, '');
+    redux.add(timeout, params.timeout ?? 60000);
+    redux.add(authToken, params.token ?? '');
+    redux.add(fetchType, params.type ?? '');
     storage.get(authToken).then(res => {
         if (res) redux.update(authToken, res);
+    });
+    storage.get(fetchType).then(res => {
+        if (res) redux.update(fetchType, res);
     })
 };
+
 
 /**
  * 获取token
  */
-const getToken = () => {
-    return redux.get(authToken);
-};
+const getToken = () => redux.get(authToken);
+
+const getType = () => redux.get(fetchType);
+const getTimeout = () => redux.get(timeout);
 
 /**
  * 写入token
@@ -31,6 +41,16 @@ const setToken = (token) => {
     storage.set(authToken, token);
 };
 
+const setType = (type) => {
+    redux.update(fetchType, type);
+    storage.set(fetchType, type);
+};
+
+const setTime = (time) => {
+    redux.update(timeout, time);
+};
+
+
 /**
  * 初始化 请求状态处理
  * @param code 请求返回status
@@ -38,7 +58,7 @@ const setToken = (token) => {
  * @constructor
  */
 const initStatus = (code, func) => {
-    if (typeof code !== 'number') return console.warn('StatusInit 中 code 不是number类型');
+    if (typeof code !== 'number' && typeof code !== 'string') return console.warn('StatusInit 中 code 不是number | string 类型');
     let status = redux.get(fetchStatus);
     if (!status) return;
     if (status[code] === code) return console.warn(`StatusInit 已初始化请求状态 ${code}`);
@@ -53,7 +73,7 @@ const verifyToken = (isToken) => {
         const timerOut = setTimeout(() => {
             clearInterval(authInterval);
             console.warn('无法获取token');
-            return false;
+            return resolve('');
         }, 10000);
         const authInterval = setInterval(() => {
             // console.log('我执行了 getToken');
@@ -105,6 +125,7 @@ const dataRequestParams = (method, url, body, contentType, token) => {
             body = undefined;
             break;
         case 'POST':
+            url = tools.replaceUrl(url, body, false);
             if (contentType.indexOf('application/json') >= 0) {
                 body = JSON.stringify(body);
             } else if (contentType.indexOf('application/x-www-form-urlencoded') >= 0) {
@@ -152,8 +173,14 @@ const dataRequest = (url, init) => {
         url: url,
         init: init,
     };
-    //开始数据请求
-    return new Promise((resolve, reject) => {
+
+    let timerPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            return resolve({code: 'SERVE_TIMEOUT'});
+        }, getTimeout());
+    });
+
+    let fetchPromise = new Promise((resolve, reject) => {
         fetch(url, init).then(res => {
             const status = res.status;
             if (status !== 200) {
@@ -167,14 +194,31 @@ const dataRequest = (url, init) => {
         }).catch(err => {
             console.warn(`请求出错: ${url}`);
             console.warn(err);
-            return reject(err);
+            return reject({code: 'SERVE_ERROR', message: err});
         }).then(res => resolve(res));
+    });
+
+    //开始数据请求
+    return new Promise((resolve, reject) => {
+        Promise.race([fetchPromise, timerPromise]).then(res => {
+            if (res.code === 'SERVE_TIMEOUT' || //网络超时
+                res.code === 'SERVE_ERROR') {   //请求错误
+                if (statusManage && typeof statusManage[res.code] === 'function') {
+                    console.warn(`数据请求 ${res.code} url:${url}`, res);
+                    statusManage[res.code](backJson);
+                }
+                return reject(res);
+            } else return resolve(res);
+        })
     })
 };
 
 export default {
     token: authToken,
     setToken, getToken,
+    type: fetchType,
+    setTime,
+    getType, setType,
     init, initStatus,
     Get, Post, Put, Delete,
 }

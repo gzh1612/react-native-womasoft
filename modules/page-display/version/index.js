@@ -21,13 +21,15 @@ const getBuild = () => DeviceInfo.getBuildNumber();
 
 /**
  * 判断版本信息是否有更新
- * @param serverVersion
- * @param serverBuild
- * @param appVersion
- * @param appBuild
+ * @param serverVersion     服务器端版本号
+ * @param serverBuild       服务器端build号
+ * @param appVersion        本地版本号
+ * @param appBuild          本地build号
+ * @param android           安卓是否更新提示
+ * @param ios               ios是否更新提示
  * @returns {boolean}
  */
-const verify = (serverVersion, serverBuild, appVersion = null, appBuild = null) => {
+const verify = (serverVersion, serverBuild, appVersion = null, appBuild = null, android = true, ios = true) => {
     if (!appVersion) appVersion = getVersion();
     if (!appVersion || !serverVersion) return false;
     if (!appBuild) appBuild = getBuild();
@@ -46,6 +48,13 @@ const verify = (serverVersion, serverBuild, appVersion = null, appBuild = null) 
     });
 
     if (parseInt(serverBuild) > parseInt(appBuild)) result = true;
+    if (Platform['OS'] === 'ios' && ios === false) {
+        console.warn('ios不需更新');
+        result = false;
+    } else if (Platform['OS'] === 'android' && android === false) {
+        console.warn('android不需更新');
+        result = false;
+    }
     return result
 };
 
