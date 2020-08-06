@@ -1,7 +1,7 @@
 import React from 'react';
 import {} from 'react-native';
 
-import Modals from './init_modal';
+import Modals from './init_popup';
 import redux from "../../data-storage/redux";
 
 //显示
