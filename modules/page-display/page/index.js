@@ -3,6 +3,8 @@ import page_text from "./page_text";
 import page_a from "./page_a";
 import page_icon from './page_icon';
 import page_slide from "./page_slide";
+import tools from './tools';
+
 
 export default {
     render: page_render,//页面最外层组件
@@ -10,4 +12,8 @@ export default {
     a: page_a,//简单的点击按钮
     icon: page_icon,//字体图标
     slide: page_slide,//滚动
+
+    initBarStyle: tools.initBarStyle,
+    setBarStyle: tools.setBarStyle,
+    getBarStyle: tools.getBarStyle,
 }

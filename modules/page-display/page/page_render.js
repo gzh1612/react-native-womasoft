@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {SafeAreaView, Platform, StyleSheet, TouchableHighlight, StatusBar, View} from 'react-native';
 
 import theme from '../theme';
+import tools from './tools';
 
 export default class PageRender extends Component {
     constructor(props) {
@@ -51,7 +52,8 @@ export default class PageRender extends Component {
             backgroundColor: state.bg ?? css.page.bg,
             flex: 1
         }]}>
-            <StatusBar backgroundColor={state.barBg ?? css.page.bg} translucent barStyle={state.barStyle}/>
+            <StatusBar backgroundColor={state.barBg ?? css.page.bg} translucent
+                       barStyle={state.barStyle ?? tools.getBarStyle() ?? 'light-content'}/>
             {state.children}
         </View>;
         let innerView = childrenView;
