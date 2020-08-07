@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Popups from './init_popup';
+import init_popup from './init_popup';
 import redux from "../../data-storage/redux";
 
 //显示
 const show = (data, style) => {
-    redux.update(Popups.reduxName, {
+    redux.update(init_popup.reduxName, {
         type: 1,
         display: true,
         style: style,
@@ -15,7 +15,7 @@ const show = (data, style) => {
 
 //隐藏
 const hide = () => {
-    redux.update(Popups.reduxName, {
+    redux.update(init_popup.reduxName, {
         type: 2,
         display: false,
         style: {},
@@ -26,7 +26,7 @@ const hide = () => {
 
 //显示
 const refresh = (data, style) => {
-    redux.update(Popups.reduxName, {
+    redux.update(init_popup.reduxName, {
         type: 3,
         display: true,
         style: style,
@@ -36,7 +36,7 @@ const refresh = (data, style) => {
 
 
 module.exports = {
-    init: Popups,
+    init: init_popup,
     show,
     hide,
     refresh,
