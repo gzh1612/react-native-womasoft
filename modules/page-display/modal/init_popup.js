@@ -12,7 +12,7 @@ export default class modal_popup extends Component {
         //初始化写入css
         const {css} = props;
         this.css = css ?? theme.get();
-        this.styles = styles(css);
+        this.styles = styles(this.css);
 
         this.state = {
             display: false,//是否显示
