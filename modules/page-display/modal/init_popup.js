@@ -12,6 +12,7 @@ export default class modal_popup extends Component {
         //初始化写入css
         const {css} = props;
         this.css = css ?? theme.get();
+        console.log('modal_popup css', this.css);
         this.styles = styles(this.css);
 
         this.state = {
@@ -119,7 +120,7 @@ export default class modal_popup extends Component {
         if (!this.state.display) return <View/>;
         const state = this.state;
         const styles = this.styles;
-        const {anOpacity, anXY, anSelectXY} = this.state;
+        const {anOpacity, anSelectXY} = this.state;
         const x = anSelectXY.x;
         const y = anSelectXY.y;
 
