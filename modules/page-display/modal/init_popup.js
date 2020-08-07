@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Animated} from 'react-native';
-import theme from '../theme';
-import redux from '../../data-storage/redux';
 
+import redux from '../../data-storage/redux';
+import theme from "../theme";
 
 const reduxName = 'framework_popup';
 
