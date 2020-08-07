@@ -10,7 +10,7 @@ import loading from './modal_loading';
 import {select} from "./modal_select";
 import {alert, confirm, confirmPwd} from './modal_prompt_box';
 
-export {
+export default {
     initModal,//初始化页面
     initPopup,
     initLoading,
