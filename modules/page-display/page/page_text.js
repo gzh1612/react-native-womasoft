@@ -16,10 +16,11 @@ export default class PageText extends Component {
             style: props.style ?? {},
             text: props.text,
             line: props.line ?? false,
-            mTop: props.mTop,
-            mBottom: props.mBottom,
-            mLeft: props.mLeft,
-            mRight: props.mRight,
+            marginTop: props.t ?? props['mTop'],
+            marginBottom: props.b ?? props['mBottom'],
+            marginLeft: props['l'] ?? props['mLeft'],
+            marginRight: props.r ?? props['mRight'],
+            width: props.width,
             log: props.log ?? false,
         }
     }
@@ -54,10 +55,11 @@ export default class PageText extends Component {
         if (!styles[0].color) style.color = state.color ?? css.font.color;
 
         if (state.lineHeight) style.lineHeight = state.lineHeight;
-        if (state.mTop) style.marginTop = state.mTop;
-        if (state.mBottom) style.marginBottom = state.mBottom;
-        if (state.mRight) style.marginRight = state.mRight;
-        if (state.mLeft) style.marginLeft = state.mLeft;
+        if (state.marginTop) style.marginTop = state.marginTop;
+        if (state.marginBottom) style.marginBottom = state.marginBottom;
+        if (state.marginRight) style.marginRight = state.marginRight;
+        if (state.marginLeft) style.marginLeft = state.marginLeft;
+        if (state.width) style.marginLeft = state.width;
 
         styles.push(style);
         if (state.log) {

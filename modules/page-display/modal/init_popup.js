@@ -34,7 +34,7 @@ export default class Popups extends Component {
     componentDidMount() {
         redux.listen(reduxName, res => {
             this.type = res.type;
-            if (res.display) {
+            if (this.type === 1) {  //show
                 this.setState({
                     display: res.display,
                     style: res.style,
@@ -47,8 +47,8 @@ export default class Popups extends Component {
                     this.render();
                     this.show(res.type);
                 });
-            } else {
-                this.hide(res.type, () => {
+            } else if (this.type === 2) {   //hide
+                this.hide(() => {
                     this.setState({
                         display: res.display,
                         style: res.style,
@@ -67,26 +67,23 @@ export default class Popups extends Component {
                         });
                     })
                 });
+            } else if (this.type === 3) {   //refresh
+                this.setState({
+                    style: res.style,
+                    data: res.data,
+                    onPress: res.onPress,
+                }, () => {
+                    this.render();
+                    // this.show(res.type);
+                });
             }
         });
 
     }
 
-    show(type) {
+    show() {
         const {anOpacity, anXY, anSelectXY} = this.state;
-        if (type === 1) Animated.parallel([
-            Animated.timing(anXY, {
-                toValue: {x: 0, y: 5},
-                duration: 100,
-                useNativeDriver: true,
-            }),
-            Animated.timing(anOpacity, {
-                toValue: 1,
-                duration: 100,
-                useNativeDriver: true
-            })
-        ]).start();
-        else if (type === 2) Animated.parallel([
+        Animated.parallel([
             Animated.timing(anSelectXY, {
                 toValue: {x: 0, y: 0},
                 duration: 100,
@@ -100,23 +97,9 @@ export default class Popups extends Component {
         ]).start();
     }
 
-    hide(type, func) {
+    hide(func) {
         const {anOpacity, anXY, anSelectXY} = this.state;
-        if (type === 1) Animated.parallel([
-            Animated.timing(anXY, {
-                toValue: {x: 0, y: 0},
-                duration: 100,
-                useNativeDriver: true,
-            }),
-            Animated.timing(anOpacity, {
-                toValue: 0,
-                duration: 100,
-                useNativeDriver: true
-            })
-        ]).start(() => {
-            if (typeof func === "function") func();
-        });
-        else if (type === 2) Animated.parallel([
+        Animated.parallel([
             Animated.timing(anSelectXY, {
                 toValue: {x: 0, y: 100},
                 duration: 100,
@@ -138,8 +121,8 @@ export default class Popups extends Component {
         const state = this.state;
         const styles = this.styles;
         const {anOpacity, anXY, anSelectXY} = this.state;
-        const x = this.type === 0 ? anXY.x : this.type === 1 ? anXY.x : anSelectXY.x;
-        const y = this.type === 0 ? anXY.y : this.type === 1 ? anXY.y : anSelectXY.y;
+        const x = anSelectXY.x;
+        const y = anSelectXY.y;
 
         return <View style={[styles.container, state.style, {backgroundColor: 'rgba(0,0,0,.1)'}]}>
             <Animated.View

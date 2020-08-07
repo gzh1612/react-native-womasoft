@@ -75,6 +75,7 @@ const alert = (content = '', params = {title: undefined, btnText: undefined}) =>
         if (!params.title) title = '提示';
         else title = params.title;
         let contentData = content;
+        if (typeof contentData === "number") contentData = contentData.toString();
         if (!params.btnText) btnText = '确定';
         else btnText = params.btnText;
 

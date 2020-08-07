@@ -3,6 +3,7 @@ import page_text from "./page_text";
 import page_a from "./page_a";
 import page_icon from './page_icon';
 import page_slide from "./page_slide";
+import page_switch from "./page_switch";
 import tools from './tools';
 
 
@@ -12,6 +13,7 @@ export default {
     a: page_a,//简单的点击按钮
     icon: page_icon,//字体图标
     slide: page_slide,//滚动
+    switch: page_switch,//开关
 
     initBarStyle: tools.initBarStyle,
     setBarStyle: tools.setBarStyle,

@@ -7,7 +7,7 @@ import redux from "../../data-storage/redux";
 //显示
 const show = (data, style) => {
     redux.update(Popups.reduxName, {
-        type: 2,
+        type: 1,
         display: true,
         style: style,
         data: data,
@@ -25,9 +25,20 @@ const hide = () => {
     })
 };
 
+//显示
+const refresh = (data, style) => {
+    redux.update(Popups.reduxName, {
+        type: 3,
+        display: true,
+        style: style,
+        data: data,
+    });
+};
+
 
 module.exports = {
     init: Popups,
     show,
     hide,
+    refresh,
 };

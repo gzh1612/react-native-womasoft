@@ -20,10 +20,11 @@ export default class PageA extends Component {
             style: props.style ?? {},
             text: props.text,
             line: props.line ?? false,
-            mTop: props.mTop ?? 0,
-            mBottom: props.mBottom ?? 0,
-            mLeft: props.mLeft ?? 0,
-            mRight: props.mRight ?? 0,
+            marginTop: props.t ?? props['mTop'] ?? 0,
+            marginBottom: props.b ?? props['mBottom'] ?? 0,
+            marginLeft: props['l'] ?? props['mLeft'] ?? 0,
+            marginRight: props.r ?? props['mRight'] ?? 0,
+            width: props.width,
             log: props.log ?? false,
         };
     }
@@ -64,10 +65,11 @@ export default class PageA extends Component {
         if (!styles[0].fontWeight) style.fontWeight = state.weight ?? 'normal';
         if (!styles[0].color) style.color = state.color ?? css.font.color ?? '#808080';
         if (state.lineHeight) style.lineHeight = state.lineHeight;
-        if (state.mTop) style.marginTop = state.mTop;
-        if (state.mBottom) style.marginBottom = state.mBottom;
-        if (state.mRight) style.marginRight = state.mRight;
-        if (state.mLeft) style.marginLeft = state.mLeft;
+        if (state.marginTop) style.marginTop = state.marginTop;
+        if (state.marginBottom) style.marginBottom = state.marginBottom;
+        if (state.marginRight) style.marginRight = state.marginRight;
+        if (state.marginLeft) style.marginLeft = state.marginLeft;
+        if (state.width) style.width = state.width;
         if (state.bgColor) {
             style.backgroundColor = state.bgColor;
             style.borderColor = state.bgColor;
