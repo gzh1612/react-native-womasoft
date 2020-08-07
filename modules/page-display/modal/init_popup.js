@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Dimensions, Animated} from 'react-native';
+import {View, StyleSheet, Animated} from 'react-native';
 import theme from '../theme';
 import redux from '../../data-storage/redux';
 
 
-const {width} = Dimensions.get('window');
 const reduxName = 'framework_popup';
 
 export default class modal_popup extends Component {
@@ -144,7 +143,7 @@ export default class modal_popup extends Component {
 }
 
 
-const styles = () => StyleSheet.create({
+const styles = (css) => StyleSheet.create({
     container: {
         flex: 1,
         position: 'absolute',
@@ -153,7 +152,7 @@ const styles = () => StyleSheet.create({
         left: 0,
         right: 0,
         zIndex: 10,
-        width: width,
+        width: css.width,
     }
 });
 
