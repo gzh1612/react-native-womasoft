@@ -1,5 +1,4 @@
 import React from 'react';
-import {} from 'react-native';
 
 import Popups from './init_popup';
 import redux from "../../data-storage/redux";

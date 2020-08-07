@@ -7,7 +7,7 @@ import redux from '../../data-storage/redux';
 const {width} = Dimensions.get('window');
 const reduxName = 'framework_popup';
 
-export default class Popups extends Component {
+export default class modal_popup extends Component {
     constructor(props) {
         super(props);
         //初始化写入css

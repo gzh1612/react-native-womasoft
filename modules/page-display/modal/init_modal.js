@@ -7,7 +7,7 @@ import redux from '../../data-storage/redux';
 const {width} = Dimensions.get('window');
 const reduxName = 'framework_modals';
 
-export default class Modals extends Component {
+export default class modal_modals extends Component {
     constructor(props) {
         super(props);
         //初始化写入css

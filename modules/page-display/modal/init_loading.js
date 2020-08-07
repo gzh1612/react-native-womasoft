@@ -6,7 +6,7 @@ import theme from "../theme";
 
 const reduxName = 'framework_loading';
 
-export default class Loading extends Component {
+export default class modal_loading extends Component {
     constructor(props) {
         super(props);
         this.css = theme.get();
