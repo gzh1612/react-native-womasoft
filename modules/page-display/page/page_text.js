@@ -42,20 +42,20 @@ export default class PageText extends Component {
     render() {
         const css = this.css;
         const state = this.state;
-        let styles = [];
+        let styles = [{
+            borderWidth: 1,
+            borderColor: 'rgba(0,0,0,0)'
+        }];
         if (state.style.length > 0) styles = styles.concat(state.style);
         else styles.push(state.style);
         if (state.log) {
             console.log(styles);
             console.log(state);
         }
-        let style = {
-            borderWidth: 1,
-            borderColor: 'rgba(0,0,0,0)'
-        };
-        if (!styles[0].fontSize) style.fontSize = state.size ?? css.font.size;
-        if (!styles[0].fontWeight) style.fontWeight = state.weight ?? 'normal';
-        if (!styles[0].color) style.color = state.color ?? css.font.color;
+        let style = {};
+        if (!styles[1].fontSize) style.fontSize = state.size ?? css.font.size;
+        if (!styles[1].fontWeight) style.fontWeight = state.weight ?? 'normal';
+        if (!styles[1].color) style.color = state.color ?? css.font.color;
 
         if (state.lineHeight) style.lineHeight = state.lineHeight;
         if (state.marginTop) style.marginTop = state.marginTop;
