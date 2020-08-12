@@ -60,7 +60,10 @@ export default class PageA extends Component {
             console.log(styles);
             console.log(state);
         }
-        let style = {};
+        let style = {
+            borderWidth: 1,
+            borderColor: 'rgba(0,0,0,0)'
+        };
         if (!styles[0].fontSize) style.fontSize = state.size ?? css.font.size ?? 14;
         if (!styles[0].fontWeight) style.fontWeight = state.weight ?? 'normal';
         if (!styles[0].color) style.color = state.color ?? css.font.color ?? '#808080';
