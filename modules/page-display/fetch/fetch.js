@@ -176,7 +176,10 @@ const dataRequest = (url, init) => {
 
     let timerPromise = new Promise((resolve, reject) => {
         setTimeout(() => {
-            return resolve({code: 'SERVE_TIMEOUT'});
+            return resolve({
+                code: 'SERVE_TIMEOUT',
+                url: url
+            });
         }, getTimeout());
     });
 
@@ -194,7 +197,11 @@ const dataRequest = (url, init) => {
         }).catch(err => {
             console.warn(`请求出错: ${url}`);
             console.warn(err);
-            return reject({code: 'SERVE_ERROR', message: err});
+            return reject({
+                code: 'SERVE_ERROR',
+                message: err,
+                url: url
+            });
         }).then(res => resolve(res));
     });
 
