@@ -68,7 +68,13 @@ export default class PageText extends Component {
         if (state.log) {
             console.log(styles);
         }
-        if (state.line) return <Text style={styles} numberOfLines={state.line}>{state.text}</Text>;
+
+        //适配小米u 12 判断是否是中文,不是给后面加个空格
+        let reg = /^[\u4E00-\u9FA5]+$/;
+        let mi12 = '';
+        if (!reg.test(state.text)) mi12 = ' ';
+
+        if (state.line) return <Text style={styles} numberOfLines={state.line}>{`${state.text}${mi12}`}</Text>;
         return <Text style={styles}>{state.text}</Text>
     }
 }

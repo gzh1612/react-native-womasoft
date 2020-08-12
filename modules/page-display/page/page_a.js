@@ -82,6 +82,13 @@ export default class PageA extends Component {
         if (state.log) {
             console.log(styles);
         }
+
+
+        //适配小米u 12 判断是否是中文,不是给后面加个空格
+        let reg = /^[\u4E00-\u9FA5]+$/;
+        let mi12 = '';
+        if (!reg.test(state.text)) mi12 = ' ';
+
         //children有值
         if (state.children) {
             //是否省略
@@ -102,13 +109,13 @@ export default class PageA extends Component {
                 if (state.alert) modal.alert(state.alert);
                 if (typeof state.onPress === "function") state.onPress();
             }}>
-                <Text style={styles} numberOfLines={state.line}>{state.text}</Text>
+                <Text style={styles} numberOfLines={state.line}>{`${state.text}${mi12}`}</Text>
             </TouchableOpacity>;
             return <TouchableOpacity activeOpacity={.5} onPress={() => {
                 if (state.alert) modal.alert(state.alert);
                 if (typeof state.onPress === "function") state.onPress();
             }}>
-                <Text style={styles}>{state.text}</Text>
+                <Text style={styles}>{`${state.text}${mi12}`}</Text>
             </TouchableOpacity>
         }
     }
