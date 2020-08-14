@@ -187,6 +187,8 @@ const styles = (css) => StyleSheet.create({
         color: '#666',
         textAlign: 'center',
         lineHeight: 22,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0)',
     },
     popupBtns: {
         borderTopWidth: 1,
