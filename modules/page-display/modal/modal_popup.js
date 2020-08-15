@@ -4,12 +4,19 @@ import init_popup from './init_popup';
 import redux from "../../data-storage/redux";
 
 //显示
-const show = (data, style) => {
+const show = (data, direction = 'bottom') => {
+    let dir = 4;
+    console.log(direction);
+    if (direction === 'left') dir = 1;
+    else if (direction === 'right') dir = 2;
+    else if (direction === 'top') dir = 3;
+    else if (direction === 'bottom') dir = 4;
     redux.update(init_popup.reduxName, {
         type: 1,
         display: true,
-        style: style,
+        style: {},
         data: data,
+        direction: dir
     });
 };
 

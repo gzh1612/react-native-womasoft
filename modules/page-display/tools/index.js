@@ -1,7 +1,17 @@
 /**
+ * 深拷贝
+ * @param val
+ */
+const deepCopy = (val) => {
+    if (typeof val !== 'object') return val;
+    return JSON.parse(JSON.stringify(val))
+};
+
+/**
  * 拼接 url
  * @param url
  * @param json
+ * @param isAdd
  * @returns {string|*}
  */
 const replaceUrl = (url, json, isAdd = true) => {
@@ -300,6 +310,7 @@ const areasCover = (areasArr, startLeft, startRight, endLeft, endRight) => {
 };
 
 export default {
+    deepCopy,
     replaceUrl,
     jsonToSearch,
     arrayToSearch,

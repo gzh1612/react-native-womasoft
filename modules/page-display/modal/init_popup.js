@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Animated} from 'react-native';
+import {View, StyleSheet, Animated, TouchableHighlight, TouchableOpacity} from 'react-native';
 
 import redux from '../../data-storage/redux';
 import theme from "../theme";
@@ -16,13 +16,16 @@ export default class modal_popup extends Component {
         this.styles = styles(this.css);
 
         this.state = {
+            // 1:left,2:right,3:top,4:bottom
+            direction: 4,//方向
+
             display: false,//是否显示
             style: {},//临时样式
             onPress: undefined,//点击空白处
             data: undefined,//显示数据
             anOpacity: new Animated.Value(0),
             anXY: new Animated.ValueXY({x: 0, y: 0}),
-            anSelectXY: new Animated.ValueXY({x: 0, y: 100}),
+            anSelectXY: new Animated.ValueXY({x: 0, y: 500}),
         };
         this.type = 0;//类别 1:popup , 2:select
 
@@ -34,15 +37,23 @@ export default class modal_popup extends Component {
     componentDidMount() {
         redux.listen(reduxName, res => {
             this.type = res.type;
+            let xy = {x: 0, y: 500};
+            let dir = res.direction;
+            if (!dir) dir = this.state.direction;
+            if (dir === 1) xy = {x: -200, y: 0};//left
+            else if (dir === 2) xy = {x: 200, y: 0};//right
+            else if (dir === 3) xy = {x: 0, y: -500};//top
+            else if (dir === 4) xy = {x: 0, y: 500};//bottom
+
             if (this.type === 1) {  //show
                 this.setState({
                     display: res.display,
                     style: res.style,
                     data: res.data,
-                    onPress: res.onPress,
+                    direction: dir,
+                    onPress: res.onPress ?? undefined,
                     anOpacity: new Animated.Value(0),
-                    anXY: new Animated.ValueXY({x: 0, y: 0}),
-                    anSelectXY: new Animated.ValueXY({x: 0, y: 100}),
+                    anSelectXY: new Animated.ValueXY(xy),
                 }, () => {
                     this.render();
                     this.show(res.type);
@@ -55,8 +66,7 @@ export default class modal_popup extends Component {
                         data: res.data,
                         onPress: res.onPress,
                         anOpacity: new Animated.Value(0),
-                        anXY: new Animated.ValueXY({x: 0, y: 0}),
-                        anSelectXY: new Animated.ValueXY({x: 0, y: 100}),
+                        anSelectXY: new Animated.ValueXY(xy),
                     }, () => {
                         redux.update(reduxName, {
                             display: false,
@@ -82,32 +92,38 @@ export default class modal_popup extends Component {
     }
 
     show() {
-        const {anOpacity, anXY, anSelectXY} = this.state;
+        const {anOpacity, anSelectXY} = this.state;
         Animated.parallel([
             Animated.timing(anSelectXY, {
                 toValue: {x: 0, y: 0},
-                duration: 100,
+                duration: 200,
                 useNativeDriver: true,
             }),
             Animated.timing(anOpacity, {
                 toValue: 1,
-                duration: 100,
+                duration: 200,
                 useNativeDriver: true
             })
         ]).start();
     }
 
     hide(func) {
-        const {anOpacity, anXY, anSelectXY} = this.state;
+        const {anOpacity, anSelectXY, direction} = this.state;
+        let xy = {x: 0, y: 500};
+        if (direction === 1) xy = {x: -200, y: 0};//left
+        else if (direction === 2) xy = {x: 200, y: 0};//right
+        else if (direction === 3) xy = {x: 0, y: -500};//top
+        else if (direction === 4) xy = {x: 0, y: 500};//bottom
+
         Animated.parallel([
             Animated.timing(anSelectXY, {
-                toValue: {x: 0, y: 100},
-                duration: 100,
+                toValue: xy,
+                duration: 200,
                 useNativeDriver: true,
             }),
             Animated.timing(anOpacity, {
                 toValue: 0,
-                duration: 100,
+                duration: 200,
                 useNativeDriver: true
             })
         ]).start(() => {
@@ -133,9 +149,6 @@ export default class modal_popup extends Component {
                         {translateX: x},
                         {translateY: y}
                     ]
-                }}
-                onPress={() => {
-                    if (typeof state.onPress === 'function') state.onPress();
                 }}>
                 {state.data}
             </Animated.View>

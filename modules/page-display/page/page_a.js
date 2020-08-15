@@ -109,13 +109,13 @@ export default class PageA extends Component {
                 if (state.alert) modal.alert(state.alert);
                 if (typeof state.onPress === "function") state.onPress();
             }}>
-                <Text style={styles} numberOfLines={state.line}>{`${state.text}${mi12}`}</Text>
+                <Text style={styles} numberOfLines={state.line}>{`${state.text ?? ''}${mi12}`}</Text>
             </TouchableOpacity>;
             return <TouchableOpacity activeOpacity={.5} onPress={() => {
                 if (state.alert) modal.alert(state.alert);
                 if (typeof state.onPress === "function") state.onPress();
             }}>
-                <Text style={styles}>{`${state.text}${mi12}`}</Text>
+                <Text style={styles}>{`${state.text ?? ''}${mi12}`}</Text>
             </TouchableOpacity>
         }
     }
