@@ -140,7 +140,7 @@ export default class modal_popup extends Component {
         const x = anSelectXY.x;
         const y = anSelectXY.y;
 
-        return <View style={[styles.container, state.style, {backgroundColor: 'rgba(0,0,0,.1)'}]}>
+        return <View style={[styles.container, state.style, {backgroundColor: 'rgba(0,0,0,.2)'}]}>
             <Animated.View
                 style={{
                     ...styles.container, ...state.style,
