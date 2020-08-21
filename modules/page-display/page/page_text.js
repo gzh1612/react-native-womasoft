@@ -16,10 +16,10 @@ export default class PageText extends Component {
             style: props.style ?? {},
             text: props.text,
             line: props.line ?? false,
-            marginTop: props.t ?? props['mTop'],
-            marginBottom: props.b ?? props['mBottom'],
+            marginTop: props['t'] ?? props['mTop'],
+            marginBottom: props['b'] ?? props['mBottom'],
             marginLeft: props['l'] ?? props['mLeft'],
-            marginRight: props.r ?? props['mRight'],
+            marginRight: props['r'] ?? props['mRight'],
             width: props.width,
             log: props.log ?? false,
         }
