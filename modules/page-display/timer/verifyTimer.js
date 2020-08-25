@@ -17,7 +17,8 @@ const init = () => {
 //写入配置
 const set = (_this, text = '', time = 30, unmount = '') => {
     if (!_this) return console.warn('timerVerify init方法 this undefined');
-    defaultUnmount = unmount ?? _this.unmount ?? _this.name ?? '';
+    defaultUnmount = unmount ? unmount : _this.unmount ?? _this.name;
+    if (!defaultUnmount) return console.warn('timer set unmount没有获取到值，请检查');
     _this.setState({
         verify_timer_json: {
             defText: text,
