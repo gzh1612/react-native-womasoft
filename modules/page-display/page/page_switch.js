@@ -8,7 +8,7 @@ export default class PageSwitch extends Component {
         super(props);
         this.css = theme.get();
         this.width = 50;        //  默认宽度
-        this.color = this.css.default.main ?? '#f00'; //  默认选中色
+        this.color = this.css.font.color ?? '#f00'; //  默认选中色
         this.bgColor = '#808080';      //  默认背景色
 
         this.styles = styles(this.color);
