@@ -8,12 +8,14 @@ import loading from './modal_loading';
 
 
 import {select} from "./modal_select";
-import {alert, confirm, confirmPwd} from './modal_prompt_box';
+import {alert, confirm, confirmPwd, initAlert} from './modal_prompt_box';
 
 export default {
     initModal,//初始化页面
     initPopup,
     initLoading,
+
+    initAlert,
 
     select,
     alert,

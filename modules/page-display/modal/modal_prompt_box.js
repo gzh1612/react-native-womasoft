@@ -33,10 +33,26 @@ const goOn = (func) => {
     })
 };
 
+/**
+ * 初始化 alert 样式
+ * @param title
+ * @param content
+ * @param btns
+ * @param btn
+ */
+const initAlert = ({title, content, btn}) => {
+    let style = {};
+    if (title) style.title = title;
+    if (content) style.content = content;
+    if (btn) style.btn = btn;
+    redux.add(`${Modals.reduxName}_alert`, style);
+};
+
 //初始化
 const PromptInit = ({title, content, btns}) => {
     const css = theme.get();
     const style = styles(css);
+    const initAlertStyle = redux.get(`${Modals.reduxName}_alert`);
 
     //内容
     let contentView = <View/>;
@@ -44,14 +60,27 @@ const PromptInit = ({title, content, btns}) => {
         contentView = <Text style={style.popupContentText}>{content}</Text>;
     else contentView = content;
 
+    let titleStyle = style.popupTitle;
+    let contentStyle = style.popupContent;
+    let btnStyle = style.popupBtns;
+    let color = '#000';
+    if (initAlertStyle && btns.length < 2) {
+        if (initAlertStyle.title) titleStyle = initAlertStyle.title;
+        if (initAlertStyle.content) contentStyle = initAlertStyle.content;
+        if (initAlertStyle.btn) {
+            btnStyle = initAlertStyle.btn;
+            if (initAlertStyle.btn.color) color = initAlertStyle.btn.color;
+        }
+    }
+
     return <View style={style.popupView}>
-        <Text style={style.popupTitle}>{title}</Text>
-        <View style={style.popupContent}>{contentView}</View>
-        <View style={style.popupBtns}>{btnsView(btns)}</View>
+        <Text style={titleStyle}>{title}</Text>
+        <View style={contentStyle}>{contentView}</View>
+        <View style={btnStyle}>{btnsView(btns, color)}</View>
     </View>
 };
 //按钮
-const btnsView = (btnsArr) => {
+const btnsView = (btnsArr, color) => {
     const css = theme.get();
     const style = styles(css);
     return btnsArr.map((item, key) => {
@@ -61,7 +90,7 @@ const btnsView = (btnsArr) => {
             if (typeof item.onPress === 'function') item.onPress();
             hide();
         }}>
-            <Text style={[item.styles, {textAlign: 'center'}]}>{item.text}</Text>
+            <Text style={[item.styles, {textAlign: 'center', color: color}]}>{item.text}</Text>
         </TouchableOpacity>
     });
 };
@@ -223,4 +252,5 @@ export {
     alert,
     confirm,
     confirmPwd,
+    initAlert,
 }

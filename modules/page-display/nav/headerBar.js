@@ -25,7 +25,16 @@ const left = (that, color = undefined, size = 18) => {
     let name = redux.get(defaultName);
     if (!name) return console.error('初始化 nav headerLeft 没有配置成功');
     if (!color) color = css.header.leftColor ?? '#fff';
-    return <page.a onPress={() => control.back(that)} style={{paddingLeft: 15, paddingRight: 20}}>
+    console.log(css);
+    return <page.a onPress={() => control.back(that)}
+                   style={{
+                       paddingLeft: 15,
+                       paddingRight: 25,
+                       height: css.headerHeight,
+                       flexDirection: 'row',
+                       justifyContent: 'flex-start',
+                       alignItems: 'center',
+                   }}>
         <page.icon name={name} size={size} color={color}/>
     </page.a>
 };
