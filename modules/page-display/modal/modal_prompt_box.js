@@ -154,9 +154,11 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
         if (lang) {
             if (!params.title) title = lang['title_tips'];
             let btnTexts = [lang['btn_sure'], lang['btn_cancel']];
+            console.log(btnDefs);
+
             params.btns.map((item, key) => {
                 if (!btnDefs[key]) return;
-                if (!item.text) item.text = btnTexts[key];
+                item.text = btnTexts[key];
             });
         }
 
@@ -169,14 +171,19 @@ const confirmPwd = (params = {title: null}) => {
     const css = theme.get();
     const style = styles(css);
     let valText = '';
-
-    params.title = params.title ?? '密码';
+    let result = {};
+    result.title = params.title ?? '密码';
+    //多语言
+    const lang = language.all('modal');
+    if (lang) {
+        if (!params.title) result.title = lang['title_pwd'];
+    }
     let contentData = <TextInput style={style.confirmPwd} password={true} secureTextEntry={true}
                                  autoFocus={true} onChangeText={text => valText = text.toString()}/>;
 
     return new Promise((resolve, reject) => {
         return confirm(contentData, {
-            title: params.title, btns: [{onPress: () => goOn(() => resolve(valText))},
+            title: result.title, btns: [{onPress: () => goOn(() => resolve(valText))},
                 {onPress: () => goOn(() => reject(valText))}]
         })
     });
