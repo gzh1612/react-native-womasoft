@@ -17,6 +17,7 @@ export default class PageRender extends Component {
             children: props.children,
             style: props.style,
             onPress: props.onPress,
+            isArticle: false,//是否是文章
         }
     }
 
@@ -66,11 +67,17 @@ export default class PageRender extends Component {
                 {childrenView}
             </SafeAreaView>
         </View>;
-        return <TouchableHighlight activeOpacity={1} style={{flex: 1}} onPress={() => {
-            if (typeof state.onPress === "function") state.onPress();
-        }}>
-            {innerView}
-        </TouchableHighlight>
+        if (state.isArticle) {
+            return <View style={{flex: 1}}>
+                {innerView}
+            </View>
+        } else {
+            return <TouchableHighlight activeOpacity={1} style={{flex: 1}} onPress={() => {
+                if (typeof state.onPress === "function") state.onPress();
+            }}>
+                {innerView}
+            </TouchableHighlight>
+        }
     }
 }
 const styles = (css) => StyleSheet.create({
