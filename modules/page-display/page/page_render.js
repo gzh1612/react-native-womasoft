@@ -17,7 +17,7 @@ export default class PageRender extends Component {
             children: props.children,
             style: props.style,
             onPress: props.onPress,
-            isArticle: false,//是否是文章
+            article: props.article ?? false,//是否是文章
         }
     }
 
@@ -67,7 +67,7 @@ export default class PageRender extends Component {
                 {childrenView}
             </SafeAreaView>
         </View>;
-        if (state.isArticle) {
+        if (state.article) {
             return <View style={{flex: 1}}>
                 {innerView}
             </View>
