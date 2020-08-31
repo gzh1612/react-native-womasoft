@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text} from 'react-native';
+import {Text, Platform} from 'react-native';
 
 import theme from '../theme';
 
@@ -42,9 +42,10 @@ export default class PageText extends Component {
     render() {
         const css = this.css;
         const state = this.state;
-        let styles = [{
-            fontFamily: 'lucida grande'
-        }];
+        let styles = [];
+        if (Platform.OS === 'android') styles.push({fontFamily: 'lucida grande'});
+        else styles.push({});
+
         if (state.style.length > 0) styles = styles.concat(state.style);
         else styles.push(state.style);
         if (state.log) {
