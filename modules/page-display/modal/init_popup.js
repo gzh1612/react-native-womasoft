@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Animated, TouchableHighlight, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Animated} from 'react-native';
 
 import redux from '../../data-storage/redux';
 import theme from "../theme";
@@ -14,11 +14,9 @@ export default class modal_popup extends Component {
         this.css = css ?? theme.get();
         console.log('modal_popup css', this.css);
         this.styles = styles(this.css);
-
         this.state = {
             // 1:left,2:right,3:top,4:bottom
             direction: 4,//方向
-
             display: false,//是否显示
             style: {},//临时样式
             onPress: undefined,//点击空白处
@@ -47,6 +45,7 @@ export default class modal_popup extends Component {
 
             if (this.type === 1) {  //show
                 this.setState({
+                    that: res.that,
                     display: res.display,
                     style: res.style,
                     data: res.data,
@@ -61,6 +60,7 @@ export default class modal_popup extends Component {
             } else if (this.type === 2) {   //hide
                 this.hide(() => {
                     this.setState({
+                        that: {},
                         display: res.display,
                         style: res.style,
                         data: res.data,
@@ -150,7 +150,7 @@ export default class modal_popup extends Component {
                         {translateY: y}
                     ]
                 }}>
-                {state.data}
+                {state.data(this.state.that, this)}
             </Animated.View>
         </View>
     }

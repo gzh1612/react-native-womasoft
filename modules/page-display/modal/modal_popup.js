@@ -4,7 +4,7 @@ import init_popup from './init_popup';
 import redux from "../../data-storage/redux";
 
 //显示
-const show = (data, direction = 'bottom') => {
+const show = (that, data, direction = 'bottom') => {
     let dir = 4;
     console.log(direction);
     if (direction === 'left') dir = 1;
@@ -13,6 +13,7 @@ const show = (data, direction = 'bottom') => {
     else if (direction === 'bottom') dir = 4;
     redux.update(init_popup.reduxName, {
         type: 1,
+        that: that,
         display: true,
         style: {},
         data: data,
