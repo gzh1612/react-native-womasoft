@@ -53,9 +53,9 @@ export default class PageText extends Component {
             console.log(state);
         }
         let style = {};
-        if (!styles[1].fontSize) style.fontSize = state.size ?? css.font.size;
-        if (!styles[1].fontWeight) style.fontWeight = state.weight ?? 'normal';
-        if (!styles[1].color) style.color = state.color ?? css.font.color;
+        if (state.size) style.fontSize = state.size ?? css.font.size ?? 14;
+        if (state.weight) style.fontWeight = state.weight ?? 'normal';
+        if (state.color) style.color = state.color ?? css.font.color ?? '#808080';
 
         if (state.lineHeight) style.lineHeight = state.lineHeight;
         if (state.marginTop) style.marginTop = state.marginTop;
