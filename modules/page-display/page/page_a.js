@@ -64,8 +64,11 @@ export default class PageA extends Component {
         }
         let style = {};
         if (state.size) style.fontSize = state.size ?? css.font.size ?? 14;
+        else style.fontSize = css.font.size ?? 14;
         if (state.weight) style.fontWeight = state.weight ?? 'normal';
         if (state.color) style.color = state.color ?? css.font.color ?? '#808080';
+        else style.color = css.font.color ?? '#808080';
+
         if (state.lineHeight) style.lineHeight = state.lineHeight;
         if (state.marginTop) style.marginTop = state.marginTop;
         if (state.marginBottom) style.marginBottom = state.marginBottom;
