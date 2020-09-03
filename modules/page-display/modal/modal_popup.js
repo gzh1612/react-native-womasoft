@@ -4,7 +4,24 @@ import init_popup from './init_popup';
 import redux from "../../data-storage/redux";
 
 //显示
-const show = (that, data, direction = 'bottom') => {
+const show = (data, direction = 'bottom') => {
+    let dir = 4;
+    console.log(direction);
+    if (direction === 'left') dir = 1;
+    else if (direction === 'right') dir = 2;
+    else if (direction === 'top') dir = 3;
+    else if (direction === 'bottom') dir = 4;
+    redux.update(init_popup.reduxName, {
+        type: 1,
+        display: true,
+        style: {},
+        data: data,
+        direction: dir
+    });
+};
+
+//显示
+const showHaveInput = (that, data, direction = 'bottom') => {
     let dir = 4;
     console.log(direction);
     if (direction === 'left') dir = 1;
@@ -46,6 +63,7 @@ const refresh = (data, style) => {
 module.exports = {
     init: init_popup,
     show,
+    showHaveInput,
     hide,
     refresh,
 };
