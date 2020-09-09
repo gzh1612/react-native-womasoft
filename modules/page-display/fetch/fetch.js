@@ -197,6 +197,10 @@ const dataRequest = (url, init) => {
         }).catch(err => {
             console.warn(`请求出错: ${url}`);
             console.warn(err);
+            if (err.message.indexOf('Network request failed') >= 0) return resolve({
+                code: 'NETWORK_FAILED',
+                url: url,
+            });
             return reject({
                 code: 'SERVE_ERROR',
                 message: err,
@@ -208,8 +212,10 @@ const dataRequest = (url, init) => {
     //开始数据请求
     return new Promise((resolve, reject) => {
         Promise.race([fetchPromise, timerPromise]).then(res => {
-            if (res.code === 'SERVE_TIMEOUT' || //网络超时
-                res.code === 'SERVE_ERROR') {   //请求错误
+
+            if (res.code === 'SERVE_TIMEOUT' ||     //网络超时
+                res.code === 'NETWORK_FAILED' ||    //网络请求失败
+                res.code === 'SERVE_ERROR') {       //请求错误
                 if (statusManage && typeof statusManage[res.code] === 'function') {
                     console.warn(`数据请求 ${res.code} url:${url}`, res);
                     statusManage[res.code](backJson);
