@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Platform, Text, TouchableOpacity, View} from 'react-native';
 
 import theme from '../theme';
-import modal from '../modal';
+import popup from '../popup';
 
 export default class PageA extends Component {
     constructor(props) {
@@ -89,26 +89,26 @@ export default class PageA extends Component {
         if (state.children) {
             //是否省略
             if (state.line) return <TouchableOpacity activeOpacity={.5} onPress={() => {
-                if (state.alert) modal.alert(state.alert);
+                if (state.alert) popup.modal.alert(state.alert);
                 if (typeof state.onPress === "function") state.onPress();
             }}>
                 <Text style={styles} numberOfLines={state.line}>{state.children}</Text>
             </TouchableOpacity>;
             return <TouchableOpacity activeOpacity={.5} onPress={() => {
-                if (state.alert) modal.alert(state.alert);
+                if (state.alert) popup.modal.alert(state.alert);
                 if (typeof state.onPress === "function") state.onPress();
             }}>
                 <View style={styles}>{state.children}</View>
             </TouchableOpacity>
         } else {
             if (state.line) return <TouchableOpacity activeOpacity={.5} onPress={() => {
-                if (state.alert) modal.alert(state.alert);
+                if (state.alert) popup.modal.alert(state.alert);
                 if (typeof state.onPress === "function") state.onPress();
             }}>
                 <Text style={styles} numberOfLines={state.line}>{`${state.text ?? ''}`}</Text>
             </TouchableOpacity>;
             return <TouchableOpacity activeOpacity={.5} onPress={() => {
-                if (state.alert) modal.alert(state.alert);
+                if (state.alert) popup.modal.alert(state.alert);
                 if (typeof state.onPress === "function") state.onPress();
             }}>
                 <Text style={styles}>{`${state.text ?? ''}`}</Text>

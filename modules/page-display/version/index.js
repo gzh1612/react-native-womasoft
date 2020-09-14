@@ -1,7 +1,7 @@
 import React from 'react'
 import {Linking, Platform} from 'react-native'
 import DeviceInfo from "react-native-device-info";
-import modal from '../modal';
+import popup from '../popup';
 
 let downloadLink = '';
 
@@ -70,14 +70,14 @@ const download = (content = '', isMust = false, isLink = false) => {
         if (!downloadLink) console.warn('version 没有初始化 downloadLinkName 没有值');
 
         if (isMust) {
-            modal.alert(content).then(() => {
+            popup.modal.alert(content).then(() => {
                 let isAndroid = true;
                 if (Platform['OS'] === 'ios') isAndroid = false;
                 if (isLink || !isAndroid) return Linking['openURL'](downloadLink);
                 return resolve(isAndroid);
             });
         } else {
-            modal.confirm(content).then(() => {
+            popup.modal.confirm(content).then(() => {
                 let isAndroid = true;
                 if (Platform['OS'] === 'ios') isAndroid = false;
                 if (isLink || !isAndroid) return Linking['openURL'](downloadLink);

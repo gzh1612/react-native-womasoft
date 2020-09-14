@@ -113,7 +113,8 @@ const alert = (content = '', params = {title: undefined, btnText: undefined}) =>
         if (!params.btnText) btnText = '确定';
         else btnText = params.btnText;
 
-        const lang = language.all('modal');
+        let lang = language.all('modal');
+        if (!lang) lang = language.all('popup');
         if (lang) {
             if (!params.title) title = lang['title_tips'];
             if (!params.btnText) btnText = lang['btn_sure'];
@@ -140,7 +141,8 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
     const style = styles(css);
     return new Promise((resolve, reject) => {
         //多语言
-        const lang = language.all('modal');
+        let lang = language.all('modal');
+        if (!lang) lang = language.all('popup');
         //标题
         let title = params.title;
         if (typeof title === 'undefined') {
@@ -183,7 +185,8 @@ const confirmPwd = (params = {title: null}) => {
     let result = {};
     result.title = params.title ?? '密码';
     //多语言
-    const lang = language.all('modal');
+    let lang = language.all('modal');
+    if (!lang) lang = language.all('popup');
     if (lang) {
         if (!params.title) result.title = lang['title_pwd'];
     }
