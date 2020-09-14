@@ -49,11 +49,21 @@ const initStyle = ({modal = {}, title = {}, titleText = {}, content = {}, conten
     redux.add(`${Modals.reduxName}_style`, styles);
 };
 
+/**
+ * 初始化
+ * @param title
+ */
+const init = ({title = true}) => {
+    let params = {title};
+    redux.add(`${Modals.reduxName}_params`, params);
+};
+
 
 //初始化
 const PromptInit = ({title, content, btns}) => {
     const css = theme.get();
     const style = styles(css);
+    const initParams = redux.get(`${Modals.reduxName}_params`) ?? {};
     const initStyle = redux.get(`${Modals.reduxName}_style`) ?? {};
 
     const styleModal = [style.modals, initStyle.modal],
@@ -66,8 +76,10 @@ const PromptInit = ({title, content, btns}) => {
 
     //title 显示
     let titleView = <View/>;
-    if (typeof title === 'string' && title) titleView = <Text style={[styleTitleText]}>{title}</Text>;
-    else if (typeof title === 'object') titleView = title;
+    if (initParams.title) {
+        if (typeof title === 'string' && title) titleView = <Text style={[styleTitleText]}>{title}</Text>;
+        else if (typeof title === 'object') titleView = title;
+    }
     //content 显示
     let contentView = <View/>;
     if (typeof content === 'string') contentView = <Text style={[styleContentText]}>{content}</Text>;
@@ -101,31 +113,36 @@ const btnsView = (btnsArr, styleItems, styleBtn) => {
 };
 
 //alert弹出框
-const alert = (content = '', params = {title: undefined, btnText: undefined}) => {
+const alert = (content = '', params = {title: undefined, btns: [{}]}) => {
     const css = theme.get();
     const style = styles(css);
     return new Promise((resolve => {
-        let title, btnText;
-        if (!params.title) title = '提示';
-        else title = params.title;
-        let contentData = content;
-        if (typeof contentData === "number") contentData = contentData.toString();
-        if (!params.btnText) btnText = '确定';
-        else btnText = params.btnText;
-
+        //多语言
         let lang = language.all('modal');
         if (!lang) lang = language.all('popup');
-        if (lang) {
-            if (!params.title) title = lang['title_tips'];
-            if (!params.btnText) btnText = lang['btn_sure'];
+        //标题
+        let title = params.title;
+        if (typeof title === 'undefined') {
+            title = '提示';
+            //多语言默认标题
+            if (lang && typeof title === 'undefined') title = lang['title_tips'];
         }
-        let btns = [{
-            text: btnText,
-            onPress: () => {
-                goOn(() => resolve(true));
+        //按钮
+        let btns = [];
+        if (!params.btns) params.btns = [{}];
+        params.btns.map(({text, style}, key) => {
+            let onPress;
+            if (key === 0) onPress = () => goOn(() => resolve(true));       //确定
+            //判断是否设置text
+            if (typeof text === 'undefined') {
+                if (key === 0) text = '确定';
+                if (lang) {
+                    if (key === 0) text = lang['btn_sure'];
+                }
             }
-        }];
-        const popup = PromptInit({title, content: contentData, btns});
+            btns.push({text, style, onPress})
+        });
+        const popup = PromptInit({title, content, btns});
         show(style.modal, popup);
     }))
 };
@@ -152,6 +169,7 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
         }
         //按钮
         let btns = [];
+        if (!params.btns) params.btns = [{}];
         params.btns.map(({text, style}, key) => {
             let onPress;
             if (key === 0) onPress = () => goOn(() => resolve(true));       //确定
@@ -274,4 +292,5 @@ export default {
     confirm,
     confirmPwd,
     initStyle,
+    init,
 }

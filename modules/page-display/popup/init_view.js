@@ -12,7 +12,6 @@ export default class popup_view extends Component {
         //初始化写入css
         const {css} = props;
         this.css = css ?? theme.get();
-        console.log('modal_popup css', this.css);
         this.styles = styles(this.css);
         this.state = {
             // 1:left,2:right,3:top,4:bottom
