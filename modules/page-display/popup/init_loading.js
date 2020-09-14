@@ -4,9 +4,10 @@ import {View, ActivityIndicator, Animated, Text, StyleSheet} from 'react-native'
 import redux from '../../data-storage/redux';
 import theme from "../theme";
 
-const reduxName = 'framework_loading';
+const reduxName = 'framework_popup_loading';
 
-export default class modal_loading extends Component {
+
+export default class popup_loading extends Component {
     constructor(props) {
         super(props);
         this.css = theme.get();
@@ -179,6 +180,7 @@ const styles = () => StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
+        zIndex: 30,
         justifyContent: 'center',
         alignItems: 'center',
     },

@@ -34,59 +34,64 @@ const goOn = (func) => {
 };
 
 /**
- * 初始化 alert 样式
- * @param title
- * @param content
- * @param btns
- * @param btn
+ *  初始化样式
+ * @param modal         模态框整体样式
+ * @param title         header样式
+ * @param titleText     标题样式
+ * @param content       content样式
+ * @param contentText   内容样式
+ * @param btn           按钮总样式
+ * @param btn1          按钮1样式
+ * @param btn2          按钮2样式
  */
-const initAlert = ({title, content, btn}) => {
-    let style = {};
-    if (title) style.title = title;
-    if (content) style.content = content;
-    if (btn) style.btn = btn;
-    redux.add(`${Modals.reduxName}_alert`, style);
+const initStyle = ({modal = {}, title = {}, titleText = {}, content = {}, contentText = {}, btns = {}, btn1 = {}, btn2 = {}}) => {
+    let styles = {modal, title, titleText, content, contentText, btns, btn1, btn2};
+    redux.add(`${Modals.reduxName}_style`, styles);
 };
+
 
 //初始化
 const PromptInit = ({title, content, btns}) => {
     const css = theme.get();
     const style = styles(css);
-    const initAlertStyle = redux.get(`${Modals.reduxName}_alert`);
+    const initStyle = redux.get(`${Modals.reduxName}_style`) ?? {};
 
-    //内容
+    const styleModal = [style.modals, initStyle.modal],
+        styleTitle = [style.title, initStyle.title],
+        styleTitleText = [style.titleText, initStyle.titleText],
+        styleContent = [style.content, initStyle.content],
+        styleContentText = [style.contentText, initStyle.contentText],
+        styleBtns = [style.btns, initStyle.btns],
+        styleBtnItems = [initStyle.btn1, initStyle.btn2];
+
+    //title 显示
+    let titleView = <View/>;
+    if (typeof title === 'string' && title) titleView = <Text style={[styleTitleText]}>{title}</Text>;
+    else if (typeof title === 'object') titleView = title;
+    //content 显示
     let contentView = <View/>;
-    if (typeof content === 'string')
-        contentView = <Text style={style.popupContentText}>{content}</Text>;
-    else contentView = content;
+    if (typeof content === 'string') contentView = <Text style={[styleContentText]}>{content}</Text>;
+    else if (typeof content === 'object') contentView = content;
 
-    let titleStyle = style.popupTitle;
-    let contentStyle = style.popupContent;
-    let btnStyle = style.popupBtns;
-    let color = '#000';
-    if (initAlertStyle && btns.length < 2) {
-        if (initAlertStyle.title) titleStyle = initAlertStyle.title;
-        if (initAlertStyle.content) contentStyle = initAlertStyle.content;
-        if (initAlertStyle.btn) {
-            btnStyle = initAlertStyle.btn;
-            if (initAlertStyle.btn.color) color = initAlertStyle.btn.color;
-        }
-    }
 
-    return <View style={style.popupView}>
-        <Text style={titleStyle}>{title}</Text>
-        <View style={contentStyle}>{contentView}</View>
-        <View style={btnStyle}>{btnsView(btns, color)}</View>
+    return <View style={styleModal}>
+        <View style={[css.columnAroundCenter, {minHeight: 80}]}>
+            <View style={styleTitle}>{titleView}</View>
+            <View style={styleContent}>{contentView}</View>
+        </View>
+        <View style={styleBtns}>{btnsView(btns, styleBtnItems, styleBtns)}</View>
     </View>
 };
+
 //按钮
-const btnsView = (btnsArr, color) => {
+const btnsView = (btnsArr, styleItems, styleBtn) => {
     const css = theme.get();
     const style = styles(css);
     return btnsArr.map((item, key) => {
         let border = {};
         if (key > 0) border = item.border ?? style.btnsViewBorder;
-        return <TouchableOpacity key={key} style={[style.btnsView, border]} onPress={() => {
+        let color = styleItems[key].color ?? styleBtn.color ?? '#666';
+        return <TouchableOpacity key={key} style={[style.btnsView, border, styleItems[key]]} onPress={() => {
             if (typeof item.onPress === 'function') item.onPress();
             hide();
         }}>
@@ -120,53 +125,57 @@ const alert = (content = '', params = {title: undefined, btnText: undefined}) =>
             }
         }];
         const popup = PromptInit({title, content: contentData, btns});
-        show(style.popup, popup);
+        show(style.modal, popup);
     }))
 };
 
+/**
+ * confirm 判断
+ * @param content
+ * @param params
+ * @returns {Promise<unknown>}
+ */
 const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
     const css = theme.get();
     const style = styles(css);
     return new Promise((resolve, reject) => {
-        let title;
-        if (!params.title) title = '提示';
-        else title = params.title;
-        if (!params.btns) params.btns = [{}, {}];
-        let contentData = content;
-        let btnDefs = [{
-            text: '确定', onPress: () => {
-                goOn(() => resolve());
-            }
-        }, {
-            text: '取消', onPress: () => {
-                goOn(() => reject());
-            }
-        }];
-
-        params.btns.map((item, key) => {
-            if (!btnDefs[key]) return;
-            if (!item.text) item.text = btnDefs[key].text;
-            if (typeof item.onPress !== "function") item.onPress = () => btnDefs[key].onPress();
-        });
-
         //多语言
         const lang = language.all('modal');
-        if (lang) {
-            if (!params.title) title = lang['title_tips'];
-            let btnTexts = [lang['btn_sure'], lang['btn_cancel']];
-            console.log(btnDefs);
-
-            params.btns.map((item, key) => {
-                if (!btnDefs[key]) return;
-                item.text = btnTexts[key];
-            });
+        //标题
+        let title = params.title;
+        if (typeof title === 'undefined') {
+            title = '提示';
+            //多语言默认标题
+            if (lang && typeof title === 'undefined') title = lang['title_tips'];
         }
+        //按钮
+        let btns = [];
+        params.btns.map(({text, style}, key) => {
+            let onPress;
+            if (key === 0) onPress = () => goOn(() => resolve(true));       //确定
+            else if (key === 1) onPress = () => goOn(() => reject(false));   //取消
+            //判断是否设置text
+            if (typeof text === 'undefined') {
+                if (key === 0) text = '确定';
+                else if (key === 1) text = '取消';
+                if (lang) {
+                    if (key === 0) text = lang['btn_sure'];
+                    else if (key === 1) text = lang['btn_cancel'];
+                }
+            }
+            btns.push({text, style, onPress})
+        });
 
-        const popup = PromptInit({title, content: contentData, btns: params.btns});
-        show(style.popup, popup);
+        const popup = PromptInit({title, content, btns});
+        show(style.modal, popup);
     });
 };
 
+/**
+ * 密码输入modal
+ * @param params
+ * @returns {Promise<unknown>}
+ */
 const confirmPwd = (params = {title: null}) => {
     const css = theme.get();
     const style = styles(css);
@@ -192,41 +201,43 @@ const confirmPwd = (params = {title: null}) => {
 };
 
 const styles = (css) => StyleSheet.create({
-    popup: {
+    modal: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    popupView: {
+    modals: {
         width: css.width - 15 * 7,
         backgroundColor: '#efefef',
         borderRadius: 10,
         borderWidth: 1,
         borderColor: '#ccc',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         // elevation: 5,
     },
-    popupTitle: {
+    titleText: {
         fontSize: 18,
         fontWeight: '700',
         textAlign: 'center',
         height: 50,
-        lineHeight: 50,
+        paddingTop: 20,
+        lineHeight: 30,
         color: '#000',
     },
-    popupContent: {
-        paddingBottom: 15,
+    content: {
+        paddingVertical: 15,
         paddingHorizontal: 15,
         maxHeight: css.height - 200,
+        lineHeight: 24,
     },
-    popupContentText: {
+    contentText: {
         color: '#666',
         textAlign: 'center',
         lineHeight: 22,
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0)',
     },
-    popupBtns: {
+    btns: {
         borderTopWidth: 1,
         borderTopColor: '#e1e1e1',
         height: 50,
@@ -255,9 +266,9 @@ const styles = (css) => StyleSheet.create({
     }
 });
 
-export {
+export default {
     alert,
     confirm,
     confirmPwd,
-    initAlert,
+    initStyle,
 }

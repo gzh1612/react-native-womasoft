@@ -1,12 +1,13 @@
 import React from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-// import language from '../language';
+import language from '../language';
 import theme from '../theme';
 
 import Modals from './init_modal';
 import redux from "../../data-storage/redux";
 
-const show = (data, style) => {
+//执行显示
+const perform_show = (data, style) => {
     redux.update(Modals.reduxName, {
         type: 2,
         display: true,
@@ -15,6 +16,7 @@ const show = (data, style) => {
     });
 };
 
+//执行隐藏
 const hide = () => {
     redux.update(Modals.reduxName, {
         type: 2,
@@ -36,10 +38,13 @@ const hide = () => {
 const SelectInit = (arr, params, resolve) => {
     const css = theme.get();
     const style = styles(css);
+    const lang = language.all('modal');
+    let cancelText = '取消';
+    if (lang) cancelText = lang['btn_cancel'];
     let cancelView = <View/>;
     if (!params.isCancel) params.isCancel = true;
     if (params.isCancel) cancelView = <TouchableOpacity activeOpacity={.5} onPress={() => hide()}>
-        <Text style={style.selectItem}>取消</Text>
+        <Text style={style.selectItem}>{cancelText}</Text>
     </TouchableOpacity>;
     return <View style={style.selectView}>
         {itemView(arr, params, resolve)}
@@ -69,14 +74,14 @@ const itemView = (arr, params, resolve) => {
  * @param params  [text:显示字段名称, isCancel:是否显示取消按钮]
  * @returns {Promise<>}
  */
-const select = (arr, params = {}) => {
+const show = (arr, params = {}) => {
     const css = theme.get();
     const style = styles(css);
     return new Promise((resolve, reject) => {
         if (!arr) return reject(false);
         const select = SelectInit(arr, params, res => resolve(res));
         // Modals.show({data: select, style: style.select});
-        show(select, style.select);
+        perform_show(select, style.select);
     });
 
 };
@@ -111,8 +116,7 @@ const styles = (css) => StyleSheet.create({
     },
 });
 
-export {
-    select,
+export default {
     show,
     hide,
 }

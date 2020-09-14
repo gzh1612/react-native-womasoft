@@ -6,9 +6,10 @@ export redux from './modules/data-storage/redux';
 export cache from './modules/data-storage/cache';
 
 //页面展示
-export modal from './modules/page-display/modal';
-export loading from './modules/page-display/modal/modal_loading';
-export popup from './modules/page-display/modal/modal_popup';
+export popup from './modules/page-display/popup';
+export modal from './modules/page-display/popup/popup_modal';
+export loading from './modules/page-display/popup/popup_loading';
+
 export language from './modules/page-display/language';
 export theme from './modules/page-display/theme';
 export page from './modules/page-display/page';

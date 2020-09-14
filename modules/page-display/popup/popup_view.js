@@ -1,6 +1,6 @@
 import React from 'react';
 
-import init_popup from './init_popup';
+import init_view from './init_view';
 import redux from "../../data-storage/redux";
 
 //显示
@@ -11,7 +11,7 @@ const show = (data, direction = 'bottom') => {
     else if (direction === 'right') dir = 2;
     else if (direction === 'top') dir = 3;
     else if (direction === 'bottom') dir = 4;
-    redux.update(init_popup.reduxName, {
+    redux.update(init_view.reduxName, {
         type: 1,
         display: true,
         style: {},
@@ -28,7 +28,7 @@ const showHaveInput = (that, data, direction = 'bottom') => {
     else if (direction === 'right') dir = 2;
     else if (direction === 'top') dir = 3;
     else if (direction === 'bottom') dir = 4;
-    redux.update(init_popup.reduxName, {
+    redux.update(init_view.reduxName, {
         type: 1,
         that: that,
         display: true,
@@ -40,7 +40,7 @@ const showHaveInput = (that, data, direction = 'bottom') => {
 
 //隐藏
 const hide = () => {
-    redux.update(init_popup.reduxName, {
+    redux.update(init_view.reduxName, {
         type: 2,
         display: false,
         style: {},
@@ -51,7 +51,7 @@ const hide = () => {
 
 //显示
 const refresh = (data, style) => {
-    redux.update(init_popup.reduxName, {
+    redux.update(init_view.reduxName, {
         type: 3,
         display: true,
         style: style,
@@ -60,8 +60,7 @@ const refresh = (data, style) => {
 };
 
 
-module.exports = {
-    init: init_popup,
+export default {
     show,
     showHaveInput,
     hide,

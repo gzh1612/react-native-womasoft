@@ -38,8 +38,7 @@ const small = (style = {}) => {
     </View>
 };
 
-module.exports = {
-    init: Loading,
+export default {
     show,
     hide,
     write,
