@@ -170,10 +170,15 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
         //按钮
         let btns = [];
         if (!params.btns) params.btns = [{}];
-        params.btns.map(({text, style}, key) => {
-            let onPress;
-            if (key === 0) onPress = () => goOn(() => resolve(true));       //确定
-            else if (key === 1) onPress = () => goOn(() => reject(false));   //取消
+        params.btns.map(({text, style, onPress}, key) => {
+            let btnPress;
+            if (key === 0) {  //确定
+                btnPress = () => goOn(() => resolve(true));
+                if (typeof onPress === 'function') btnPress = onPress();
+            } else if (key === 1) { //取消
+                btnPress = () => goOn(() => reject(false));
+                if (typeof onPress === 'function') btnPress = onPress();
+            }
             //判断是否设置text
             if (typeof text === 'undefined') {
                 if (key === 0) text = '确定';
@@ -183,7 +188,7 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
                     else if (key === 1) text = lang['btn_cancel'];
                 }
             }
-            btns.push({text, style, onPress})
+            btns.push({text, style, btnPress})
         });
 
         const popup = PromptInit({title, content, btns});
@@ -209,7 +214,9 @@ const confirmPwd = (params = {title: null}) => {
         if (!params.title) result.title = lang['title_pwd'];
     }
     let contentData = <TextInput style={style.confirmPwd} password={true} secureTextEntry={true}
-                                 autoFocus={true} onChangeText={text => valText = text.toString()}/>;
+                                 autoFocus={true} onChangeText={text => {
+        valText = text.toString()
+    }}/>;
 
     return new Promise((resolve, reject) => {
         return confirm(contentData, {
