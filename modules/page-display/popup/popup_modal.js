@@ -277,6 +277,7 @@ const styles = (css) => StyleSheet.create({
         borderRightWidth: 1,
     },
     confirmPwd: {
+        width: css.width - 15 * 10,
         height: 40,
         paddingHorizontal: 15,
         borderWidth: 1,
@@ -287,7 +288,12 @@ const styles = (css) => StyleSheet.create({
     }
 });
 
+import popup_loading from "./popup_loading";
+import popup_select from "./popup_select";
+
 export default {
+    loading: popup_loading,
+    popup: popup_select,
     alert,
     confirm,
     confirmPwd,
