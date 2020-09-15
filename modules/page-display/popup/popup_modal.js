@@ -172,12 +172,14 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
         if (!params.btns) params.btns = [{}];
         params.btns.map(({text, style, onPress}, key) => {
             let btnPress;
-            if (key === 0) {  //确定
-                btnPress = () => goOn(() => resolve(true));
-                if (typeof onPress === 'function') btnPress = onPress();
-            } else if (key === 1) { //取消
-                btnPress = () => goOn(() => reject(false));
-                if (typeof onPress === 'function') btnPress = onPress();
+            if (typeof onPress === 'function') {
+                btnPress = onPress;
+            } else {
+                if (key === 0) {  //确定
+                    btnPress = () => goOn(() => resolve(true));
+                } else if (key === 1) { //取消
+                    btnPress = () => goOn(() => reject(false));
+                }
             }
             //判断是否设置text
             if (typeof text === 'undefined') {
@@ -188,9 +190,10 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
                     else if (key === 1) text = lang['btn_cancel'];
                 }
             }
-            btns.push({text, style, btnPress})
+            btns.push({text, style, onPress: btnPress})
         });
 
+        console.log(btns);
         const popup = PromptInit({title, content, btns});
         show(style.modal, popup);
     });
@@ -221,7 +224,7 @@ const confirmPwd = (params = {title: null}) => {
     return new Promise((resolve, reject) => {
         return confirm(contentData, {
             title: result.title, btns: [{onPress: () => goOn(() => resolve(valText))},
-                {onPress: () => goOn(() => reject(valText))}]
+                {onPress: null}]
         })
     });
 
