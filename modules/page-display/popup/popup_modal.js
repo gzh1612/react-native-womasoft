@@ -125,7 +125,7 @@ const alert = (content = '', params = {title: undefined, btns: [{}]}) => {
         if (typeof title === 'undefined') {
             title = '提示';
             //多语言默认标题
-            if (lang && typeof title === 'undefined') title = lang['title_tips'];
+            if (lang) title = lang['title_tips'];
         }
         //按钮
         let btns = [];
@@ -165,7 +165,7 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
         if (typeof title === 'undefined') {
             title = '提示';
             //多语言默认标题
-            if (lang && typeof title === 'undefined') title = lang['title_tips'];
+            if (lang) title = lang['title_tips'];
         }
         //按钮
         let btns = [];
