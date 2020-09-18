@@ -33,7 +33,7 @@ export default class popup_view extends Component {
 
     componentDidMount() {
         redux.listen(reduxName, res => {
-            console.log(res);
+            // console.log(res);
             this.type = res.type;
             let xy = {x: 0, y: 500};
             let dir = res.direction;
@@ -140,8 +140,8 @@ export default class popup_view extends Component {
         const x = anSelectXY.x;
         const y = anSelectXY.y;
 
-        console.log(typeof state.data);
-        console.log(state.data);
+        // console.log(typeof state.data);
+        // console.log(state.data);
 
         let children = <View/>;
         if (typeof state.data === 'function') children = state.data(this.state.that, this);
