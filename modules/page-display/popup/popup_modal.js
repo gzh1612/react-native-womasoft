@@ -60,7 +60,7 @@ const init = ({title = true}) => {
 
 
 //初始化
-const PromptInit = ({title, content, btns}) => {
+const PromptInit = ({title, content, btns, isTitleShow}) => {
     const css = theme.get();
     const style = styles(css);
     const initParams = redux.get(`${Modals.reduxName}_params`) ?? {};
@@ -76,7 +76,7 @@ const PromptInit = ({title, content, btns}) => {
 
     //title 显示
     let titleView = <View/>;
-    if (initParams.title) {
+    if (initParams.title && isTitleShow) {
         if (typeof title === 'string' && title) titleView = <Text style={[styleTitleText]}>{title}</Text>;
         else if (typeof title === 'object') titleView = title;
     }
@@ -117,6 +117,9 @@ const alert = (content = '', params = {title: undefined, btns: [{}]}) => {
     const css = theme.get();
     const style = styles(css);
     return new Promise((resolve => {
+        //判断是否显示title
+        let isTitleShow = false;
+        if (title) isTitleShow = true;
         //多语言
         let lang = language.all('modal');
         if (!lang) lang = language.all('popup');
@@ -142,7 +145,7 @@ const alert = (content = '', params = {title: undefined, btns: [{}]}) => {
             }
             btns.push({text, style, onPress})
         });
-        const popup = PromptInit({title, content, btns});
+        const popup = PromptInit({title, content, btns, isTitleShow});
         show(style.modal, popup);
     }))
 };
@@ -157,6 +160,9 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
     const css = theme.get();
     const style = styles(css);
     return new Promise((resolve, reject) => {
+        //判断是否显示title
+        let isTitleShow = false;
+        if (title) isTitleShow = true;
         //多语言
         let lang = language.all('modal');
         if (!lang) lang = language.all('popup');
@@ -194,7 +200,7 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
         });
 
         console.log(btns);
-        const popup = PromptInit({title, content, btns});
+        const popup = PromptInit({title, content, btns, isTitleShow});
         show(style.modal, popup);
     });
 };
