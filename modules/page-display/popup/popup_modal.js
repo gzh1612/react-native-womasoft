@@ -76,7 +76,7 @@ const PromptInit = ({title, content, btns, isTitleShow}) => {
 
     //title 显示
     let titleView = <View/>;
-    if (initParams.title && isTitleShow) {
+    if (initParams.title || isTitleShow) {
         if (typeof title === 'string' && title) titleView = <Text style={[styleTitleText]}>{title}</Text>;
         else if (typeof title === 'object') titleView = title;
     }
