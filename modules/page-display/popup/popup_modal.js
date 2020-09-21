@@ -119,7 +119,7 @@ const alert = (content = '', params = {title: undefined, btns: [{}]}) => {
     return new Promise((resolve => {
         //判断是否显示title
         let isTitleShow = false;
-        if (title) isTitleShow = true;
+        if (params.title) isTitleShow = true;
         //多语言
         let lang = language.all('modal');
         if (!lang) lang = language.all('popup');
@@ -162,7 +162,7 @@ const confirm = (content = '', params = {title: undefined, btns: [{}, {}]}) => {
     return new Promise((resolve, reject) => {
         //判断是否显示title
         let isTitleShow = false;
-        if (title) isTitleShow = true;
+        if (params.title) isTitleShow = true;
         //多语言
         let lang = language.all('modal');
         if (!lang) lang = language.all('popup');
