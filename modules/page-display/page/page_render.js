@@ -42,42 +42,44 @@ export default class PageRender extends Component {
 
     render() {
         const css = this.css;
-        const style = this.style;
-        const stateStyle = this.state.style ?? {};
         const state = this.state;
+        let barBg = state.barBg ?? css.page.bg;
+        let barView;
+        if (!state.full) {
+            barView = <View style={{
+                width: css.width,
+                height: css.headerBarHeight,
+                backgroundColor: barBg,
+            }}/>;
+        }
 
-        let fullStyle = {};
-        if (Platform.OS === 'android' && !state.full) fullStyle = {paddingTop: css.headerBarHeight};
+        //设置 statusBar
+        let statusBarView = <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}
+                                       barStyle={state.barStyle ?? tools.getBarStyle()}/>;
 
-        let childrenView = <View style={[stateStyle, fullStyle, {
-            backgroundColor: state.bg ?? css.page.bg,
-            flex: 1
-        }]}>
-            <StatusBar backgroundColor={state.barBg ?? css.page.bg} translucent
-                       barStyle={state.barStyle ?? tools.getBarStyle() ?? 'light-content'}/>
+        //内容页
+        let innerView = <View style={{flex: 1}}>
             {state.children}
         </View>;
-        let innerView = childrenView;
-        if (Platform.OS === 'ios' && !state.full) innerView = <View style={{flex: 1}}>
-            <View style={{height: css.headerBarHeight, backgroundColor: state.barBg ?? css.page.bg}}/>
-            <SafeAreaView style={[style.container, {
-                backgroundColor: state.bg ?? css.page.bg,
-                flex: 1
-            }]}>
-                {childrenView}
-            </SafeAreaView>
-        </View>;
-        if (state.article) {
-            return <View style={{flex: 1}}>
+        if (Platform.OS === 'ios') {
+            let children = state.children;
+            if (!state.full) children = <SafeAreaView style={{flex: 1}}>
+                {state.children}
+            </SafeAreaView>;
+            innerView = <View style={{flex: 1}}>
+                {children}
+            </View>;
+        }
+
+        return <TouchableHighlight style={{flex: 1, backgroundColor: '#000'}} activeOpacity={1} onPress={() => {
+            if (typeof state.onPress === "function") state.onPress();
+        }}>
+            <View style={{flex: 1, backgroundColor: state.bg ?? css.page.bg}}>
+                {statusBarView}
+                {barView}
                 {innerView}
             </View>
-        } else {
-            return <TouchableHighlight activeOpacity={1} style={{flex: 1}} onPress={() => {
-                if (typeof state.onPress === "function") state.onPress();
-            }}>
-                {innerView}
-            </TouchableHighlight>
-        }
+        </TouchableHighlight>;
     }
 }
 const styles = (css) => StyleSheet.create({
