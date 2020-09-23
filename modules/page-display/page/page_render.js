@@ -3,6 +3,7 @@ import {SafeAreaView, Platform, StyleSheet, TouchableHighlight, StatusBar, View}
 
 import theme from '../theme';
 import tools from './tools';
+import redux from '../../data-storage/redux';
 
 export default class PageRender extends Component {
     constructor(props) {
@@ -56,7 +57,9 @@ export default class PageRender extends Component {
         //设置 statusBar
         let statusBarView = <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}
                                        barStyle={state.barStyle ?? tools.getBarStyle()}/>;
-
+        // redux.listen('navBar', res => {
+        //     console.log(res);
+        // });
         //内容页
         let innerView = <View style={{flex: 1}}>
             {state.children}
@@ -70,6 +73,13 @@ export default class PageRender extends Component {
                 {children}
             </View>;
         }
+
+        //如果是文章不用 TouchableHighlight
+        if (state.article) return <View style={{flex: 1, backgroundColor: '#000'}}>
+            {statusBarView}
+            {barView}
+            {innerView}
+        </View>;
 
         return <TouchableHighlight style={{flex: 1, backgroundColor: '#000'}} activeOpacity={1} onPress={() => {
             if (typeof state.onPress === "function") state.onPress();
