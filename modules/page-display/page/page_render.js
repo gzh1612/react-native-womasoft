@@ -75,7 +75,7 @@ export default class PageRender extends Component {
         }
 
         //如果是文章不用 TouchableHighlight
-        if (state.article) return <View style={{flex: 1, backgroundColor: '#000'}}>
+        if (state.article) return <View style={[{flex: 1, backgroundColor: '#000'}, state.style]}>
             {statusBarView}
             {barView}
             {innerView}
@@ -84,7 +84,7 @@ export default class PageRender extends Component {
         return <TouchableHighlight style={{flex: 1, backgroundColor: '#000'}} activeOpacity={1} onPress={() => {
             if (typeof state.onPress === "function") state.onPress();
         }}>
-            <View style={{flex: 1, backgroundColor: state.bg ?? css.page.bg}}>
+            <View style={[{flex: 1, backgroundColor: state.bg ?? css.page.bg}, state.style]}>
                 {statusBarView}
                 {barView}
                 {innerView}
