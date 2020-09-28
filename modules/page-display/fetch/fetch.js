@@ -98,8 +98,10 @@ const Post = (url, body, contentType, isToken = false) => {
     });
 };
 
-const Put = () => {
-
+const Put = (url, body, contentType, isToken = false) => {
+    return verifyToken(isToken).then(token => {
+        return dataRequestParams('put', url, body, contentType, token)
+    });
 };
 
 const Delete = () => {
@@ -135,7 +137,14 @@ const dataRequestParams = (method, url, body, contentType, token) => {
             }
             break;
         case 'PUT':
+            url = tools.replaceUrl(url, body, false);
+            if (contentType.indexOf('application/json') >= 0) {
+                body = JSON.stringify(body);
+            } else if (contentType.indexOf('application/x-www-form-urlencoded') >= 0) {
+                body = tools.jsonToSearch(body);
+            } else if (contentType.indexOf('text/html') >= 0) {
 
+            }
             break;
         case 'DELETE':
 
