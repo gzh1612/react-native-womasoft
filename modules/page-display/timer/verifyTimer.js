@@ -37,7 +37,7 @@ const text = (_this) => {
     return _this.state.verify_timer_json.text;
 };
 
-const onPress = (_this) => {
+const onPress = (_this, countDown) => {
     return new Promise((resolve, reject) => {
         if (!_this) return console.warn('timerVerify onPress this undefined');
         let json = _this.state.verify_timer_json;
@@ -59,13 +59,13 @@ const onPress = (_this) => {
         redux.update(timerVerify, endTime);
         storage.set(timerVerify, endTime.toString());
 
-        setState(_this, json);
+        setState(_this, json, countDown);
         return resolve();
     });
 };
 
 //写入循环
-const setTime = (_this) => {
+const setTime = (_this, countDown) => {
     const interval = setInterval(() => {
         if (!unmount.confirm(defaultUnmount)) return clearInterval(interval);
         const json = _this.state.verify_timer_json;
@@ -79,6 +79,7 @@ const setTime = (_this) => {
         json.time--;
         setText(json);
         _this.setState({verify_timer_json: json});
+        if (typeof countDown === "function") countDown();
     }, 1000);
 };
 
@@ -86,9 +87,9 @@ const setText = (json) => {
     json.text = `${json.time} s`;
 };
 
-const setState = (_this, json) => {
+const setState = (_this, json, countDown) => {
     setText(json);
-    _this.setState({verify_timer_json: json}, () => setTime(_this));
+    _this.setState({verify_timer_json: json}, () => setTime(_this, countDown));
 };
 
 export default {
