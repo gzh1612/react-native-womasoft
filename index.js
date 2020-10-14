@@ -15,7 +15,6 @@ export theme from './modules/page-display/theme';
 export page from './modules/page-display/page';
 
 export emitter from './modules/page-display/emitter';
-// export fetch from './modules/page-display/fetch';
 export fetch from './modules/page-display/fetch_v2';
 export nav from './modules/page-display/nav';
 export permissions from './modules/page-display/permissions';
