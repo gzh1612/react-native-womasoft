@@ -110,7 +110,7 @@ export default class PageA extends Component {
         if (state.color) style.color = state.color ?? css.font.color ?? '#808080';
         else {
             for (let i = 0, len = styles.length; i < len; i++) {
-                if (styles[i].color) style.color = styles[i].color;
+                if (styles[i] && styles[i].color) style.color = styles[i].color;
             }
             if (!style.color) style.color = css.font.color ?? '#808080';
         }
