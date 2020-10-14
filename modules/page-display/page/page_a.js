@@ -108,7 +108,12 @@ export default class PageA extends Component {
         if (state.weight) style.fontWeight = state.weight ?? 'normal';
 
         if (state.color) style.color = state.color ?? css.font.color ?? '#808080';
-        else style.color = css.font.color ?? '#808080';
+        else {
+            for (let i = 0, len = styles.length; i < len; i++) {
+                if (styles[i].color) style.color = styles[i].color;
+            }
+            if (!style.color) style.color = css.font.color ?? '#808080';
+        }
 
         if (state.lineHeight) style.lineHeight = state.lineHeight;
         if (state.marginTop) style.marginTop = state.marginTop;
