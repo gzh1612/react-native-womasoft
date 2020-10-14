@@ -1,4 +1,5 @@
-import fetch from './fetch';
+import fetch from "./fetch";
+import tools from "./tools";
 
 export default {
     get: fetch.Get,
@@ -6,13 +7,14 @@ export default {
     put: fetch.Put,
     delete: fetch.Delete,
 
-    init: fetch.init,
-    initStatus: fetch.initStatus,
+    init: tools.init,
+    setStatus: tools.setStatus,
+    setAuthStorage: tools.setAuthStorage,
+    getAuthStorage: tools.getAuthStorage,
+    setAuthType: tools.setAuthType,
+    setTimeout: tools.setTimeout,
 
-    token: fetch.token,
-    setToken: fetch.setToken,
-    type: fetch.type,
-    getType: fetch.getType,
-    setType: fetch.setType,
-    setTime: fetch.setTime,
+    getType: tools.getType,
+    setType: tools.setType,
+    auth: tools.auth,
 }

@@ -15,7 +15,7 @@ export theme from './page-display/theme';
 export page from './page-display/page';
 
 export emitter from './page-display/emitter';
-export fetch from './page-display/fetch_v2';
+export fetch from './page-display/fetch';
 export nav from './page-display/nav';
 export permissions from './page-display/permissions';
 export unmount from './page-display/unmount';
