@@ -22,4 +22,3 @@ export unmount from './modules/page-display/unmount';
 export version from './modules/page-display/version';
 export timer from './modules/page-display/timer';
 export tools from './modules/page-display/tools';
-// export log from './modules/page-display/console';
