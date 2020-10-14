@@ -30,6 +30,31 @@ export default class PageRender extends Component {
             nextProps.barBg === this.state.barBg &&
             nextProps.barStyle === this.state.barStyle &&
             JSON.stringify(nextProps.style ?? {}) === JSON.stringify(this.state.style ?? {})) return false;
+        // console.log('children', nextProps.children === this.state.children);
+        // console.log('--nextProps', nextProps.children);
+        // console.log('--state', this.state.children);
+        // console.log('');
+        // console.log('full', nextProps.full === this.state.full);
+        // console.log('--nextProps', nextProps.full);
+        // console.log('--state', this.state.full);
+        // console.log('');
+        // console.log('bg', nextProps.bg === this.state.bg);
+        // console.log('--nextProps', nextProps.bg);
+        // console.log('--state', this.state.bg);
+        // console.log('');
+        // console.log('barBg', nextProps.barBg === this.state.barBg);
+        // console.log('--nextProps', nextProps.barBg);
+        // console.log('--state', this.state.barBg);
+        // console.log('');
+        // console.log('barStyle', nextProps.barStyle === this.state.barStyle);
+        // console.log('--nextProps', nextProps.barStyle);
+        // console.log('--state', this.state.barStyle);
+        // console.log('');
+        // console.log('style', JSON.stringify(nextProps.style ?? {}) === JSON.stringify(this.state.style ?? {}));
+        // console.log('--nextProps', JSON.stringify(nextProps.style ?? {}));
+        // console.log('--state', JSON.stringify(this.state.style ?? {}));
+        // console.log('');
+        // console.log('--------------------------------------------------------------');
         this.setState({
             children: nextProps.children,
             style: nextProps.style,

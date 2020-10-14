@@ -27,7 +27,6 @@ export default class PageA extends Component {
             marginLeft: props['l'] ?? props['mLeft'],
             marginRight: props['r'] ?? props['mRight'],
             width: props.width,
-            log: props.log ?? false,
         };
     }
 
@@ -42,18 +41,54 @@ export default class PageA extends Component {
             isPress === this.state.isPress &&
             nextProps.noPressColor === this.state.noPressColor &&
             nextProps.onPress === this.state.onPress
-        )
-            return false;
+        ) return false;
+        console.log('children', nextProps.children === this.state.children);
+        console.log('--nextProps', nextProps.children);
+        console.log('--state', this.state.children);
+        console.log('');
+        console.log('color', nextProps.color === this.state.color);
+        console.log('--nextProps', nextProps.color);
+        console.log('--state', this.state.color);
+        console.log('');
+        console.log('bgColor', nextProps.bgColor === this.state.bgColor);
+        console.log('--nextProps', nextProps.bgColor);
+        console.log('--state', this.state.bgColor);
+        console.log('');
+        console.log('style', JSON.stringify(nextProps.style ?? {}) === JSON.stringify(this.state.style ?? {}));
+        console.log('--nextProps', JSON.stringify(nextProps.style ?? {}));
+        console.log('--state', JSON.stringify(this.state.style ?? {}));
+        console.log('');
+        console.log('text', nextProps.text === this.state.text);
+        console.log('--nextProps', nextProps.text);
+        console.log('--state', this.state.text);
+        console.log('');
+        console.log('alert', nextProps.alert === this.state.alert);
+        console.log('--nextProps', nextProps.alert);
+        console.log('--state', this.state.alert);
+        console.log('');
+        console.log('isPress', isPress === this.state.isPress);
+        console.log('--nextProps', isPress);
+        console.log('--state', this.state.isPress);
+        console.log('');
+        console.log('noPressColor', nextProps.noPressColor === this.state.noPressColor);
+        console.log('--nextProps', nextProps.noPressColor);
+        console.log('--state', this.state.noPressColor);
+        console.log('');
+        console.log('onPress', nextProps.onPress === this.state.onPress);
+        console.log('--nextProps', nextProps.onPress);
+        console.log('--state', this.state.onPress);
+        console.log('');
+        console.log('--------------------------------------------------------------');
         this.setState({
-            children: nextProps.children ?? this.state.children,
-            color: nextProps.color ?? this.state.color,
-            bgColor: nextProps.bgColor ?? this.state.bgColor,
-            text: nextProps.text ?? this.state.text,
-            alert: nextProps.alert ?? this.state.alert,
-            style: nextProps.style ?? this.state.style,
-            onPress: nextProps.onPress ?? this.state.onPress,
+            children: nextProps.children,
+            color: nextProps.color,
+            bgColor: nextProps.bgColor,
+            text: nextProps.text,
+            alert: nextProps.alert,
+            style: nextProps.style,
+            onPress: nextProps.onPress,
             isPress: isPress,
-            noPressColor: nextProps.noPressColor ?? this.state.noPressColor,
+            noPressColor: nextProps.noPressColor,
         });
         return true;
     }
@@ -65,18 +100,15 @@ export default class PageA extends Component {
         let styles = [];
         if (Platform.OS === 'android') styles.push({fontFamily: 'lucida grande'});
         else styles.push({});
-        if (state.style.length > 0) styles = styles.concat(state.style);
+        if (state.style) styles = styles.concat(state.style);
         else styles.push(state.style);
-        if (state.log) {
-            console.log(styles);
-            console.log(state);
-        }
         let style = {};
         if (state.size) style.fontSize = state.size ?? css.font.size ?? 14;
         else style.fontSize = css.font.size ?? 14;
         if (state.weight) style.fontWeight = state.weight ?? 'normal';
+
         if (state.color) style.color = state.color ?? css.font.color ?? '#808080';
-        else style.color = styles[1].color ?? css.font.color ?? '#808080';
+        else style.color = css.font.color ?? '#808080';
 
         if (state.lineHeight) style.lineHeight = state.lineHeight;
         if (state.marginTop) style.marginTop = state.marginTop;
@@ -90,9 +122,6 @@ export default class PageA extends Component {
         }
 
         styles.push(style);
-        if (state.log) {
-            console.log(styles);
-        }
 
         if (!this.state.isPress) {
             styles.push({
