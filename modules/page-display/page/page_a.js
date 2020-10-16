@@ -129,7 +129,7 @@ export default class PageA extends Component {
         styles.push(style);
 
         if (!this.state.isPress) {
-            styles.push({
+            if (this.state.noPressColor) styles.push({
                 backgroundColor: this.state.noPressColor,
                 borderColor: this.state.noPressColor,
             })
