@@ -18,4 +18,5 @@ export default {
     initBarStyle: tools.initBarStyle,
     setBarStyle: tools.setBarStyle,
     getBarStyle: tools.getBarStyle,
+    blur: tools.blur,
 }
