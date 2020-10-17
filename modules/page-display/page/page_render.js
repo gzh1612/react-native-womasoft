@@ -19,6 +19,7 @@ export default class PageRender extends Component {
             style: props.style,
             onPress: props.onPress,
             article: props.article ?? false,//是否是文章
+            onBlur: props.onBlur ?? undefined,
         }
     }
 
@@ -107,6 +108,7 @@ export default class PageRender extends Component {
         </View>;
 
         return <TouchableHighlight style={{flex: 1, backgroundColor: '#000'}} activeOpacity={1} onPress={() => {
+            if (typeof this.state.onBlur !== 'undefined') tools.blur(this.state.onBlur);
             if (typeof state.onPress === "function") state.onPress();
         }}>
             <View style={[{flex: 1, backgroundColor: state.bg ?? css.page.bg}, state.style]}>
