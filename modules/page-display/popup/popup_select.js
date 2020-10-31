@@ -42,7 +42,7 @@ const SelectInit = (arr, params, resolve) => {
     let cancelText = '取消';
     if (lang) cancelText = lang['btn_cancel'];
     let cancelView = <View/>;
-    if (!params.isCancel) params.isCancel = true;
+    if (typeof params.isCancel !== "boolean") params.isCancel = true;
     if (params.isCancel) cancelView = <TouchableOpacity activeOpacity={.5} onPress={() => hide()}>
         <Text style={style.selectItem}>{cancelText}</Text>
     </TouchableOpacity>;
