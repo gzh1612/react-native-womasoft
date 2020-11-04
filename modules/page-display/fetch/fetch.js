@@ -41,6 +41,8 @@ const dataRequestParams = ({method, url, body, contentType, isAuth}) => {
             body = tools.jsonToSearch(body);
         } else if (contentType.indexOf('text/html') >= 0) {
 
+        } else if (contentType.indexOf('multipart/form-data') >= 0) {
+            //传入的是formData
         }
     }
 
