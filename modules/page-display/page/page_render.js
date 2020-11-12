@@ -61,6 +61,7 @@ export default class PageRender extends Component {
 
     render() {
         const css = this.css;
+        const styles = this.style;
         const state = this.state;
         let barBg = state.barBg ?? css.page.bg;
         let barView;
@@ -91,27 +92,29 @@ export default class PageRender extends Component {
         }
 
         //如果是文章不用 TouchableHighlight
-        if (state.article) return <View style={[{flex: 1, backgroundColor: '#000'}, state.style]}>
+        if (state.article) return <View style={[state.style, styles.container,
+            {backgroundColor: state.bg ?? css.page.bg ?? '#fff'}]}>
             {barView}
             {innerView}
         </View>;
 
-        return <View style={{flex: 1}}>
-            <TouchableHighlight style={{flex: 1, backgroundColor: '#000'}} activeOpacity={1} onPress={() => {
-                if (typeof this.state.onBlur !== 'undefined') tools.blur(this.state.onBlur);
-                if (typeof state.onPress === "function") state.onPress();
-            }}>
-                <View style={[{flex: 1, backgroundColor: state.bg ?? css.page.bg}, state.style]}>
-                    {barView}
+        return <TouchableHighlight style={{flex: 1, backgroundColor: '#fff'}} activeOpacity={1} onPress={() => {
+            if (typeof this.state.onBlur !== 'undefined') tools.blur(this.state.onBlur);
+            if (typeof state.onPress === "function") state.onPress();
+        }}>
+            <View style={{flex: 1, flexGrow: 1}}>
+                {barView}
+                <View style={[state.style, styles.container,
+                    {backgroundColor: state.bg ?? css.page.bg ?? '#fff'}]}>
                     {innerView}
                 </View>
-            </TouchableHighlight>
-        </View>;
+            </View>
+        </TouchableHighlight>;
     }
 }
 const styles = (css) => StyleSheet.create({
     container: {
-        backgroundColor: css.page.bg ?? '#fff',
         flex: 1,
+        flexGrow: 1,
     },
 });
