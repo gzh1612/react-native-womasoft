@@ -76,7 +76,7 @@ export default class PageText extends Component {
             console.log(styles);
         }
 
-        if (state.line) return <Text style={styles} numberOfLines={state.line}>{`${state.text}`}</Text>;
-        return <Text style={styles}>{state.text}</Text>
+        if (state.line) return <Text style={styles} numberOfLines={state.line}>{state.text ?? ''}</Text>;
+        return <Text style={styles}>{state.text ?? ''}</Text>
     }
 }
