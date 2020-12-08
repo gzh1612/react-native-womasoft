@@ -64,6 +64,7 @@ const dataRequestParams = ({method, url, body, contentType, isAuth}) => {
         if (requestTools.auth.token === authType) {
             headerJson['Authorization'] = `Bearer ${authStorage}`;
         }
+        if(requestTools.getLog()) console.log(headerJson);
     }
     const headers = new Headers(headerJson);
     const params = {

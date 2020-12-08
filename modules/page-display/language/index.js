@@ -39,6 +39,10 @@ const getType = () => {
     return locales[0].languageCode;
 };
 
+const getSetType = () => {
+    return redux.get(defaultType);
+};
+
 const all = (name) => {
     const language = redux.get(defaultName);
     if (!language || !name) return language;
@@ -57,6 +61,12 @@ const get = (name) => {
     return language;
 };
 
+const set = (type, json) => {
+    redux.update(defaultType, type);
+    storage.set(defaultType, type);
+    redux.update(defaultName, json);
+};
+
 export default {
-    init, getType, all, get,
+    init, getType, getSetType, all, get, set,
 }

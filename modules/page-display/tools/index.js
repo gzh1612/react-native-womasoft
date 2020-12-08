@@ -119,6 +119,22 @@ const selectArrayByParams = (array, params, value) => {
 };
 
 /**
+ * 搜索数组 返回匹配值
+ * @param array 数组
+ * @param params    参数
+ * @param value     对比值
+ * @returns {array}
+ */
+const selectArrayByArray = (array, params, value) => {
+    if (!array) return [];
+    let arrayResult = [];
+    for (let i = 0, len = array.length; i < len; i++) {
+        if (array[i][params] === value) arrayResult.push(array[i]);
+    }
+    return arrayResult
+};
+
+/**
  * 转换科学计数法
  * @param val
  * @returns {string}
@@ -318,6 +334,7 @@ export default {
     isIndexOf,
     lastLetter,
     selectArrayByParams,
+    selectArrayByArray,
 
     amountConversion,
     amount,
