@@ -1,6 +1,6 @@
 import {Dimensions, StatusBar, NativeModules, Platform} from 'react-native';
 import redux from '../../data-storage/redux';
-// import storage from '../../data-storage/storage';
+import storage from '../../data-storage/storage';
 
 const {width, height} = Dimensions.get('window');
 const {StatusBarManager} = NativeModules;
@@ -115,9 +115,8 @@ css.columnEndCenter = {
 //listSingle
 css.listHeight = 42;
 
-
-//设置项目主题色
-const set = (params) => {
+//写入css 并合并
+const writeCss = (params) => {
     if (!params) return;
     for (let item in params) {
         css[item] = params[item];
@@ -125,15 +124,34 @@ const set = (params) => {
     return css;
 };
 
+//设置项目主题色
+const set = (classType, classStyleList) => {
+    if (!classType || !classStyleList) return console.error('classType 或 classStyleList 参数有 undefined');
+    let styles = writeCss(classStyleList[classType]);
+    redux.update(defaultType, classType);
+    redux.update(defaultName, styles);
+    storage.set(defaultType, classType);
+};
+
 const get = () => redux.get(defaultName);
 
-const init = (defaultTypeName, cssJson) => {
-    if (!defaultTypeName || !cssJson) return console.error('defaultTypeName 或 cssJson 参数有 undefined');
-    redux.add(defaultType, defaultTypeName);
-    redux.add(defaultName, cssJson);
-    // storage.get(defaultType).then(res => {
-    //     console.log(res);
-    // });
+const getType = () => redux.get(defaultType);
+
+const init = (classType, classStyleList) => {
+    if (!classType || !classStyleList) return console.error('classType 或 classStyleList 参数有 undefined');
+    let styles = writeCss(classStyleList[classType]);
+    redux.add(defaultType, classType);
+    redux.add(defaultName, styles);
+    storage.get(defaultType).then(res => {
+        console.log(res);
+        if (res) {
+            let styles = writeCss(classStyleList[res]);
+            redux.update(defaultType, res);
+            redux.update(defaultName, styles);
+        } else {
+            storage.set(defaultType, classType);
+        }
+    });
 };
 
 
@@ -145,4 +163,5 @@ export default {
     set,
     init,
     get,
+    getType,
 }
