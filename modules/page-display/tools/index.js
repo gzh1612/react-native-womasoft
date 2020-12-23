@@ -196,6 +196,18 @@ const isAmount = (amount) => {
 };
 
 /**
+ * 格式化字符串，将中间文字替换成...
+ * @param str       文字
+ * @param count     左右保留个数
+ * @returns {string|*}
+ */
+const subString = (str, count = 10) => {
+    if (typeof str !== 'string') return str;
+    if (str.length <= count * 2) return str;
+    return `${str.substring(0, count)}...${str.substring(str.length - count, str.length)}`
+};
+
+/**
  * 格式化时间
  * @param date  new Date() 后的时间
  * @param unit
@@ -335,6 +347,7 @@ export default {
     lastLetter,
     selectArrayByParams,
     selectArrayByArray,
+    subString,
 
     amountConversion,
     amount,

@@ -3,6 +3,7 @@ import redux from '../../data-storage/redux';
 import storage from '../../data-storage/storage';
 
 const {width, height} = Dimensions.get('window');
+const deviceHeight = Dimensions.get('screen').height;
 const {StatusBarManager} = NativeModules;
 
 const defaultName = 'AppTheme';
@@ -22,7 +23,7 @@ let css = {
     //header导航颜色
     headerBgColor: '',
     headerTitleColor: '',
-    headerBarHeight: StatusBar.currentHeight ?? 0,//header导航栏高度
+    headerBarHeight: StatusBar.currentHeight ?? 48,//header导航栏高度
     headerHeight: 50,//header高度
     //导航
     navColor: '#eee',
@@ -30,6 +31,8 @@ let css = {
 
     width: width,
     height: height,
+    deviceHeight: deviceHeight,
+    footerHeight: deviceHeight - height,
 
 
 };

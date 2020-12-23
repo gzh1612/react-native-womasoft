@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
-import {SafeAreaView, Platform, StyleSheet, TouchableHighlight, View, Text} from 'react-native';
+import {Platform, StyleSheet, TouchableHighlight, View, Text} from 'react-native';
+// import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import theme from '../theme';
 import tools from './tools';
@@ -32,10 +33,11 @@ export default class PageRender extends PureComponent {
         let innerView = <View style={{flex: 1}}>{this.props.children}</View>;
         if (Platform.OS === 'ios') {
             let children = this.props.children;
-            if (!state.full) children = <SafeAreaView style={{flex: 1}}>
-                {this.props.children}
-            </SafeAreaView>;
+            // if (!state['full']) children = <SafeAreaProvider style={{flex: 1, flexGrow: 1}}>
+            //     {this.props.children}
+            // </SafeAreaProvider>;
             innerView = <View style={{flex: 1}}>
+                {/*<View style={{height: css.headerBarHeight, backgroundColor: css.page.barBg}}/>*/}
                 {children}
             </View>;
         }
@@ -54,8 +56,8 @@ export default class PageRender extends PureComponent {
             if (typeof state.onPress === "function") state.onPress();
         }}>
             <View style={{flex: 1}}>
-                <View style={[state.style, styles.container, {
-                    backgroundColor: state.bg ?? css.page.bg
+                <View style={[state['style'], styles.container, {
+                    backgroundColor: state['bg'] ?? css.page.bg
                 }]}>
                     {innerView}
                 </View>

@@ -18,6 +18,8 @@ const getVersion = () => DeviceInfo.getVersion();
 //获取build 号
 const getBuild = () => DeviceInfo.getBuildNumber();
 
+const getDeviceName = () => DeviceInfo.getDeviceName();
+
 
 /**
  * 判断版本信息是否有更新
@@ -91,6 +93,7 @@ const download = (content = '', isMust = false, isLink = false) => {
 export default {
     getVersion,
     getBuild,
+    getDeviceName,
 
     init,
     verify,

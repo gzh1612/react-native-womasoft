@@ -1,4 +1,7 @@
+import {BackHandler, Platform} from 'react-native';
 import redux from '../../data-storage/redux';
+import unmount from '../unmount';
+import popup from '../popup';
 
 const barStyle = 'barStyle';
 
@@ -25,9 +28,33 @@ const blur = (that) => {
     }
 };
 
+//页面start
+const start = (that) => {
+    if (!that) return;
+    if (that.name) unmount.load(that.name);
+    if (Platform.OS === 'android') BackHandler.addEventListener('hardwareBackPress', () => OnBackPress());
+};
+
+//页面end
+const end = (that) => {
+    if (!that) return;
+    if (that.name) unmount.remove(that.name);
+    if (Platform.OS === 'android') BackHandler.removeEventListener('hardwareBackPress', () => OnBackPress());
+};
+
+const OnBackPress = () => {
+    if (popup.view.isShow()) {
+        popup.view.hide();
+        return true;
+    }
+    return false;
+};
+
 export default {
     initBarStyle,
     setBarStyle,
     getBarStyle,
     blur,
+    start,
+    end,
 }

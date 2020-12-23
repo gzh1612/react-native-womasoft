@@ -15,8 +15,12 @@ export default {
     slide: page_slide,//滚动
     switch: page_switch,//开关
 
+
+    tools: tools,
     initBarStyle: tools.initBarStyle,
     setBarStyle: tools.setBarStyle,
     getBarStyle: tools.getBarStyle,
     blur: tools.blur,
+    start: tools.start,
+    end: tools.end,
 }

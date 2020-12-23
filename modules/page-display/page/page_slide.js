@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import {TouchableHighlight, View, ScrollView, RefreshControl} from 'react-native';
 
 import theme from '../theme';
+import popup from '../popup';
 
 export default class PageSlide extends PureComponent {
     constructor(props) {
@@ -19,34 +20,17 @@ export default class PageSlide extends PureComponent {
         }
     }
 
-    //
-    // shouldComponentUpdate(nextProps, nextState, nextContext) {
-    //     if (nextProps.children === this.state.children &&
-    //         nextProps.refreshing === this.state.refreshing &&
-    //         nextProps.loadingPaging === this.state.loadingPaging &&
-    //         nextProps.onPaging === this.state.onPaging &&
-    //         JSON.stringify(nextProps.style) === JSON.stringify(this.state.style) &&
-    //         JSON.stringify(nextProps.slideStyle) === JSON.stringify(this.state.slideStyle)) return false;
-    //     if (this.state.log) {
-    //         console.log('children', nextProps.children === this.state.children);
-    //         console.log('refreshing', nextProps.refreshing === this.state.refreshing);
-    //         console.log('loadingPaging', nextProps.loadingPaging === this.state.loadingPaging);
-    //         console.log('style', JSON.stringify(nextProps.style) === JSON.stringify(this.state.style));
-    //         console.log('slideStyle', JSON.stringify(nextProps.slideStyle) === JSON.stringify(this.state.slideStyle));
-    //         console.log('==================================');
-    //     }
-    //     this.setState({
-    //         children: nextProps.children,
-    //         style: nextProps.style ?? this.state.style,
-    //         slideStyle: nextProps.slideStyle ?? this.state.slideStyle,
-    //         refreshing: nextProps.refreshing,
-    //         loadingPaging: nextProps.loadingPaging,
-    //         onPaging: nextProps.onPaging,
-    //     });
-    //     return true;
-    // }
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        // console.log(nextProps);
+        // console.log(nextState);
+        // console.log(nextContext);
+        if (nextProps.loadingPaging !== nextState.loadingPaging) this.setState({loadingPaging: nextProps.loadingPaging});
+        return true;
+    }
 
     render() {
+        let loadingView = <View/>;
+        if (this.state.loadingPaging) loadingView = popup.loading.small();
         return <ScrollView style={this.state.slideStyle ?? {}}
                            onScroll={(event) => {
                                let currHeight = this.state.height + event['nativeEvent']['contentOffset'].y,
@@ -57,13 +41,13 @@ export default class PageSlide extends PureComponent {
                            }}
                            onLayout={(event) => this.setState({height: event['nativeEvent']['layout'].height})}
                            refreshControl={
-                               <RefreshControl refreshing={this.state.refreshing ?? false}
-                                               onRefresh={() => {
-                                                   if (typeof this.state.onRefresh === 'function') this.state.onRefresh();
-                                               }}/>}>
+                               <RefreshControl refreshing={this.state.refreshing ?? false} onRefresh={() => {
+                                   if (typeof this.state.onRefresh === 'function') this.state.onRefresh();
+                               }}/>}>
             <TouchableHighlight activeOpacity={1} style={{minHeight: this.state.height}}>
                 <View style={this.state.style ?? {}}>
                     {this.props.children}
+                    {loadingView}
                 </View>
             </TouchableHighlight>
         </ScrollView>

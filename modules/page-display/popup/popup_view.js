@@ -59,10 +59,16 @@ const refresh = (data, style) => {
     });
 };
 
+const isShow = () => {
+    const data = redux.get(init_view.reduxName);
+    return data.display ?? false
+}
+
 
 export default {
     show,
     showHaveInput,
     hide,
     refresh,
+    isShow,
 };
