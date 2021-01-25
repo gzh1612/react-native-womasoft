@@ -195,6 +195,14 @@ const isAmount = (amount) => {
     return numberAmount.toString() === amount.toString();
 };
 
+const isNum = (val) => {
+    if (typeof val === "undefined") return false;
+    if (typeof val === "object") return false;
+    let num = parseFloat(val);
+    if (isNaN(num)) return false;
+    return num.toString().length === val.toString().length;
+}
+
 /**
  * 格式化字符串，将中间文字替换成...
  * @param str       文字
@@ -352,6 +360,8 @@ export default {
     amountConversion,
     amount,
     isAmount,
+
+    isNum,
 
     formatDate,
     formatDateTimezoneOffset,

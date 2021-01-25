@@ -1,26 +1,46 @@
-'use strict';
-
+//v1 版本
 //数据存储
-export storage from './data-storage/storage';
-export redux from './data-storage/redux';
-export cache from './data-storage/cache';
-
+import redux from './v1/data-storage/redux';
+import storage from './v1/data-storage/storage';
+import cache from './v1/data-storage/cache';
 //页面展示
-export popup from './page-display/popup';
-export modal from './page-display/popup/popup_modal';
-export loading from './page-display/popup/popup_loading';
+import popup from './v1/page-display/popup';
+import language from './v1/page-display/language';
+import theme from './v1/page-display/theme';
+import page from './v1/page-display/page';
+import emitter from './v1/page-display/emitter';
+import fetch from './v1/page-display/fetch';
+import nav from './v1/page-display/nav';
+import permissions from './v1/page-display/permissions';
+import unmount from './v1/page-display/unmount';
+import version from './v1/page-display/version';
+import timer from './v1/page-display/timer';
+import tools from './v1/page-display/tools';
+import files from './v1/page-display/files';
 
-export language from './page-display/language';
-export theme from './page-display/theme';
-export page from './page-display/page';
+//v2 版本
+import Animated from "./v2/Animated";
+import Core from './v2/Core';
+import Emitter from "./v2/Emitter";
+import Fetch from "./v2/Fetch";
+import Files from "./v2/Files";
+import Language from "./v2/Language";
+import Modal from "./v2/Modal";
+import Nav from "./v2/Navigation";
+import Page from './v2/Page';
+import Popup from "./v2/Popup";
+import Redux from "./v2/Redux";
+import Storage from "./v2/Storage";
+import System from "./v2/System";
+import Theme from "./v2/Theme";
+import Tools from "./v2/Tools";
+import Unmount from "./v2/Unmount";
+import Loading from "./v2/Loading";
 
-export emitter from './page-display/emitter';
-export fetch from './page-display/fetch';
-export nav from './page-display/nav';
-export permissions from './page-display/permissions';
-export unmount from './page-display/unmount';
-export version from './page-display/version';
-export timer from './page-display/timer';
-export tools from './page-display/tools';
-export files from './page-display/files';
-// export log from './page-display/console';
+// export default {
+//     storage, cache, popup, nav, page, language, fetch, redux,
+//     emitter, version, theme, permissions, unmount, timer, tools, files,
+//
+//     Animated, Core, Emitter, Fetch, Files, Language, Modal, Nav, Page, Popup,
+//     Redux, Storage, System, Theme, Tools, Unmount, Loading,
+// }

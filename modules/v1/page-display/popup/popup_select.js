@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {View, ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import language from '../language';
 import theme from '../theme';
 
@@ -47,8 +47,11 @@ const SelectInit = (arr, params, resolve) => {
         <Text style={style.selectItem}>{cancelText}</Text>
     </TouchableOpacity>;
     return <View style={style.selectView}>
-        {itemView(arr, params, resolve)}
-        {cancelView}
+        <TouchableOpacity style={{width: css.width, height: css.height * 0.3}} onPress={() => hide()}/>
+        <ScrollView style={{height: css.height * 0.7}}>
+            {itemView(arr, params, resolve)}
+            {cancelView}
+        </ScrollView>
     </View>
 };
 //循环item
@@ -60,7 +63,7 @@ const itemView = (arr, params, resolve) => {
         let text = item.text;
         if (params.text) text = item[params.text];
         return <TouchableOpacity activeOpacity={.5} key={key} onPress={() => {
-            if (typeof resolve === 'function') resolve(item);
+            if (typeof resolve === 'function') resolve(item, key);
             hide();
         }}>
             <Text style={style.selectItem}>{text}</Text>
@@ -80,7 +83,7 @@ const show = (arr, params = {}) => {
     return new Promise((resolve, reject) => {
         if (!arr) return reject(false);
         const select = SelectInit(arr, params, res => resolve(res));
-        // Modals.show({data: select, style: style.select});
+        // Modal.show({data: select, style: style.select});
         perform_show(select, style.select);
     });
 

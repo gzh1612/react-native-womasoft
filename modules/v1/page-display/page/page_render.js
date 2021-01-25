@@ -5,7 +5,7 @@ import {Platform, StyleSheet, TouchableHighlight, View, Text} from 'react-native
 import theme from '../theme';
 import tools from './tools';
 
-export default class PageRender extends PureComponent {
+export default class Page_render extends PureComponent {
     constructor(props) {
         super(props);
         this.css = theme.get() ?? {};

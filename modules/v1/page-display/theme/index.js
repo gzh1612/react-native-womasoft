@@ -1,6 +1,7 @@
 import {Dimensions, StatusBar, NativeModules, Platform} from 'react-native';
 import redux from '../../data-storage/redux';
 import storage from '../../data-storage/storage';
+import Theme from "../../../v2/Theme";
 
 const {width, height} = Dimensions.get('window');
 const deviceHeight = Dimensions.get('screen').height;
@@ -136,7 +137,7 @@ const set = (classType, classStyleList) => {
     storage.set(defaultType, classType);
 };
 
-const get = () => redux.get(defaultName);
+const get = () => new Theme().get();
 
 const getType = () => redux.get(defaultType);
 
