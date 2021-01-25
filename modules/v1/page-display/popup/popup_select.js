@@ -82,7 +82,7 @@ const show = (arr, params = {}) => {
     const style = styles(css);
     return new Promise((resolve, reject) => {
         if (!arr) return reject(false);
-        const select = SelectInit(arr, params, res => resolve(res));
+        const select = SelectInit(arr, params, (res, key) => resolve(res, key));
         // Modal.show({data: select, style: style.select});
         perform_show(select, style.select);
     });
