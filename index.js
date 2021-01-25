@@ -18,22 +18,22 @@ export timer from './modules/v1/page-display/timer';
 export tools from './modules/v1/page-display/tools';
 export files from './modules/v1/page-display/files';
 
-// //v2 版本
-// export Animated from "./modules/v2/Animated";
-// export Core from './modules/v2/Core';
-// export Emitter from "./modules/v2/Emitter";
-// export Fetch from "./modules/v2/Fetch";
-// export Files from "./modules/v2/Files";
-// export Language from "./modules/v2/Language";
-// export Modal from "./modules/v2/Modal";
-// export Nav from "./modules/v2/Navigation";
-// export Page from './modules/v2/Page';
-// export Popup from "./modules/v2/Popup";
-// export Redux from "./modules/v2/Redux";
-// export Storage from "./modules/v2/Storage";
-// export System from "./modules/v2/System";
-// export Theme from "./modules/v2/Theme";
-// export Tools from "./modules/v2/Tools";
-// export Unmount from "./modules/v2/Unmount";
-// export Loading from "./modules/v2/Loading";
+//v2 版本
+export Animated from "./modules/v2/Animated";
+export Core from './modules/v2/Core';
+export Emitter from "./modules/v2/Emitter";
+export Fetch from "./modules/v2/Fetch";
+export Files from "./modules/v2/Files";
+export Language from "./modules/v2/Language";
+export Modal from "./modules/v2/Modal";
+export Nav from "./modules/v2/Navigation";
+export Page from './modules/v2/Page';
+export Popup from "./modules/v2/Popup";
+export Redux from "./modules/v2/Redux";
+export Storage from "./modules/v2/Storage";
+export System from "./modules/v2/System";
+export Theme from "./modules/v2/Theme";
+export Tools from "./modules/v2/Tools";
+export Unmount from "./modules/v2/Unmount";
+export Loading from "./modules/v2/Loading";
 
