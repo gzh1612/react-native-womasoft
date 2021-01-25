@@ -141,22 +141,7 @@ const get = () => new Theme().get();
 
 const getType = () => redux.get(defaultType);
 
-const init = (classType, classStyleList) => {
-    if (!classType || !classStyleList) return console.error('classType 或 classStyleList 参数有 undefined');
-    let styles = writeCss(classStyleList[classType]);
-    redux.add(defaultType, classType);
-    redux.add(defaultName, styles);
-    storage.get(defaultType).then(res => {
-        console.log(res);
-        if (res) {
-            let styles = writeCss(classStyleList[res]);
-            redux.update(defaultType, res);
-            redux.update(defaultName, styles);
-        } else {
-            storage.set(defaultType, classType);
-        }
-    });
-};
+const init = (classType, classStyleList) => new Theme().init(classStyleList, classType);
 
 
 export default {
