@@ -80,39 +80,39 @@ css.rowEndCenter = {
     ...css.rowEnd,
     alignItems: 'center'
 };
-css.columnBetween = {
+css.colBetween = {
     flexDirection: 'column',
     justifyContent: 'space-between',
 };
-css.columnBetweenCenter = {
-    ...css.columnBetween,
+css.colBetweenCenter = {
+    ...css.colBetween,
     alignItems: 'center'
 };
-css.columnStart = {
+css.colStart = {
     flexDirection: 'column',
     justifyContent: 'flex-start'
 };
-css.columnStartCenter = {
-    ...css.columnStart,
+css.colStartCenter = {
+    ...css.colStart,
     alignItems: 'center'
 };
 
-css.columnAround = {
+css.colAround = {
     flexDirection: 'column',
     justifyContent: 'space-around',
 };
-css.columnAroundCenter = {
-    ...css.columnAround,
+css.colAroundCenter = {
+    ...css.colAround,
     alignItems: 'center'
 };
 
-css.columnEnd = {
+css.colEnd = {
     flexDirection: 'column',
     justifyContent: 'flex-end'
 };
 
-css.columnEndCenter = {
-    ...css.columnEnd,
+css.colEndCenter = {
+    ...css.colEnd,
     alignItems: 'center'
 };
 

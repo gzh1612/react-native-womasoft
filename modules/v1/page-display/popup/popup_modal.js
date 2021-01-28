@@ -87,7 +87,7 @@ const PromptInit = ({title, content, btns, isTitleShow}) => {
 
 
     return <View style={styleModal}>
-        <View style={[css.columnAroundCenter, {minHeight: 80}]}>
+        <View style={[css.colAroundCenter, {minHeight: 80}]}>
             <View style={styleTitle}>{titleView}</View>
             <View style={styleContent}>{contentView}</View>
         </View>
