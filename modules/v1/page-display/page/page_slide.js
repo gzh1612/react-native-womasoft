@@ -25,6 +25,7 @@ export default class PageSlide extends PureComponent {
         // console.log(nextState);
         // console.log(nextContext);
         if (nextProps.loadingPaging !== nextState.loadingPaging) this.setState({loadingPaging: nextProps.loadingPaging});
+        if (nextProps.onPaging !== nextState.onPaging) this.setState({onPaging: nextProps.onPaging});
         return true;
     }
 
