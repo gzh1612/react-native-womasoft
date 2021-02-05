@@ -46,9 +46,14 @@ const SelectInit = (arr, params, resolve) => {
     if (params.isCancel) cancelView = <TouchableOpacity activeOpacity={.5} onPress={() => hide()}>
         <Text style={style.selectItem}>{cancelText}</Text>
     </TouchableOpacity>;
+    let height = css.height * 0.7;
+    let arrCount = arr.length;
+    if (params.isCancel) arrCount = arrCount + 1;
+    if (arrCount * 60 < height) height = arrCount * 60;
+
     return <View style={style.selectView}>
-        <TouchableOpacity style={{width: css.width, height: css.height * 0.3}} onPress={() => hide()}/>
-        <ScrollView style={{height: css.height * 0.7}}>
+        <TouchableOpacity style={{width: css.width, height: css.height - height}} onPress={() => hide()}/>
+        <ScrollView style={{height: height}}>
             {itemView(arr, params, resolve)}
             {cancelView}
         </ScrollView>
