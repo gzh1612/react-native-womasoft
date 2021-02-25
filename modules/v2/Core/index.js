@@ -12,15 +12,7 @@ export default class Core {
     #stringInit = () => {
         //判断是否是JSON
         String.prototype.isJson = () => {
-            try {
-                let value = this;
-                if (typeof value !== "string") return false;
-                value = value.toString();
-                const json = JSON.parse(value);
-                return !!(typeof json === "object" && json);
-            } catch (err) {
-                return false;
-            }
+            return Tools.isJson(this);
         }
 
         //将string类型转换成json

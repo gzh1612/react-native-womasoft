@@ -40,14 +40,24 @@ export default class Fetch {
 
     }
 
+    /**
+     *
+     * @param method                //  请求类型
+     * @param url                   //  请求地址
+     * @param body                  //  请求参数
+     * @param contentType           //  请求内容类型
+     * @param isAuth                //  是否需要权限
+     * @param authValue             //  权限值
+     * @returns {Promise<R>|void}
+     */
     #dataRequest = ({method, url, body, contentType, isAuth, authValue}) => {
         method = method.toLocaleUpperCase();
         contentType = contentType ?? Fetch.contentType.application_json;
         if (method === 'GET') {
-            url = url.replaceOrSpliceToUrl(body);
+            url = Tools.replaceOrSpliceToUrl(url, body);
             body = undefined;
-        } else if (method === 'POST') {
-            url = url.replaceWithJson(body);
+        } else {
+            url = Tools.replaceWithJson(url, body);
             if (contentType === Fetch.contentType.application_json) {
                 body = JSON.stringify(body);
             } else if (contentType === Fetch.contentType.application_www) {
@@ -57,6 +67,7 @@ export default class Fetch {
             } else if (contentType === Fetch.contentType.form_data) {
                 //传入的是formData
             }
+            console.log('请求参数：', body);
         }
         console.log(`数据请求：${url}`);
         if (this.getIsLog()) {
@@ -81,7 +92,7 @@ export default class Fetch {
             if (this.getIsLog()) console.log(headerJson);
         }
         // headers 请求头
-        const headers = new Headers(headerJson);
+        // const header = new Headers(headerJson);
         // 请求状态处理
         const requestStatus = this.getStatus();
         //网络超时
@@ -95,12 +106,12 @@ export default class Fetch {
         });
         //数据请求
         const requestPromise = new Promise((resolve) => {
-            fetch(url, {method, body, headers}).then(res => {
+            fetch(url, {method, body, headers: headerJson}).then(res => {
                 const {status} = res;
                 if (this.getIsLog()) console.log(`数据请求：${status}; url：${url}`, res);
                 if (status !== 200) {
                     if (requestStatus && typeof requestStatus[status] === "function") {
-                        requestStatus[status](url, {method, body, headers});
+                        requestStatus[status](url, {method, body});
                     }
                     return resolve({code: status.toString()});
                 }
@@ -125,14 +136,14 @@ export default class Fetch {
         });
 
         return new Promise(resolve => {
-            Promise.race([timeoutPromise, requestPromise]).then(res => {
+            return Promise.race([timeoutPromise, requestPromise]).then(res => {
                 if (this.getIsLog()) console.log('fetch race', res);
                 if (res.code === Fetch.status.SERVE_ERROR ||
                     res.code === Fetch.status.SERVE_FAILED ||
                     res.code === Fetch.status.SERVE_TIMEOUT) {
                     if (requestStatus && typeof requestStatus[res.code] === 'function') {
                         console.warn(`数据请求：${res.code}; url：${url}`, res);
-                        requestStatus[res.code](url, {method, body, headers});
+                        requestStatus[res.code](url, {method, body});
                     }
                 } else resolve(res);
             });
@@ -161,26 +172,54 @@ export default class Fetch {
         if (typeof status === "undefined") list.push({name: Fetch.params.status, value: {}});
         // 默认类型，用于可切换式API
         if (typeof type === "undefined") list.push({name: Fetch.params.type, value: ''});
-        // 权限存储
-        if (typeof authValue === "undefined") list.push({name: Fetch.params.authValue, value: []});
-        console.log('fetch init', list);
+
         redux.adds(list);
+        // 权限存储
+        new Storage().init([{
+            name: authValue ? authValue.name : Fetch.params.authValue,
+            type: Storage.type.getJson,
+            value: authValue ? authValue.value : []
+        }]);
     }
 
     get(url, body, params) {
-
+        if (!params) params = {};
+        return this.#dataRequest({
+            method: 'GET', url, body,
+            contentType: params.contentType,
+            isAuth: params.isAuth,
+            authValue: params.authValue,
+        })
     }
 
-    post() {
-
+    post(url, body, params) {
+        if (!params) params = {};
+        return this.#dataRequest({
+            method: 'POST', url, body,
+            contentType: params.contentType,
+            isAuth: params.isAuth,
+            authValue: params.authValue,
+        })
     }
 
-    put() {
-
+    put(url, body, params) {
+        if (!params) params = {};
+        return this.#dataRequest({
+            method: 'PUT', url, body,
+            contentType: params.contentType,
+            isAuth: params.isAuth,
+            authValue: params.authValue,
+        })
     }
 
-    delete() {
-
+    delete(url, body, params) {
+        if (!params) params = {};
+        return this.#dataRequest({
+            method: 'DELETE', url, body,
+            contentType: params.contentType,
+            isAuth: params.isAuth,
+            authValue: params.authValue,
+        })
     }
 
     // 获取权限储存内容
@@ -213,21 +252,26 @@ export default class Fetch {
     }
 
     //写入默认权限
-    setAuthValue(type, value) {
-        this.setAuthValueCustom(Fetch.authDefaultName, type, value);
+    setAuthValue(value) {
+        const defAuth = this.getAuthValueByName(Fetch.authDefaultName);
+        this.setAuthValueCustom(defAuth.name, defAuth.type, value);
     }
 
     //权限 自定义
     setAuthValueCustom(name, type, value) {
         let list = this.getAuthValue() ?? [];
         if (!name || !type) return;
-        let params = list.find(n => n.name === name);
-        if (params === undefined) {
-            list.push({name, type, value});
+        if (list.length === 0) {
+            list.push({name, type, value: value});
         } else {
-            params.type = type;
-            params.value = value;
+            list.map((item) => {
+                if (item.name === name) {
+                    item.type = type;
+                    item.value = value;
+                }
+            })
         }
+        console.log(list);
         new Redux().update(Fetch.params.authValue, list);
         new Storage().setJson(Fetch.params.authValue, list);
     }

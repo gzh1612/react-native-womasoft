@@ -24,6 +24,10 @@ export default class PageIcon extends Component {
          * size
          * color
          * style
+         * t
+         * l
+         * r
+         * b
          * onPress
          */
         super(props);
@@ -40,6 +44,10 @@ export default class PageIcon extends Component {
         if (nextProps.name !== nextState.name) props['name'] = nextProps.name;
         if (nextProps.size !== nextState.size) props['size'] = nextProps.size;
         if (nextProps.color !== nextState.color) props['color'] = nextProps.color;
+        if (nextProps.t !== nextState.t) props['t'] = nextProps.t;
+        if (nextProps.l !== nextState.l) props['l'] = nextProps.l;
+        if (nextProps.r !== nextState.r) props['r'] = nextProps.r;
+        if (nextProps.b !== nextState.b) props['b'] = nextProps.b;
         if (this.props.log) console.log('PageIcon', props);
         let i = 0;
         for (let item in props) {
@@ -56,11 +64,15 @@ export default class PageIcon extends Component {
         if (!iconJson) return <View/>;
         const IconsView = createIconSet(iconJson, 'iconfont', 'iconfont.ttf');
         const style = {
-            color: css.font.color, fontSize: 14,
+            color: css.font.color, fontSize: 18,
             ...props.style ?? {}
         };
         if (props.color) style.color = props.color;
         if (props.size) style.fontSize = props.size;
+        if (props.t) style.marginTop = props.t;
+        if (props.l) style.marginLeft = props.l;
+        if (props.r) style.marginRight = props.r;
+        if (props.b) style.marginBottom = props.b;
         if (props.log) console.log('PageIcon-style', style);
         if (typeof props.onPress === "function")
             return <TouchableOpacity onPress={() => props.onPress()}>

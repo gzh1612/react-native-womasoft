@@ -11,7 +11,7 @@
 //         //     chooseFromLibraryButtonTitle: lang.chooseFromLibraryButtonTitle,
 //         //     storageOptions: {
 //         //         skipBackup: true,
-//         //         path: 'images',
+//         //         path: 'Images',
 //         //     },
 //         // };
 //         //

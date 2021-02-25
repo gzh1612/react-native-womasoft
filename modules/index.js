@@ -25,6 +25,7 @@ import Emitter from "./v2/Emitter";
 import Fetch from "./v2/Fetch";
 import Files from "./v2/Files";
 import Language from "./v2/Language";
+import Loading from "./v2/Loading";
 import Modal from "./v2/Modal";
 import Nav from "./v2/Navigation";
 import Page from './v2/Page';
@@ -35,12 +36,12 @@ import System from "./v2/System";
 import Theme from "./v2/Theme";
 import Tools from "./v2/Tools";
 import Unmount from "./v2/Unmount";
-import Loading from "./v2/Loading";
 
-// export default {
-//     storage, cache, popup, nav, page, language, fetch, redux,
-//     emitter, version, theme, permissions, unmount, timer, tools, files,
-//
-//     Animated, Core, Emitter, Fetch, Files, Language, Modal, Nav, Page, Popup,
-//     Redux, Storage, System, Theme, Tools, Unmount, Loading,
-// }
+
+export default {
+    // storage, cache, popup, nav, page, language, fetch, redux,
+    // emitter, version, theme, permissions, unmount, timer, tools, files,
+
+    Animated, Core, Emitter, Fetch, Files, Language, Loading, Modal, Nav,
+    Page, Popup, Redux, Storage, System, Theme, Tools, Unmount,
+}

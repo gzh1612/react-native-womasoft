@@ -15,6 +15,7 @@ export default class PageSlide extends Component {
          *  onPaging        分页执行
          */
         super(props);
+        this.state = {};
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -40,28 +41,25 @@ export default class PageSlide extends Component {
     render() {
         const css = this.#css,
             props = this.props ?? {};
-        const style = {...props.style ?? {}};
-        if (props.log) console.log('PageSlide-style', style);
-
         let loadingView = <View/>;
         if (typeof props.loading === "boolean" && props.loading) loadingView = <View/>;
 
-        return <ScrollView onLayout={event => this.setState({height: event['nativeEvent']['layout'].height})}
-                           onScroll={event => {
-                               const nativeEvent = event['nativeEvent'];
-                               let currHeight = this.state.height + nativeEvent['contentOffset'].y,
-                                   totalHeight = nativeEvent['contentSize'].height;
-                               if ((totalHeight - 1) < currHeight && props.loading) {
-                                   if (typeof props.onPaging === "function") props.onPaging();
-                               }
-                           }}
-                           refreshControl={
-                               <RefreshControl refreshing={props.refreshing ?? false} onRefresh={() => {
-                                   if (typeof props.onRefresh === "function") props.onRefresh();
-                               }}/>
-                           }>
-            <TouchableHighlight activeOpacity={1} style={{}}>
-                <View style={style}>
+        return <ScrollView onLayout={(event) => {
+            this.setState({height: event['nativeEvent']['layout'].height});
+        }} onScroll={event => {
+            const nativeEvent = event['nativeEvent'];
+            let currHeight = this.state.height + nativeEvent['contentOffset'].y,
+                totalHeight = nativeEvent['contentSize'].height;
+            if ((totalHeight - 1) < currHeight && props.loading) {
+                if (typeof props.onPaging === "function") props.onPaging();
+            }
+        }} refreshControl={
+            <RefreshControl refreshing={props.refreshing ?? false} onRefresh={() => {
+                if (typeof props.onRefresh === "function") props.onRefresh();
+            }}/>
+        }>
+            <TouchableHighlight activeOpacity={1} style={{minHeight: this.state.height ?? css.height}}>
+                <View style={props.style ?? {}}>
                     {props.children}
                     {loadingView}
                 </View>

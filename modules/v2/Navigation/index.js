@@ -1,13 +1,14 @@
 import React from "react";
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, NavigationContainer} from '@react-navigation/native';
 import Theme from "../Theme";
 import Page from "../Page";
 import Redux from "../Redux";
+import Emitter from "../Emitter";
 
 export default class Navigation {
     #timer = 1;                                         //默认延时时间
-    #navLast = 'framework_nav_last';                    //最后一次导航操作
-    #getLastThis = () => new Redux().get(this.#navLast);
+    static navLast = 'framework_nav_last';                    //最后一次导航操作
+    #getLastThis = () => new Redux().get(Navigation.navLast);
     /**
      * 私有方法
      *  导航跳转统一处理
@@ -16,8 +17,6 @@ export default class Navigation {
      * @returns {*}
      */
     #navResult = (result, timer) => {
-        const redux = new Redux();
-        redux.update(this.#navLast, this.that);
         if (!timer) return result;
         const timeout = setTimeout(() => {
             clearTimeout(timeout);
@@ -30,6 +29,8 @@ export default class Navigation {
 
     static headerLeftIconName = 'framework_nav_iconName';   //左侧返回图标
 
+    static footerName = 'framework_nav_footerName';         //底部导航名称
+
     //页面渐隐
     static fade = ({current, closing}) => ({
         cardStyle: {
@@ -38,24 +39,39 @@ export default class Navigation {
     });
 
 
-    constructor(that) {
-        this.that = that ?? this.#getLastThis();
+    constructor() {
+        this.that = this.#getLastThis();
     }
 
     init(params = {}) {
         const redux = new Redux();
         if (params.headerLeftIconName) redux.add(Navigation.headerLeftIconName, params.headerLeftIconName ?? '');
-        redux.add(this.#navLast, {});
+        redux.add(Navigation.navLast, {});
     }
 
-    //头部左侧箭头显示
-    headerLeft(color) {
+    //写入this
+    setThis(that) {
+        new Redux().update(Navigation.navLast, that);
+    }
+
+    /**
+     * 头部左侧箭头显示
+     * @param params       [color|name|onPress]
+     *           color
+     *           name
+     *           onPress
+     * @returns
+     */
+    headerLeft(params) {
+        if (!params) params = {};
         const css = new Theme().get();
-        const icon = new Redux().get(Navigation.headerLeftIconName);
+        let icon = new Redux().get(Navigation.headerLeftIconName);
         let leftColor = css.header.leftColor;
-        if (color) leftColor = color;
+        if (params.color) leftColor = params.color;
+        if (params.name) icon = params.name;
         return <Page.Text style={{paddingHorizontal: 15}} onPress={() => {
-            this.back();
+            if (typeof params.onPress === "function") params.onPress();
+            else this.back();
         }}>
             <Page.Icon name={icon} size={18} color={leftColor} style={{lineHeight: css.header.height}}/>
         </Page.Text>
@@ -75,21 +91,19 @@ export default class Navigation {
      */
     go(routeName, params, timer) {
         if (!this.that) return;
-        const {navigation} = this.that.props;
+        const {navigation, route} = this.that.props;
         params = params ?? {};
         return this.#navResult(navigation.navigate(routeName, params), timer);
     }
 
     /**
      * 返回
-     * @param routeName     页面名称
-     * @param timer         延时跳转时间
      * @returns {*}
      */
-    back(routeName, timer) {
+    back(timer) {
         if (!this.that) return;
-        const {navigation} = this.that.props;
-        return this.#navResult(navigation.goBack(routeName), timer);
+        const {navigation, route} = this.that.props;
+        return this.#navResult(navigation.goBack(), timer);
     }
 
     /**
@@ -133,9 +147,23 @@ export default class Navigation {
     }
 
     setHeaderBar(value) {
-        console.log(value);
         new Redux().update(Navigation.headerBar, value);
     }
 
+    hide() {
+        return new Emitter().set(Navigation.footerName, false);
+    }
+
+    show() {
+        return new Emitter().set(Navigation.footerName, true);
+    }
+
+    // isDisplay() {
+    //     return this.that.state.isDisplay ?? true
+    // }
+    //
+    // emitterNavigation() {
+    //     return new Emitter();
+    // }
 
 }

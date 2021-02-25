@@ -3,7 +3,7 @@
 // import {createStackNavigator, CardStyleInterpolators,} from '@react-navigation/stack';
 // import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 //
-// import confTheme from '../confTheme';
+// import ConfTheme from '../ConfTheme';
 //
 //
 // /**
@@ -16,7 +16,7 @@
 // const App = (initPage, screenList) => {
 //     const Stack = createStackNavigator();
 //     // console.log(screenList);
-//     const css = confTheme.get();
+//     const css = ConfTheme.get();
 //     return (<NavigationContainer>
 //         <Stack.Navigator
 //             initialRouteName={initPage}

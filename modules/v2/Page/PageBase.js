@@ -13,16 +13,9 @@ export default class PageRender extends Component {
          *  log             查看log
          *  this            获取当前页面this
          *  style           render附加样式
-         *  innerStyle      内边样式
          *  isPress         是否可以点击，用于展示文章
          *  onBlur          点击失去焦点
          *  onPress         点击操作
-         *  isBar           是否显示barView
-         *  isHeader        是否显示headerView
-         *  headerStyle     header 样式
-         *  headerLeft      header 左侧图标
-         *  headerRight     header 右侧图标
-         *  barBg           bar 背景
          */
         super(props);
     }
@@ -39,7 +32,7 @@ export default class PageRender extends Component {
         //redux 监听
         new Redux().listen(Navigation.headerBar, res => {
             StatusBar.setBarStyle(res);
-        })
+        });
     }
 
     componentWillUnmount() {
@@ -54,11 +47,8 @@ export default class PageRender extends Component {
         if (!nextState) nextState = {};
         const props = {};
         if (nextProps.this !== nextState.this) props['this'] = nextProps.this;
-        if (nextProps.bg !== nextState.bg) props['bg'] = nextProps.bg;
         if (nextProps.children !== nextState.children) props['children'] = nextProps.children;
-        if (nextProps.isBar !== nextState.isBar) props['isBar'] = nextProps.isBar;
-        if (nextProps.isHeader !== nextState.isHeader) props['isHeader'] = nextProps.isHeader;
-        if (this.props.log) console.log('PageRender', props);
+        if (this.props.log) console.log('PageBase', props);
         let i = 0;
         for (let item in props) {
             if (props.hasOwnProperty(item)) i++;
@@ -81,28 +71,9 @@ export default class PageRender extends Component {
         const css = this.#css;
         const props = this.props ?? {};
         const pageThis = props.this ?? {};
-        const style = {backgroundColor: css.page.bg, ...props.style ?? {}};
-        if (props.bg) style.backgroundColor = props.bg;
-
-        const isBar = typeof props.isBar === 'boolean' ? props.isBar : true,
-            isHeader = typeof props.isHeader === 'boolean' ? props.isHeader : true;
-        const barStyle = {};
-        if (css.page.barBg) barStyle.backgroundColor = css.page.barBg;
-        if (props.barBg) barStyle.backgroundColor = props.barBg;
-        //bar
-        const barView = isBar ? <View style={{width: css.width, height: css.headerBarHeight, ...barStyle}}/> : <View/>;
-        //header
-        const headerView = isHeader ? <Header title={pageThis.title}
-                                              style={props.headerStyle ?? {}}
-                                              left={props.headerLeft}
-                                              right={props.headerRight}/> : <View/>;
         //内容
-        let contentView = <View style={[{flex: 1}, style]}>
-            {barView}
-            {headerView}
-            <View style={[{flex: 1, flexGrow: 1}, css.colBetween, props['innerStyle'] ?? {}]}>
-                {props.children}
-            </View>
+        let contentView = <View style={[{flex: 1}]}>
+            {props.children}
         </View>;
 
         if (props.isPress) return contentView;

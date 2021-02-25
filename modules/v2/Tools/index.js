@@ -1,6 +1,63 @@
 export default class Tools {
+    /**
+     ---    is 判断方法
+     *  isArray             //  判断是否为数组
+     *  isAmount            //  判断是否为金额
+     *  isNum               //  判断是否为数字
+     ---
+     */
     constructor() {
     }
+
+    /**
+     * is 判断方法
+     */
+    //判断是否为数据
+    static isArray(value) {
+        if (typeof value === 'object') {
+            if (value.length > 0) return true;
+            else if (value.toString() === '') return true;
+        }
+        return false
+    }
+
+    //是否是金额
+    static isAmount(value) {
+        let numberAmount = parseFloat(value);
+        console.log('isAmount', `${numberAmount.toString()} -- ${value.toString()}`);
+        return numberAmount.toString() === value.toString();
+    }
+
+    //是否是数字
+    static isNum(value) {
+        if (typeof value === "undefined") return false;
+        if (typeof value === "object") return false;
+        let num = parseFloat(value);
+        if (isNaN(num)) return false;
+        return num.toString().length === value.toString().length;
+    }
+
+    //是否是JSON
+    static isJson(value) {
+        try {
+            if (typeof value === "string") return false;
+            value = JSON.stringify(value);
+            const json = JSON.parse(value);
+            return !!(typeof json === "object" && json);
+        } catch (err) {
+            return false;
+        }
+    }
+
+    //判断最后一个index
+    static isLastIndexOf(str, value) {
+        if (typeof str !== "string") return console.warn(`Tools isLastIndexOf str=${str}`);
+        return str.lastIndexOf(value) === str.length - 1
+    }
+
+    /**
+     *  -----------------------------
+     */
 
     //深拷贝
     static copy(value) {
@@ -11,7 +68,7 @@ export default class Tools {
     //用json替换string中的值
     static replaceWithJson(value, json) {
         if (!value) return value;
-        if (!json.isJson()) return value;
+        if (!Tools.isJson(json)) return value;
         for (const item in json) {
             if (!json.hasOwnProperty(item)) continue;
             if (value.indexOf(`{${item}}`) < 0) continue;
@@ -23,8 +80,8 @@ export default class Tools {
     //拼接或替换 转换为url
     static replaceOrSpliceToUrl(value, json) {
         if (!value) return value;
-        if (!json.isJson()) return value;
-        value += value.isIndexOf('?') ? value.lastIndexOf('&') === 0 ? '' : '&' : '?';
+        if (!Tools.isJson(json)) return value;
+        value += value.indexOf('?') > 0 ? Tools.isLastIndexOf(value, '&') ? '' : '&' : '?';
         for (const item in json) {
             if (!json.hasOwnProperty(item)) continue;
             if (value.indexOf(`{${item}}`) < 0) {
@@ -33,7 +90,7 @@ export default class Tools {
                 value = value.replace(`{${item}}`, json[item]);
             }
         }
-        if (value.lastIndexOf('?') === 0 || value.lastIndexOf('&') === 0) value = value.substring(0, value.length - 1);
+        if (Tools.isLastIndexOf(value, '?') || Tools.isLastIndexOf(value, '&')) value = value.substring(0, value.length - 1);
         return value;
     }
 
@@ -163,7 +220,7 @@ export default class Tools {
         if (!params) params = {};
         let convert = typeof params.convert === "boolean" ? params.convert : true;
         let minLength = typeof params.min === "number" ? params.min : 2;
-        let maxLength = typeof params.max === "number" ? params.max : 8;
+        let maxLength = typeof params.max === "number" ? params.max : 4;
 
         let numberFloat = parseFloat(value);
         let numberInt = parseInt(value);
@@ -183,21 +240,6 @@ export default class Tools {
         return numberFloat.toString()
     }
 
-    //是否是金额
-    static isAmount(value) {
-        let numberAmount = parseFloat(value);
-        console.log('isAmount', `${numberAmount.toString()} -- ${value.toString()}`);
-        return numberAmount.toString() === value.toString();
-    }
-
-    //是否是数字
-    static isNum(value) {
-        if (typeof value === "undefined") return false;
-        if (typeof value === "object") return false;
-        let num = parseFloat(value);
-        if (isNaN(num)) return false;
-        return num.toString().length === value.toString().length;
-    }
 
     /**
      * 格式化字符串，将中间文字替换成...

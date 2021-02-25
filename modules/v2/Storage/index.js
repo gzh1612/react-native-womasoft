@@ -21,6 +21,8 @@ export default class Storage {
                 if (!item.name) return;
                 if (!item.type) return;
                 const redux = new Redux();
+                console.log('--------Storage');
+                console.log(item);
                 redux.add(item.name, item.value);
                 this[item.type](item.name).then(res => {
                     if (!res) return;

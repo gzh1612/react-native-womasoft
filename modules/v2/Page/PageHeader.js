@@ -14,10 +14,12 @@ export default class PageHeader extends Component {
          *  left            左侧view
          *  right           右侧view
          *  style           header 样式
+         *  bg              header 背景样式
          *  titleStyle      title 样式
          *  titleColor      title 颜色
          *  titleSize       title 大小
          *  leftColor       左侧图标样式
+         *  t               marginTop
          */
         super(props);
     }
@@ -48,16 +50,22 @@ export default class PageHeader extends Component {
     render() {
         const css = this.#css;
         const props = this.props ?? {};
-        // const pageThis = props.this ?? {};
+        const pageThis = props.this ?? {};
 
         //header样式
-        const style = {width: css.width, height: css.header.height, ...props.style ?? {}};
+        const style = {width: css.width, height: css.header.height};
         //底部线条
         if (css.header.line) {
             style.borderBottomWidth = 0.5;
             style.borderBottomColor = css.header.line;
         }
         if (css.header.bg) style.backgroundColor = css.header.bg;
+        if (props.bg) style.backgroundColor = props.bg;
+        if (props.t) style.marginTop = props.t;
+
+        //title
+        let title = pageThis.title;
+        if (props.title) title = props.title;
         //title样式
         const titleStyle = {color: '#000', fontSize: 16, fontWeight: 'bold', ...props.titleStyle ?? {}};
         if (css.header.color) titleStyle.color = css.header.color;
@@ -76,12 +84,13 @@ export default class PageHeader extends Component {
             console.log('PageHeader-titleStyle', titleStyle);
         }
 
-        return <View style={[css.rowBetweenCenter, style]}>
+
+        return <View style={[css.rowBetweenCenter, style, props.style ?? {}]}>
             <View style={{width: (css.width * 0.25)}}>
                 {leftView}
             </View>
             <View style={[{flexGrow: 1}, css.colBetweenCenter]}>
-                <Text style={[titleStyle]}>{props.title ?? ''}</Text>
+                <Text style={[titleStyle]}>{title}</Text>
             </View>
             <View style={[{width: (css.width * 0.25)}, css.rowEndCenter]}>
                 {rightView}

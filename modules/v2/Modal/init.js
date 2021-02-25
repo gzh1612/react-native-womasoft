@@ -1,14 +1,15 @@
 import React, {Component} from "react";
-import {View, ActivityIndicator, Animated, Text, StyleSheet} from 'react-native';
+import {View, Animated, StyleSheet} from 'react-native';
 import Theme from "../Theme";
 import Redux from "../Redux";
 
-export default class LoadingInit extends Component {
+export default class ModalInit extends Component {
     #css = new Theme().get();
     #styles = styles(this.#css);
 
-    static data = 'framework_loading_data';
-    static type = 'framework_loading_type';
+    static data = 'framework_modal_data';
+    static type = 'framework_modal_type';
+    static widthRatio = 0.7;   //modal宽度比例
 
     constructor(props) {
         super(props);
@@ -18,23 +19,26 @@ export default class LoadingInit extends Component {
     }
 
     componentDidMount() {
-        new Redux().listen(LoadingInit.data, res => {
-            // console.log(res);
+        new Redux().listen(ModalInit.data, res => {
             if (res.type === 0) {
                 /**
-                 * 隐藏loading
+                 * 隐藏 modal
                  */
                 this.setState({
                     type: res.type,
                     isDisplay: false,
+                    title: undefined,
                     content: undefined,
-                    image: undefined,
+                    btn: undefined,
                 })
             } else if (res.type === 1) {
                 /**
-                 * 显示loading
+                 * 显示 modal
                  */
-                let state = {type: res.type, content: res.content, image: res.image};
+                let state = {
+                    type: res.type, title: res.title, direction: res.direction,
+                    content: res.content, btn: res.btn
+                };
                 if (this.state.type !== 1) {
                     state['isDisplay'] = true;
                 }
@@ -58,24 +62,19 @@ export default class LoadingInit extends Component {
         //mask
         const styleMask = {};
         if (css.page.maskBg) styleMask.backgroundColor = css.page.maskBg;
-        //loading View
-        const styleLoading = {width: 170, height: 175};
-        if (!css.loading) css.loading = {};
-        if (css.loading.width) styleLoading.width = css.loading.width;
-        if (css.loading.height) styleLoading.height = css.loading.height;
+        //modal View
+        const styleModal = {width: ModalInit.widthRatio * css.width};
+        if (!css.modal) css.modal = {};
 
-        //显示图片
-        const imageView = typeof state.image === "undefined" ?
-            <ActivityIndicator size={'large'} color={'#fff'}/> : state.image;
+        const titleView = state.title ?? <View/>;
+        const contentView = state.content ?? <View/>;
+        const btnView = state.btn ?? <View/>;
 
         return <View style={[styles.container, styleMask]}>
-            <Animated.View style={[styles.loading, styleLoading]}>
-                {imageView}
-                <View style={[styles.content, {width: styleLoading.width}]}>
-                    <Animated.View>
-                        <Text style={styles.contentText}>{state.content ?? ''}</Text>
-                    </Animated.View>
-                </View>
+            <Animated.View style={[styles.modal, styleModal]}>
+                {titleView}
+                {contentView}
+                {btnView}
             </Animated.View>
         </View>
     }
@@ -93,28 +92,12 @@ const styles = (css) => StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,.5)',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 30,
+        zIndex: 20,
     },
-    loading: {
-        backgroundColor: 'rgba(0,0,0,0.6)',
-        justifyContent: 'center',
-        alignItems: 'center',
+    modal: {
+        backgroundColor: '#fff',
         borderRadius: 8,
+        borderWidth: 0.5,
+        borderColor: '#ccc',
     },
-    content: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflow: 'hidden',
-    },
-    contentText: {
-        color: '#fff',
-        textAlign: 'center',
-        lineHeight: 40,
-        fontSize: 12,
-    }
 })
