@@ -35,6 +35,8 @@ export default class Loading {
         return res.find(m => m.name === name);
     }
 
+    static InitView = init;
+
     //类型
     static type = {
         system: 'system',       //系统默认类型

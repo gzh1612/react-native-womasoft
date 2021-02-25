@@ -89,6 +89,7 @@ export default class Modal {
         return <View style={[btnStyle]}>{itemView(data)}</View>
     }
 
+    static InitView = init;
     //名称
     static names = {
         alert: 'alert',

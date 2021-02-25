@@ -64,6 +64,7 @@ export default class Popup {
         </View>
     };
 
+    static InitView = init;
     //名称
     static names = {
         view: 'view',                   // view 显示
