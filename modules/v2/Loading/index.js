@@ -144,7 +144,6 @@ export default class Loading {
         })
         if (typeof func === 'function') setTimeout(() => {
             this.hide();
-            console.log(111);
             func();
         }, 1000);
     }

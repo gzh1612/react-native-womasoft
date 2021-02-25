@@ -6,7 +6,6 @@ import Page from "../Page";
 import Theme from "../Theme";
 import Language from "../Language";
 
-let popupId = undefined;
 export default class Popup {
     #css = new Theme().get();
     #lang = new Language().all('framework') ?? {};

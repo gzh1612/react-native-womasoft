@@ -15,6 +15,7 @@ export default class ModalInit extends Component {
         super(props);
         this.state = {
             isDisplay: false,           //是否显示
+            animatedOpacity: new Animated.Value(0),
         };
     }
 
@@ -24,25 +25,33 @@ export default class ModalInit extends Component {
                 /**
                  * 隐藏 modal
                  */
-                this.setState({
-                    type: res.type,
-                    isDisplay: false,
-                    title: undefined,
-                    content: undefined,
-                    btn: undefined,
+                this.animatedHide(() => {
+                    this.setState({
+                        type: res.type,
+                        isDisplay: false,
+                        title: undefined,
+                        content: undefined,
+                        btn: undefined,
+                    });
                 })
+
             } else if (res.type === 1) {
                 /**
                  * 显示 modal
                  */
                 let state = {
-                    type: res.type, title: res.title, direction: res.direction,
-                    content: res.content, btn: res.btn
+                    type: res.type,
+                    title: res.title,
+                    direction: res.direction,
+                    content: res.content,
+                    btn: res.btn,
                 };
                 if (this.state.type !== 1) {
                     state['isDisplay'] = true;
                 }
-                this.setState(state);
+                this.setState(state, () => {
+                    this.animatedShow();
+                });
             } else if (res.type === 2) {
                 /**
                  * 只改变文字
@@ -54,10 +63,29 @@ export default class ModalInit extends Component {
         });
     }
 
+    animatedShow() {
+        const {animatedOpacity} = this.state;
+        Animated.timing(animatedOpacity, {
+            toValue: 1,
+            duration: 100,
+            useNativeDriver: true,
+        }).start();
+    }
+
+    animatedHide(func) {
+        const {animatedOpacity} = this.state;
+        Animated.timing(animatedOpacity, {
+            toValue: 0,
+            duration: 10,
+            useNativeDriver: true,
+        }).start(() => func());
+    }
+
     render() {
         const css = this.#css,
             styles = this.#styles;
         const state = this.state;
+        const {animatedOpacity} = this.state;
         if (!state.isDisplay) return <View/>;
         //mask
         const styleMask = {};
@@ -71,7 +99,9 @@ export default class ModalInit extends Component {
         const btnView = state.btn ?? <View/>;
 
         return <View style={[styles.container, styleMask]}>
-            <Animated.View style={[styles.modal, styleModal]}>
+            <Animated.View style={[styles.modal, styleModal, {
+                opacity: animatedOpacity
+            }]}>
                 {titleView}
                 {contentView}
                 {btnView}
