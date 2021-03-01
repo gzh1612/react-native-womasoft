@@ -29,6 +29,7 @@ export default class PageSlide extends Component {
         if (nextProps.style !== nextState.style) props['style'] = nextProps.style;
         if (nextProps.refreshing !== nextState.refreshing) props['refreshing'] = nextProps.refreshing;
         if (nextProps.loading !== nextState.loading) props['loading'] = nextProps.loading;
+        if (nextProps.children !== nextState.children) props['loading'] = nextProps.children;
         if (this.props.log) console.log('PageIcon', props);
         let i = 0;
         for (let item in props) {

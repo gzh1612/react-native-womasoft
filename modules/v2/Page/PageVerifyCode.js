@@ -40,6 +40,8 @@ export default class PageVerifyCode {
         }, 10);
     }
 
+    static name = 'woma_framework_verify_code';
+
     constructor(_this, name) {
         this._this = _this;
         this.pageName = name;
@@ -51,7 +53,6 @@ export default class PageVerifyCode {
         this.defaultTimer = timer;
         this.currentTime = new Date().getTime();    //当前时间
         const params = this.#getParams();
-        console.log(params);
         this.text = text;
         this.timer = timer;
         this.endTime = params.endTime ?? this.currentTime;  //结束时间
@@ -62,7 +63,6 @@ export default class PageVerifyCode {
             this.isClick = false;
             this.#forTimer();
         }
-        console.log(this.isClick);
     }
 
 
@@ -83,7 +83,6 @@ export default class PageVerifyCode {
         this.endTime = this.currentTime + this.defaultTimer * 1e3;
         this.text = `${this.defaultTimer} s`;
         this.isClick = false;
-        console.log(this.endTime);
         this.#setParams();
         this.#forTimer();
     }
