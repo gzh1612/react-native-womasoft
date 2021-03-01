@@ -58,7 +58,8 @@ export default class PageText extends Component {
         const css = this.#css,
             props = this.props ?? {};
         const isText = typeof props.isText === "boolean" ? props.isText : false;
-        const style = {color: css.font.color, fontSize: 14};
+        const defStyle = {color: css.font.color, fontSize: 14};
+        const style = {};
         if (props.color) style.color = props.color;
         if (props.size) style.fontSize = props.size;
         if (props.width) style.width = props.width;
@@ -71,11 +72,11 @@ export default class PageText extends Component {
         if (props.log) console.log('PageText-style', style);
 
         let text = props.children ? props.children : props.text ? props.text : '';
-        let textView = <Text style={[props.style ?? {}, style]}>{text}</Text>;
+        let textView = <Text style={[defStyle, props.style ?? {}, style]}>{text}</Text>;
         if (isText) return textView;//纯文本在这里输出
         if (props.line) {   //显示几行小数点替换
             if (!style.width) style.width = css.width - 30;
-            textView = <Text style={[props.style ?? {}, style]} numberOfLines={props.line}>{text}</Text>;
+            textView = <Text style={[defStyle, props.style ?? {}, style]} numberOfLines={props.line}>{text}</Text>;
         }
         if (props.children) textView = <View style={[props.style ?? {}, style]}>{text}</View>
         if (typeof props.onPress === "function") {
