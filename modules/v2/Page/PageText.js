@@ -71,13 +71,13 @@ export default class PageText extends Component {
         if (props.log) console.log('PageText-style', style);
 
         let text = props.children ? props.children : props.text ? props.text : '';
-        let textView = <Text style={[style, props.style ?? {}]}>{text}</Text>;
+        let textView = <Text style={[props.style ?? {}, style]}>{text}</Text>;
         if (isText) return textView;//纯文本在这里输出
         if (props.line) {   //显示几行小数点替换
             if (!style.width) style.width = css.width - 30;
-            textView = <Text style={[style, props.style ?? {}]} numberOfLines={props.line}>{text}</Text>;
+            textView = <Text style={[props.style ?? {}, style]} numberOfLines={props.line}>{text}</Text>;
         }
-        if (props.children) textView = <View style={[style, props.style ?? {}]}>{text}</View>
+        if (props.children) textView = <View style={[props.style ?? {}, style]}>{text}</View>
         if (typeof props.onPress === "function") {
             const isPress = typeof props.isPress === "boolean" ? props.isPress : true;
             return <TouchableOpacity activeOpacity={0.9} onPress={() => {
