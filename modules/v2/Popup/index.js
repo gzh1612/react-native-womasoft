@@ -95,6 +95,9 @@ export default class Popup {
         100: 1,
     }
 
+    //设置headerTips 文字颜色
+    static headerTipsColor = 'framework_popup_headerTips';
+
     /**
      *
      * @param name
@@ -210,6 +213,7 @@ export default class Popup {
     }
 
     headerTips(data) {
+        const color = new Redux().get(Popup.headerTipsColor);
         const nameData = this.#getName(Popup.names.headerTips);
         if (nameData.hideTimer) {
             setTimeout(() => {
@@ -223,7 +227,7 @@ export default class Popup {
                 height: this.#css.header.height,
                 paddingHorizontal: 15,
             }]}>
-                <Page.Text text={data.toString()} lineHeight={24}/>
+                <Page.Text text={data.toString()} lineHeight={24} color={color}/>
             </View>;
         else dataView = data;
         return new Redux().update(this.#data, {
