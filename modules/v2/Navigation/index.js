@@ -158,12 +158,10 @@ export default class Navigation {
         return new Emitter().set(Navigation.footerName, true);
     }
 
-    // isDisplay() {
-    //     return this.that.state.isDisplay ?? true
-    // }
-    //
-    // emitterNavigation() {
-    //     return new Emitter();
-    // }
+    emitterFooter(func) {
+        return new Emitter().get(Navigation.footerName, res => {
+            if (typeof func === 'function') func(res);
+        });
+    }
 
 }
