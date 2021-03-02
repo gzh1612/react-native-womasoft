@@ -14,11 +14,11 @@ export default class PagePopup extends Component {
         if (!data) data = <View/>;
         if (!params) params = {};
         const style = {
-            backgroundColor: '#fff', flex: 1, position: 'absolute',
+            flex: 1, position: 'absolute', backgroundColor: '#fff'
         };
+        if (params.bg) style.backgroundColor = params.bg;
         if (params.width) style.width = this.#css.width * params.width;
         if (params.height) style.height = this.#css.height * params.height;
-        // if (params.bg) style.backgroundColor = params.bg;
         if (params.type === Popup.type.bottom) {
             style.left = 0;
             style.right = 0;
@@ -42,29 +42,14 @@ export default class PagePopup extends Component {
                 height: this.#css.deviceHeight,
             }} onPress={() => {
                 if (typeof this.props.isHide === "boolean" && this.props.isHide === false) return;
-                PagePopup.hide(this.props.this, this.props.id)
+                this.hide();
             }}/>
             <View style={[style, params.style ?? {}]}>
                 {data}
             </View>
         </View>
     };
-    //显示
-    static show = (that, id) => {
-        let state = {};
-        if (!id) return console.warn(`Page.Popup.show id:${id}`);
-        state[`framework_popup_${id}`] = true;
-        that.setState(state);
-        new Navigation().show();
-    };
-    //隐藏
-    static hide = (that, id) => {
-        let state = {};
-        if (!id) return console.warn(`Page.Popup.hide id:${id}`);
-        state[`framework_popup_${id}`] = false;
-        that.setState(state);
-        new Navigation().hide();
-    }
+
     //出现方向
     static type = {
         left: 'left',
@@ -96,9 +81,21 @@ export default class PagePopup extends Component {
      *  width       //  宽度 默认 100
      *  height      //  高度 默认 100
      *  isHide      //  是否点击隐藏
+     *  bg          //  背景色
      */
     constructor(props) {
         super(props);
+        if (props.this) this._this = props.this;
+        if (props.id) this._id = props.id;
+
+        //方向
+        const direction = props.type ?? PagePopup.type.bottom;
+        const popupThis = props.this;
+        popupThis.setState({
+            framework_page_popup_animated_opacity: new Animated.Value(0),
+            framework_page_popup_animated_xy: new Animated.ValueXY(this.getDirectionParams(direction)),
+            framework_page_popup_direction: direction,
+        })
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -118,13 +115,89 @@ export default class PagePopup extends Component {
         return i > 0
     }
 
+    //显示
+    show() {
+        const props = this.props ?? {};
+        const popupThis = props.this;
+        let state = {};
+        if (!this._id) return console.warn(`Page.Popup.show id:${this._id}`);
+        state[`framework_popup_${this._id}`] = true;
+        popupThis.setState(state, () => this.animatedShow());
+        new Navigation().show();
+    };
+
+    //隐藏
+    hide() {
+        const props = this.props ?? {};
+        const popupThis = props.this;
+        let state = {};
+        if (!this._id) return console.warn(`Page.Popup.hide id:${this._id}`);
+        state[`framework_popup_${this._id}`] = false;
+        this.animatedHide(() => {
+            popupThis.setState(state);
+            new Navigation().hide();
+        })
+    }
+
+    //获取方向动画参数
+    getDirectionParams(direction) {
+        let params = {};
+        if (direction === 'top') params = {x: 0, y: -50};
+        else if (direction === 'bottom') params = {x: 0, y: 50};
+        else if (direction === 'left') params = {x: -50, y: 0};
+        else if (direction === 'right') params = {x: 50, y: 0};
+        console.log(params);
+        return params;
+    }
+
+    animatedShow() {
+        const props = this.props ?? {};
+        const popupThis = props.this;
+        const {framework_page_popup_animated_opacity, framework_page_popup_animated_xy} = popupThis.state;
+        Animated.parallel([
+            Animated.timing(framework_page_popup_animated_xy, {
+                toValue: {x: 0, y: 0},
+                duration: 100,
+                useNativeDriver: true,
+            }),
+            Animated.timing(framework_page_popup_animated_opacity, {
+                toValue: 1,
+                duration: 100,
+                useNativeDriver: true,
+            })
+        ]).start();
+    }
+
+
+    animatedHide(func) {
+        const props = this.props ?? {};
+        const popupThis = props.this;
+        const {
+            framework_page_popup_animated_opacity,
+            framework_page_popup_animated_xy,
+            framework_page_popup_direction
+        } = popupThis.state;
+        Animated.parallel([
+            Animated.timing(framework_page_popup_animated_xy, {
+                toValue: this.getDirectionParams(framework_page_popup_direction),
+                duration: 100,
+                useNativeDriver: true,
+            }),
+            Animated.timing(framework_page_popup_animated_opacity, {
+                toValue: 0,
+                duration: 100,
+                useNativeDriver: true,
+            })
+        ]).start(() => func());
+    }
+
 
     render() {
         const css = this.#css,
             styles = this.#styles,
             props = this.props ?? {};
         const popupThis = props.this;
-        const name = props.name;
+        const {framework_page_popup_animated_opacity, framework_page_popup_animated_xy} = popupThis.state;
         const id = props.id;
         if (!id) console.warn(`Page.Popup id:${id}`);
         let isDisplay = popupThis.state[`framework_popup_${id}`];
@@ -141,11 +214,21 @@ export default class PagePopup extends Component {
             width: props.width ?? PagePopup.width["100"],
             height: props.height ?? PagePopup.height["100"],
             type: props.type ?? PagePopup.type.bottom,
+            bg: props.bg ?? '#fff',
         });
 
-
+        let animatedStyle = {};
+        console.log('framework_page_popup_animated_opacity', framework_page_popup_animated_opacity);
+        if (framework_page_popup_animated_opacity) animatedStyle = {
+            opacity: framework_page_popup_animated_opacity,
+            transform: [
+                {translateX: framework_page_popup_animated_xy.x},
+                {translateY: framework_page_popup_animated_xy.y}
+            ]
+        };
+        console.log(animatedStyle);
         return <View style={[styles.container, styleMask]}>
-            <Animated.View style={[stylePopup]}>
+            <Animated.View style={[stylePopup, animatedStyle]}>
                 {children}
             </Animated.View>
         </View>
