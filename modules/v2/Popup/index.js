@@ -236,7 +236,7 @@ export default class Popup {
         if (typeof data === "string") dataView =
             <View style={[this.#css.rowAroundCenter, bg, {
                 paddingTop: this.#css.headerBarHeight,
-                height: this.#css.header.height,
+                height: this.#css.header.height + this.#css.headerBarHeight,
                 paddingHorizontal: 15,
             }]}>
                 <Page.Text text={data.toString()} lineHeight={24} color={color}/>
@@ -247,6 +247,13 @@ export default class Popup {
             direction: nameData.type ?? Popup.type.top,
             data: this.#getData(dataView, nameData),
         })
+    }
+
+    //错误提示
+    headerTipsError(content, params) {
+        if (!params) params = {};
+        params.bg = '#d02115';
+        this.headerTips(content, params);
     }
 
     tips(data) {
