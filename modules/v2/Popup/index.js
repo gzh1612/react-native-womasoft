@@ -212,8 +212,20 @@ export default class Popup {
         })
     }
 
-    headerTips(data) {
-        const color = new Redux().get(Popup.headerTipsColor);
+    /**
+     * header tips 头部提示框 1.5秒后消失
+     * @param data      显示内容
+     * @param params    [bg:背景色,color:字体颜色]
+     */
+    headerTips(data, params) {
+        if (!params) params = {};
+        //文字颜色
+        let color = new Redux().get(Popup.headerTipsColor);
+        if (params.color) color = params.color;
+        // 背景颜色
+        let bg = {};
+        if (params.bg) bg.backgroundColor = params.bg;
+
         const nameData = this.#getName(Popup.names.headerTips);
         if (nameData.hideTimer) {
             setTimeout(() => {
@@ -222,8 +234,8 @@ export default class Popup {
         }
         let dataView;
         if (typeof data === "string") dataView =
-            <View style={[this.#css.rowAroundCenter, {
-                marginTop: this.#css.headerBarHeight,
+            <View style={[this.#css.rowAroundCenter, bg, {
+                paddingTop: this.#css.headerBarHeight,
                 height: this.#css.header.height,
                 paddingHorizontal: 15,
             }]}>
