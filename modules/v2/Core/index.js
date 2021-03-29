@@ -71,9 +71,7 @@ export default class Core {
     }
 
     #objectInit = () => {
-        // Object.prototype.toSearch = () => {
-        //     console.log(JSON.stringify(this));
-        // }
+
     }
 
 
