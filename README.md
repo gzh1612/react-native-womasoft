@@ -12,33 +12,33 @@
 
 ##### 2、[Emitter](#user-content-emitter)
 
-##### 3、[Fetch](#fetch)
+##### 3、[Fetch](#user-content-fetch)
 
-##### 4、[Files](#files)
+##### 4、[Files](#user-content-files)
 
-##### 5、[Language](#language)
+##### 5、[Language](#user-content-language)
 
-##### 6、[Loading](#loading)
+##### 6、[Loading](#user-content-loading)
 
-##### 7、[Modal](#modal)
+##### 7、[Modal](#user-content-modal)
 
-##### 8、[Nav](#nav)
+##### 8、[Nav](#user-content-nav)
 
-##### 9、[Page](#page)
+##### 9、[Page](#user-content-page)
 
-##### 10、[Popup](#popup)
+##### 10、[Popup](#user-content-popup)
 
-##### 11、[Redux](#redux)
+##### 11、[Redux](#user-content-redux)
 
-##### 12、[Storage](#storage)
+##### 12、[Storage](#user-content-storage)
 
-##### 13、[System](#system)
+##### 13、[System](#user-content-system)
 
-##### 14、[Theme](#theme)
+##### 14、[Theme](#user-content-theme)
 
-##### 15、[Tools](#tools)
+##### 15、[Tools](#user-content-tools)
 
-##### 16、[Unmount](#umount)
+##### 16、[Unmount](#user-content-umount)
 
 ## 二、项目搭建
 
@@ -107,7 +107,7 @@ componentWillUnmount()
 }
 ```
 
-### 3、<a id="#fetch">Fetch</a>
+### 3、<a id="fetch">Fetch</a>
 
 Fetch组件用于网络请求  
 静态参数：
@@ -332,28 +332,28 @@ new Fetch().setAuthValueCustom(name, type, value);
 new Fetch().setType(value);
 ```
 
-### 4、<a id="#files">Files</a>
+### 4、<a id="files">Files</a>
 
-### 5、<a id="#language">Language</a>
+### 5、<a id="language">Language</a>
 
-### 6、<a id="#nav">Nav</a>
+### 6、<a id="nav">Nav</a>
 
-### 7、<a id="#page">Page</a>
+### 7、<a id="page">Page</a>
 
-### 8、<a id="#popup">Popup</a>
+### 8、<a id="popup">Popup</a>
 
-### 9、<a id="#redux">Redux</a>
+### 9、<a id="redux">Redux</a>
 
-### 10、<a id="#storage">Storage</a>
+### 10、<a id="storage">Storage</a>
 
-### 11、<a id="#system">System</a>
+### 11、<a id="system">System</a>
 
-### 12、<a id="#storage">Storage</a>
+### 12、<a id="storage">Storage</a>
 
-### 13、<a id="#system">System</a>
+### 13、<a id="system">System</a>
 
-### 14、<a id="#theme">Theme</a>
+### 14、<a id="theme">Theme</a>
 
-### 15、<a id="#tools">Tools</a>
+### 15、<a id="tools">Tools</a>
 
-### 16、<a id="#umount">Unmount</a>
+### 16、<a id="umount">Unmount</a>
