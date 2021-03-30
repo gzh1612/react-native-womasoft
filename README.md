@@ -8,9 +8,9 @@
 
 ### 一、目录
 
-##### 1、[Core](#core)
+##### 1、[Core](#user-content-core)
 
-##### 2、[Emitter](#emitter)
+##### 2、[Emitter](#user-content-emitter)
 
 ##### 3、[Fetch](#fetch)
 
@@ -46,7 +46,7 @@
 
 ## 三、使用说明
 
-### 1、<a id="#core">Core</a>
+### 1、<a id="core">Core</a>
 
 Core组件内置一些默认方法
 
@@ -54,7 +54,7 @@ Core组件内置一些默认方法
 new Core().init();
 ```
 
-### 2、<a id="#emitter">Emitter</a>
+### 2、<a id="emitter">Emitter</a>
 
 Emitter组件包装于 react native DeviceEventEmitter方法
 
@@ -141,16 +141,16 @@ Fetch.contentType.text_html
 
 ##### 初始化 init 方法
 
-log：true 或 false  
-timeout：int类型，精确到毫秒  
-status：错误状态处理，function类型  
-authValue：权限配置，Array类型
++ log：true 或 false  
++ timeout：int类型，精确到毫秒  
++ status：错误状态处理，function类型  
++ authValue：权限配置，Array类型
 
 ```javascript
 new Fetch().init([
     {name: Fetch.params.log, value: false},                             //log
     {name: Fetch.params.timeout, value: 30000},                         //超时时间
-    {name: Fetch.params.status, value: status()},             //请求状态处理
+    {name: Fetch.params.status, value: status()},                       //请求状态处理
     {name: Fetch.params.authValue, value: [{name: Fetch.authDefaultName, type: Fetch.auth.token, value: ''}]},
 ])
 ```
