@@ -37,7 +37,6 @@ export default class Fetch {
         SERVE_TIMEOUT: 'SERVE_TIMEOUT',     //网络超时
         SERVE_FAILED: 'SERVE_FAILED',   //网络请求失败
         SERVE_ERROR: 'SERVE_ERROR',        //请求错误
-
     }
 
     /**
