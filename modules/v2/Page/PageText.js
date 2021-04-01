@@ -20,6 +20,7 @@ export default class PageText extends Component {
          *  style       样式
          *  isPress     是否可以点击  默认true
          *  onPress     点击事件
+         *  onLongPress 长按事件
          *  t           marginTop
          *  b           marginBottom
          *  l           marginLeft
@@ -72,11 +73,13 @@ export default class PageText extends Component {
         if (props.log) console.log('PageText-style', style);
 
         let text = props.children ? props.children : props.text ? props.text : '';
-        let textView = <Text style={[defStyle, props.style ?? {}, style]}>{text}</Text>;
+        let textView = <Text style={[defStyle, props.style ?? {}, style]}
+                             onLongPress={() => props.onLongPress()}>{text}</Text>;
         if (isText) return textView;//纯文本在这里输出
         if (props.line) {   //显示几行小数点替换
             if (!style.width) style.width = css.width - 30;
-            textView = <Text style={[defStyle, props.style ?? {}, style]} numberOfLines={props.line}>{text}</Text>;
+            textView = <Text style={[defStyle, props.style ?? {}, style]} numberOfLines={props.line}
+                             onLongPress={() => props.onLongPress()}>{text}</Text>;
         }
         if (props.children) textView = <View style={[props.style ?? {}, style]}>{text}</View>
         if (typeof props.onPress === "function") {

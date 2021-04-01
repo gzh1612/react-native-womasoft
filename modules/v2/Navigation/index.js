@@ -127,7 +127,7 @@ export default class Navigation {
      * @param timer
      * @returns {*}
      */
-    popTpTop(timer) {
+    popToTop(timer) {
         if (!this.that) return;
         const {navigation} = this.that.props;
         return this.#navResult(navigation.popToTop(), timer);

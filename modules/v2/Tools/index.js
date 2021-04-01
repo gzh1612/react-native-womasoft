@@ -12,7 +12,7 @@ export default class Tools {
     /**
      * is 判断方法
      */
-    //判断是否为数据
+    //判断是否为数组
     static isArray(value) {
         if (typeof value === 'object') {
             if (value.length > 0) return true;
@@ -299,6 +299,8 @@ export default class Tools {
      * @param rangeY    Y轴参数 [起始数值，结束数值]
      * @param count     总共多少个
      * @param params
+     *          areas:[0,0,0,0,0,0]
+     *          分别代表 width，height，y轴top，x轴right，y轴Bottom，x轴left
      * @returns {[]|Array}
      */
     static randomXY(rangeX = [], rangeY = [], count, params = {}) {

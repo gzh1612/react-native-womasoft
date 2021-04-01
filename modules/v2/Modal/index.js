@@ -122,6 +122,15 @@ export default class Modal {
         if (params.btn) this.btn = params.btn;
     }
 
+    /**
+     * 初始化方法
+     * @param params
+     *      name：名称
+     *      type：防线
+     *      btn：[] 按钮
+     *          id：按钮编号
+     *          text：显示文字
+     */
     init(params) {
         if (!params || (typeof params === "object" && params.length <= 0)) params = [];
         const alert = params.find(m => m.name === Modal.names.alert);

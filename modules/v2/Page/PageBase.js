@@ -5,7 +5,7 @@ import Theme from "../Theme";
 import Navigation from "../Navigation";
 import Redux from "../Redux";
 
-export default class PageRender extends Component {
+export default class PageBase extends Component {
     #css = new Theme().get();
 
     constructor(props) {

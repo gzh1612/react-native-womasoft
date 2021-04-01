@@ -78,6 +78,7 @@ export default class PagePopup extends Component {
      *  log
      *  this
      *  id          //  唯一编号
+     *  type        //  方向
      *  width       //  宽度 默认 100
      *  height      //  高度 默认 100
      *  isHide      //  是否点击隐藏

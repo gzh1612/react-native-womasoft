@@ -40,7 +40,7 @@ export default class Files {
     /**
      * 下载
      * @param url               请求地址
-     * @param filePath          下载路径
+     * @param filePath          下载保存路径
      * @param progressDivider   多少百分比返回一次
      * @param beginSuccess      开始下载调用
      * @param progressSuccess   下载进行中
