@@ -120,6 +120,7 @@ export default class Modal {
         if (!params) params = {};
         if (params.name) this.nameData = params.name;
         if (params.btn) this.btn = params.btn;
+        if (params.title) this.title = params.title;
     }
 
     /**
@@ -167,7 +168,7 @@ export default class Modal {
         btn.map(item => item.onPress = () => typeof func === "function" ? func(Tools.copy(item)) : undefined);
         new Redux().update(this.#data, {
             type: 1,
-            title: this.#getTitle(nameData.title, nameData.titleStyle),
+            title: this.#getTitle(this.title ?? nameData.title, nameData.titleStyle),
             content: this.#getContent(content, nameData.contentStyle, nameData['contentTextStyle']),
             btn: this.#getBtn(btn, nameData.type),
         })
@@ -185,7 +186,7 @@ export default class Modal {
         btn.map(item => item.onPress = () => typeof func === "function" ? func(Tools.copy(item)) : undefined);
         new Redux().update(this.#data, {
             type: 1,
-            title: this.#getTitle(nameData.title, nameData.titleStyle),
+            title: this.#getTitle(this.title ?? nameData.title, nameData.titleStyle),
             content: this.#getContent(content, nameData.contentStyle, nameData['contentTextStyle']),
             btn: this.#getBtn(btn, nameData.type),
         })
@@ -197,7 +198,7 @@ export default class Modal {
         btn.map(item => item.onPress = () => typeof func === "function" ? func(Tools.copy(item)) : undefined);
         new Redux().update(this.#data, {
             type: 1,
-            title: this.#getTitle(nameData.title, nameData.titleStyle),
+            title: this.#getTitle(this.title ?? nameData.title, nameData.titleStyle),
             content: this.#getContent(content, nameData.contentStyle, nameData['contentTextStyle']),
             btn: this.#getBtn(btn, nameData.type),
         })
@@ -218,7 +219,7 @@ export default class Modal {
         })) : undefined);
         new Redux().update(this.#data, {
             type: 1,
-            title: this.#getTitle(nameData.title, nameData.titleStyle),
+            title: this.#getTitle(this.title ?? nameData.title, nameData.titleStyle),
             content: this.#getContent(content, nameData.contentStyle, nameData['contentTextStyle']),
             btn: this.#getBtn(btn, nameData.type),
         })
