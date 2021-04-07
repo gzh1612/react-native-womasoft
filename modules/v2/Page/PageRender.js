@@ -101,17 +101,21 @@ export default class PageRender extends Component {
             {barView}
             {headerView}
             <View style={[{flex: 1, flexGrow: 1}, css.colBetween, props['innerStyle'] ?? {}]}>
-                {props.children}
+                <View style={[{flex: 1}, style]}>
+                    {props.children}
+                </View>
             </View>
         </View>;
 
         if (props.isPress) return contentView;
-        return <TouchableHighlight style={{flex: 1}} activeOpacity={1} onPress={() => {
-            this.onBlur(typeof props.onBlur !== "undefined" ? props.onBlur : pageThis);
-            if (typeof props.onPress === "function") props.onPress();
-        }}>
-            {contentView}
-        </TouchableHighlight>
+        return <View style={{flex: 1}}>
+            <TouchableHighlight style={{flex: 1}} activeOpacity={1} onPress={() => {
+                this.onBlur(typeof props.onBlur !== "undefined" ? props.onBlur : pageThis);
+                if (typeof props.onPress === "function") props.onPress();
+            }}>
+                {contentView}
+            </TouchableHighlight>
+        </View>
     }
 }
 
