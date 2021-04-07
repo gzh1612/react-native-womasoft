@@ -80,13 +80,14 @@ export default class PageText extends Component {
             textView = <Text style={[defStyle, props.style ?? {}, style]} numberOfLines={props.line}>{text}</Text>;
         }
         if (props.children) textView = <View style={[props.style ?? {}, style]}>{text}</View>
-        if (typeof props.onLongPress === "function") {
-            return <Text onLongPress={() => props.onLongPress()}>{textView}</Text>
-        } else if (typeof props.onPress === "function") {
+        if (typeof props.onPress === "function") {
             const isPress = typeof props.isPress === "boolean" ? props.isPress : true;
             return <TouchableOpacity activeOpacity={0.9} onPress={() => {
                 if (!isPress) return;
                 props.onPress();
+            }} onLongPress={() => {
+                if (!isPress) return;
+                if (typeof props.onLongPress === "function") props.onLongPress();
             }}>
                 {textView}
             </TouchableOpacity>
