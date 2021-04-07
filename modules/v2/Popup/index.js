@@ -30,7 +30,7 @@ export default class Popup {
         if (params.style) {
             if (params.style.height) style.height = params.style.height;
         }
-        // if (params.bg) style.backgroundColor = params.bg;
+        if (params.bg) style.backgroundColor = params.bg;
         if (params.type === Popup.type.bottom) {
             style.left = 0;
             style.right = 0;
@@ -52,6 +52,7 @@ export default class Popup {
             <Page.Text style={{
                 width: this.#css.width,
                 height: this.#css.deviceHeight,
+                backgroundColor: this.#css.popup.maskBg,
             }} onPress={() => {
                 const isHide = typeof params.isHide === "boolean" ? params.isHide : true;
                 console.log(isHide);
@@ -194,7 +195,13 @@ export default class Popup {
         let slideHeight = this.#css.height * nameData.height - 50 - 60;
         if (params.title) slideHeight = slideHeight - 40;
         if (slideHeight > arr.length * 50) slideHeight = arr.length * 50;
-        const dataView = <View style={[this.#css.colBetween, {flex: 1, padding: 15}]}>
+        const dataView = <View style={[this.#css.colBetween, {
+            flex: 1,
+            padding: 15,
+            borderWidth: 0.5,
+            borderColor: 'rgba(0,0,0,.1)',
+            borderRadius: 5,
+        }]}>
             <View style={{flex: 1, flexGrow: 1}}>
                 {titleView}
                 <View style={[styleBorder, {height: slideHeight}]}>
