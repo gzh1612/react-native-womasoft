@@ -5,11 +5,11 @@ export default class Emitter {
     }
 
     set(name, value) {
-        DeviceEventEmitter.emit(name, {code: 0, result: value});
+        return DeviceEventEmitter.emit(name, {code: 0, result: value});
     }
 
     get(name, success) {
-        DeviceEventEmitter.addListener(name, res => {
+        return DeviceEventEmitter.addListener(name, res => {
             if (res && res.code === 0 && typeof success === "function") success(res.result)
         })
     }
