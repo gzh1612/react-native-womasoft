@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {TouchableHighlight, View, Platform, StatusBar} from 'react-native';
+import {TouchableHighlight, View, Platform, StatusBar, BackHandler} from 'react-native';
 import Header from "./PageHeader";
 import Theme from "../Theme";
 import Navigation from "../Navigation";
+import Page from "../Page";
 import Redux from "../Redux";
 
 export default class PageRender extends Component {
@@ -40,9 +41,16 @@ export default class PageRender extends Component {
         new Redux().listen(Navigation.headerBar, res => {
             StatusBar.setBarStyle(res);
         })
+        BackHandler.addEventListener('hardwareBackPress', () => this.onBackPress());
     }
 
     componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', () => this.onBackPress());
+    }
+
+    onBackPress() {
+        if (new Page.Popup().isDisplay()) new Page.Popup().hide();
+        return false;
     }
 
     shouldComponentUpdate(nextProps, nextState) {

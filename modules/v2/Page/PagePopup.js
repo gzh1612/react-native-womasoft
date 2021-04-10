@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import {View, Animated, StyleSheet} from 'react-native';
 import Theme from "../Theme";
 import Popup from "../Popup";
+import Redux from "../Redux";
 import Page from "./index";
 import Navigation from "../Navigation";
 
 export default class PagePopup extends Component {
+    #name = 'PagePopup_framework';
     #css = new Theme().get();
     #styles = styles(this.#css);
 
@@ -86,17 +88,26 @@ export default class PagePopup extends Component {
      */
     constructor(props) {
         super(props);
-        if (props.this) this._this = props.this;
-        if (props.id) this._id = props.id;
-
+        let params = new Redux().get(this.#name);
+        if (!params) params = {};
+        if (typeof this.props === "undefined") {
+            this._this = params.this;
+            this._id = params.id;
+            props = {};
+        } else {
+            if (props.this) this._this = props.this;
+            if (props.id) this._id = props.id;
+        }
         //方向
         const direction = props.type ?? PagePopup.type.bottom;
-        const popupThis = props.this;
-        popupThis.setState({
-            framework_page_popup_animated_opacity: new Animated.Value(0),
-            framework_page_popup_animated_xy: new Animated.ValueXY(this.getDirectionParams(direction)),
-            framework_page_popup_direction: direction,
-        })
+        if (this._this) {
+            const popupThis = this._this;
+            popupThis.setState({
+                framework_page_popup_animated_opacity: new Animated.Value(0),
+                framework_page_popup_animated_xy: new Animated.ValueXY(this.getDirectionParams(direction)),
+                framework_page_popup_direction: direction,
+            });
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -118,27 +129,44 @@ export default class PagePopup extends Component {
 
     //显示
     show() {
-        const props = this.props ?? {};
-        const popupThis = props.this;
         let state = {};
         if (!this._id) return console.warn(`Page.Popup.show id:${this._id}`);
+        let params = new Redux().get(this.#name);
+        if (!params) {
+            params = {};
+            new Redux().add(this.#name, params);
+        }
+        params.this = this._this;
+        params.id = this._id;
+        new Redux().update(this.#name, params);
         state[`framework_popup_${this._id}`] = true;
-        popupThis.setState(state, () => this.animatedShow());
+        this._this.setState(state, () => this.animatedShow());
         new Navigation().show();
     };
 
     //隐藏
     hide() {
-        const props = this.props ?? {};
-        const popupThis = props.this;
         let state = {};
+        let params = new Redux().get(this.#name);
+        if (!params) params = {};
+        this._id === undefined ? params.id : this._id;
+        this._this === undefined ? params.this : this._this;
         if (!this._id) return console.warn(`Page.Popup.hide id:${this._id}`);
+        if (!this._this) return;
         state[`framework_popup_${this._id}`] = false;
+        new Redux().remove(this.#name, {});
         this.animatedHide(() => {
-            popupThis.setState(state);
+            this._this.setState(state);
             new Navigation().hide();
         })
     }
+
+    isDisplay() {
+        let params = new Redux().get(this.#name);
+        if (!params) return false;
+        return params.id;
+    }
+
 
     //获取方向动画参数
     getDirectionParams(direction) {
@@ -152,9 +180,7 @@ export default class PagePopup extends Component {
     }
 
     animatedShow() {
-        const props = this.props ?? {};
-        const popupThis = props.this;
-        const {framework_page_popup_animated_opacity, framework_page_popup_animated_xy} = popupThis.state;
+        const {framework_page_popup_animated_opacity, framework_page_popup_animated_xy} = this._this.state;
         Animated.parallel([
             Animated.timing(framework_page_popup_animated_xy, {
                 toValue: {x: 0, y: 0},
@@ -171,13 +197,11 @@ export default class PagePopup extends Component {
 
 
     animatedHide(func) {
-        const props = this.props ?? {};
-        const popupThis = props.this;
         const {
             framework_page_popup_animated_opacity,
             framework_page_popup_animated_xy,
             framework_page_popup_direction
-        } = popupThis.state;
+        } = this._this.state;
         Animated.parallel([
             Animated.timing(framework_page_popup_animated_xy, {
                 toValue: this.getDirectionParams(framework_page_popup_direction),
