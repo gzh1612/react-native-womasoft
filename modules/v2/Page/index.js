@@ -10,6 +10,7 @@ import PageIcon from "./PageIcon";
 import PageText from "./PageText";
 import PageSlide from "./PageSlide";
 import PagePopup from "./PagePopup";
+import PageSwitch from "./PageSwitch";
 import PageVerifyCode from "./PageVerifyCode";
 
 
@@ -25,6 +26,7 @@ export default class Page {
     static Text = PageText;
     static Slide = PageSlide;
     static Popup = PagePopup;
+    static Switch = PageSwitch;
 
     static VerifyCode = PageVerifyCode;
 

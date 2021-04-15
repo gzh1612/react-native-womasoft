@@ -1,90 +1,163 @@
-// import React, {Component} from 'react';
-// import {TouchableOpacity, Text} from 'react-native';
-// import Theme from "../Theme";
-//
-// export default class PageSwitch extends Component {
-//     #css = new Theme().get();
-//
-//     constructor(props) {
-//         /**
-//          *  log
-//          *  isText      否是全部是文本 默认false
-//          *  text        内容
-//          *  children    多样内容
-//          *  color       颜色
-//          *  size        大小
-//          *  lineHeight  行高
-//          *  line        显示行数并且多余的文字小数点替换
-//          *  width       宽度
-//          *  weight      粗
-//          *  style       样式
-//          *  isPress     是否可以点击  默认true
-//          *  onPress     点击事件
-//          *  t           marginTop
-//          *  b           marginBottom
-//          *  l           marginLeft
-//          *  r           marginRight
-//          */
-//         super(props);
-//     }
-//
-//     shouldComponentUpdate(nextProps, nextState) {
-//         if (this.props.log) {
-//             console.log('nextProps', nextProps);
-//             console.log('nextState', nextState);
-//         }
-//         if (!nextProps) nextProps = {};
-//         if (!nextState) nextState = {};
-//         const props = {};
-//         if (nextProps.isText !== nextState.isText) props['isText'] = nextProps.isText;
-//         if (nextProps.text !== nextState.text) props['text'] = nextProps.text;
-//         if (nextProps.children !== nextState.children) props['children'] = nextProps.children;
-//         if (nextProps.color !== nextState.color) props['color'] = nextProps.color;
-//         if (nextProps.size !== nextState.size) props['size'] = nextProps.size;
-//         if (nextProps.lineHeight !== nextState.lineHeight) props['lineHeight'] = nextProps.lineHeight;
-//         if (nextProps.width !== nextState.width) props['width'] = nextProps.width;
-//         if (nextProps.style !== nextState.style) props['style'] = nextProps.style;
-//         if (nextProps.isPress !== nextState.isPress) props['isPress'] = nextProps.isPress;
-//         if (this.props.log) console.log('PageIcon', props);
-//         let i = 0;
-//         for (let item in props) {
-//             if (props.hasOwnProperty(item)) i++;
-//         }
-//         return i > 0
-//     }
-//
-//
-//     render() {
-//         const css = this.#css,
-//             props = this.props ?? {};
-//         const isText = typeof props.isText === "boolean" ? props.isText : false;
-//         const style = {color: css.font.color, fontSize: 14, ...props.style ?? {}};
-//         if (props.color) style.color = props.color;
-//         if (props.size) style.fontSize = props.size;
-//         if (props.width) style.width = props.width;
-//         if (props.weight) style.weight = props.weight;
-//         if (props.t) style.marginTop = props.t;
-//         if (props.b) style.marginBottom = props.b;
-//         if (props['l']) style.marginLeft = props['l'];
-//         if (props.r) style.marginRight = props.r;
-//         if (props.log) console.log('PageText-style', style);
-//
-//         let text = props.children ? props.children : props.text ? props.text : '';
-//         let textView = <Text style={style}>{text}</Text>;
-//         if (isText) return textView;//纯文本在这里输出
-//         if (props.line) {   //显示几行小数点替换
-//             if (!style.width) style.width = css.width - 30;
-//             textView = <Text style={style} numberOfLines={props.line}>{text}</Text>;
-//         }
-//         if (typeof props.onPress === "function") {
-//             const isPress = typeof props.isPress === "boolean" ? props.isPress : true;
-//             return <TouchableOpacity activeOpacity={0.9} onPress={() => {
-//                 if (!isPress) return;
-//                 props.onPress();
-//             }}>
-//                 {textView}
-//             </TouchableOpacity>
-//         } else return textView
-//     }
-//
-// }
+import React, {Component} from 'react';
+import {View, StyleSheet, TouchableHighlight, Animated} from 'react-native';
+
+import Theme from "../Theme";
+
+export default class PageSwitch extends Component {
+    #css = new Theme().get();
+    #styles = styles(this.#css);
+
+    /**
+     * log
+     * this
+     * color
+     * bgColor
+     * style
+     * width
+     * value
+     * onPress
+     *
+     * @param props
+     */
+    constructor(props) {
+        super(props);
+        this.width = 50;        //  默认宽度
+        this.color = this.#css.font.color ?? '#f00'; //  默认选中色
+        this.bgColor = '#808080';      //  默认背景色
+        console.log(props.value);
+        this.state = {
+            page_switch_isSelect: typeof props.value === 'undefined' ? false : props.value,//是否选中
+            page_switch_an_opacity: props.value ? new Animated.Value(1) : new Animated.Value(0),//背景 动画
+            page_switch_an_selectXY: props.value ? new Animated.ValueXY({
+                x: (props.width ?? this.width) - 24, y: 0
+            }) : new Animated.ValueXY({x: 0, y: 0}),//滑动 动画
+        }
+
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        if (this.props.log) {
+            console.log('nextProps', nextProps);
+            console.log('nextState', nextState);
+        }
+        if (!nextProps) nextProps = {};
+        if (!nextState) nextState = {};
+        const props = {};
+        if (nextProps.this !== nextState.this) props['this'] = nextProps.this;
+        if (nextProps.color !== nextState.color) props['color'] = nextProps.color;
+        if (nextProps.bgColor !== nextState.bgColor) props['bgColor'] = nextProps.bgColor;
+        if (nextProps.value !== nextState.value) props['value'] = nextProps.value;
+        let i = 0;
+        for (let item in props) {
+            if (props.hasOwnProperty(item)) i++;
+        }
+        return i > 0
+    }
+
+    show() {
+        const {page_switch_an_opacity, page_switch_an_selectXY} = this.state;
+        Animated.parallel([
+            Animated.timing(page_switch_an_selectXY, {
+                toValue: {x: (this.props.width ?? this.width) - 24, y: 0},
+                duration: 100,
+                useNativeDriver: true,
+            }),
+            Animated.timing(page_switch_an_opacity, {
+                toValue: 1,
+                duration: 100,
+                useNativeDriver: true
+            })
+        ]).start();
+    }
+
+    hide(func) {
+        const {page_switch_an_opacity, page_switch_an_selectXY} = this.state;
+        Animated.parallel([
+            Animated.timing(page_switch_an_selectXY, {
+                toValue: {x: 0, y: 0},
+                duration: 100,
+                useNativeDriver: true,
+            }),
+            Animated.timing(page_switch_an_opacity, {
+                toValue: 0,
+                duration: 100,
+                useNativeDriver: true
+            })
+        ]).start(() => {
+            if (typeof func === "function") func();
+        });
+    }
+
+    render() {
+        const css = this.#css,
+            styles = this.#styles,
+            props = this.props ?? {};
+
+        const {page_switch_an_opacity, page_switch_an_selectXY, page_switch_isSelect} = this.state;
+        console.log('state', this.state);
+        const x = page_switch_an_selectXY.x;
+        const y = page_switch_an_selectXY.y;
+
+        console.log(page_switch_isSelect);
+        return <View style={{width: props.width ?? this.width, height: 40}}>
+            <TouchableHighlight underlayColor="rgba(0,0,0,0)" onPress={() => {
+                if (page_switch_isSelect) {
+                    this.setState({page_switch_isSelect: false}, () => this.hide());
+                } else {
+                    this.setState({page_switch_isSelect: true}, () => this.show());
+                }
+                if (typeof props.onPress === 'function') return props.onPress(!page_switch_isSelect);
+            }}>
+                <View style={[styles.outView, {
+                    width: props.width ?? this.width,
+                    backgroundColor: props.bgColor ?? this.bgColor,
+
+                }]}>
+                    <Animated.View
+                        style={{
+                            ...styles.innerView,
+                            backgroundColor: props.color ?? this.color,
+                            opacity: page_switch_an_opacity,
+                            borderColor: props.color ?? this.color,
+                        }}/>
+                    <Animated.View
+                        style={{
+                            ...styles.roundView,
+                            transform: [
+                                {translateX: x},
+                                {translateY: y}
+                            ]
+                        }}/>
+                </View>
+            </TouchableHighlight>
+        </View>
+    }
+}
+
+
+const styles = () => StyleSheet.create({
+    outView: {
+        height: 8,
+        marginVertical: 16,
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0)',
+        // overflow: 'hidden',
+        position: 'relative',
+    },
+    innerView: {
+        flex: 1,
+        borderWidth: 1,
+        borderRadius: 6,
+    },
+    roundView: {
+        width: 24,
+        height: 24,
+        borderRadius: 22,
+        borderWidth: .5,
+        borderColor: '#ccc',
+        backgroundColor: '#fff',
+        position: 'absolute',
+        top: -10,
+    }
+});
