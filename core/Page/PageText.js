@@ -18,7 +18,7 @@ export default class PageText extends Component {
          *  width       宽度
          *  weight      粗
          *  style       样式
-         *  isPress     是否可以点击  默认true
+         *  isPress     是否可以连续点击  默认false
          *  onPress     点击事件
          *  onLongPress 长按事件
          *  t           marginTop
@@ -27,6 +27,9 @@ export default class PageText extends Component {
          *  r           marginRight
          */
         super(props);
+        this.state = {
+            isPress: true,
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -84,7 +87,10 @@ export default class PageText extends Component {
             const isPress = typeof props.isPress === "boolean" ? props.isPress : true;
             return <TouchableOpacity activeOpacity={0.9} onPress={() => {
                 if (!isPress) return;
-                props.onPress();
+                this.setState({isPress: false}, () => {
+                    props.onPress();
+                    setTimeout(() => this.setState({isPress: true}), 1000);
+                })
             }} onLongPress={() => {
                 if (!isPress) return;
                 if (typeof props.onLongPress === "function") props.onLongPress();

@@ -31,8 +31,9 @@ export default class Page {
     static VerifyCode = PageVerifyCode;
 
     //剪切板
-    Clipboard(value) {
+    Clipboard(value, func) {
         Clipboard.setString(value);
+        if (typeof func === "function") func();
     }
 
     //二维码

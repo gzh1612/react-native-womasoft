@@ -175,7 +175,6 @@ export default class PagePopup extends Component {
         else if (direction === 'bottom') params = {x: 0, y: 50};
         else if (direction === 'left') params = {x: -50, y: 0};
         else if (direction === 'right') params = {x: 50, y: 0};
-        console.log(params);
         return params;
     }
 
@@ -243,7 +242,6 @@ export default class PagePopup extends Component {
         });
 
         let animatedStyle = {};
-        console.log('framework_page_popup_animated_opacity', framework_page_popup_animated_opacity);
         if (framework_page_popup_animated_opacity) animatedStyle = {
             opacity: framework_page_popup_animated_opacity,
             transform: [
@@ -251,7 +249,6 @@ export default class PagePopup extends Component {
                 {translateY: framework_page_popup_animated_xy.y}
             ]
         };
-        console.log(animatedStyle);
         return <View style={[styles.container, styleMask]}>
             <Animated.View style={[stylePopup, animatedStyle]}>
                 {children}

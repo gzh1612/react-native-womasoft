@@ -1,3 +1,5 @@
+import CryptoJS from "crypto-js";
+
 export default class Tools {
     /**
      ---    is 判断方法
@@ -7,6 +9,48 @@ export default class Tools {
      ---
      */
     constructor() {
+    }
+
+    /**
+     * 加密解密
+     */
+    static toMD5(value) {
+        return CryptoJS.MD5(value.toString()).toString()
+    }
+
+    /**
+     * 加密
+     * @param value
+     * @param password
+     * @returns {string}
+     */
+    static toEncrypt(value, password) {
+        if (!value || !password) return ''
+        password = CryptoJS['enc'].Hex.parse(password)
+        const encrypt = CryptoJS['AES'].encrypt(value, password, {
+            mode: CryptoJS['mode'].CBC,
+            iv: CryptoJS['enc'].Hex.parse(this.toMD5('Wallet App')),
+        })
+        return encrypt.ciphertext.toString(CryptoJS['enc'].Hex)
+    }
+
+    /**
+     * 解密
+     * @param value
+     * @param password
+     * @returns {string|boolean}
+     */
+    static toDecrypt(value, password) {
+        if (!value || !password) return false
+        value = CryptoJS['enc'].Hex.parse(value)
+        password = CryptoJS['enc'].Hex.parse(password)
+        const decrypt = CryptoJS['AES'].decrypt({ciphertext: value}, password, {
+            mode: CryptoJS['mode'].CBC,
+            iv: CryptoJS['enc'].Hex.parse(this.toMD5('Wallet App')),
+        })
+        const result = decrypt.toString(CryptoJS['enc'].Utf8)
+        if (!result) return false
+        return result
     }
 
     /**
@@ -21,9 +65,19 @@ export default class Tools {
         return false
     }
 
-    //是否是金额
-    static isAmount(value) {
+    /**
+     * 是否是金额
+     * @param value                                 金额
+     * @param options {allocNegative,alloc0}       [allocNegative：是否可以为负数|alloc0：是否可以为0]
+     * @returns {boolean}
+     */
+    static isAmount(value, options) {
+        if (!options) options = {};
+        if (!options.allocNegative) options.allocNegative = false;  //是否可以为负数
+        if (!options.alloc0) options.alloc0 = false;                //是否可以为0
         let numberAmount = parseFloat(value);
+        if (options.allocNegative === false && numberAmount < 0) return false;
+        if (options.alloc0 === false && numberAmount === 0) return false;
         console.log('isAmount', `${numberAmount.toString()} -- ${value.toString()}`);
         return numberAmount.toString() === value.toString();
     }

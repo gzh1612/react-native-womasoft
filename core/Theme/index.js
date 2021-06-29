@@ -99,7 +99,6 @@ export default class Theme {
         let themeType = defaultName;
         const redux = new Redux(), storage = new Storage();
         redux.add(this.#type, themeType);
-        const w = this.#writeCss(themeAll[themeType]);
         redux.add(this.#data, this.#writeCss(themeAll[themeType]));
         storage.get(this.#type).then(res => {
             if (res) {

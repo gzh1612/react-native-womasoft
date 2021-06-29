@@ -13,6 +13,7 @@ export default class PageHeader extends Component {
          *  title           名称
          *  left            左侧view
          *  right           右侧view
+         *  center          中间view
          *  style           header 样式
          *  bg              header 背景样式
          *  titleStyle      title 样式
@@ -36,6 +37,7 @@ export default class PageHeader extends Component {
         if (nextProps.title !== nextState.title) props['title'] = nextProps.title;
         if (nextProps.left !== nextState.left) props['left'] = nextProps.left;
         if (nextProps.right !== nextState.right) props['right'] = nextProps.right;
+        if (nextProps.center !== nextState.center) props['center'] = nextProps.center;
         if (nextProps.style !== nextState.style) props['style'] = nextProps.style;
         if (nextProps.titleStyle !== nextState.titleStyle) props['titleStyle'] = nextProps.titleStyle;
         if (this.props.log) console.log('PageIcon', props);
@@ -73,11 +75,14 @@ export default class PageHeader extends Component {
         if (props['titleSize']) titleStyle.fontSize = props['titleSize'];
 
         //left
-        let leftView = new Nav().headerLeft();
+        let leftView = new Nav().headerLeft({color: props.leftColor});
         if (typeof props.left === "object") leftView = props.left;
         //right
         let rightView = <View/>;
         if (typeof props.right === "object") rightView = props.right;
+        //center
+        let centerView = <View/>;
+        if (typeof props.center === "object") centerView = props.center;
 
         if (props.log) {
             console.log('PageHeader-style', style);
@@ -89,8 +94,8 @@ export default class PageHeader extends Component {
             <View style={{width: (css.width * 0.25)}}>
                 {leftView}
             </View>
-            <View style={[{flexGrow: 1}, css.colBetweenCenter]}>
-                <Text style={[titleStyle]}>{title}</Text>
+            <View style={[{flexGrow: 1, width: css.width / 2}, css.colBetweenCenter]}>
+                {props.center ? centerView : <Text style={[titleStyle]}>{title}</Text>}
             </View>
             <View style={[{width: (css.width * 0.25)}, css.rowEndCenter]}>
                 {rightView}

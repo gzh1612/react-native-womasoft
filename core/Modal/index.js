@@ -71,7 +71,7 @@ export default class Modal {
                             this.hide()
                             setTimeout(() => {
                               if (typeof item.onPress === 'function') item.onPress()
-                            }, 1)
+                            }, 100)
                           }} />
       })
     }

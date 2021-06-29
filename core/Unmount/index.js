@@ -5,9 +5,9 @@ export default class Unmount {
 
     #get = () => new Redux().get(this.#name);
 
-    constructor(name) {
+    constructor(name, timestamp = new Date().getTime()) {
         if (!name) return console.warn('unmount name 为空');
-        this.pageName = name;
+        this.pageName = `${name}_${timestamp}`;
     }
 
     start(name) {
@@ -27,6 +27,7 @@ export default class Unmount {
         if (!unmount) return console.warn('unmount end 方法错误，原因是没有执行start方法');
         if (name) this.pageName = name;
         unmount[this.pageName] = false;
+        delete unmount[this.pageName];
         new Redux().update(this.#name, unmount);
     }
 
