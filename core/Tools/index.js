@@ -72,12 +72,20 @@ export default class Tools {
      * @returns {boolean}
      */
     static isAmount(value, options) {
+        if (typeof value !== "undefined") value = value.toString();
         if (!options) options = {};
         if (!options.allocNegative) options.allocNegative = false;  //是否可以为负数
         if (!options.alloc0) options.alloc0 = false;                //是否可以为0
         let numberAmount = parseFloat(value);
         if (options.allocNegative === false && numberAmount < 0) return false;
         if (options.alloc0 === false && numberAmount === 0) return false;
+        for (let i = 0, len = value.length; i < len; i++) {
+            const str_0_length = value.lastIndexOf('0');
+            if (str_0_length > 0) {
+                console.log('isAmount', str_0_length);
+                value = value.substring(0, str_0_length);
+            }
+        }
         console.log('isAmount', `${numberAmount.toString()} -- ${value.toString()}`);
         return numberAmount.toString() === value.toString();
     }
