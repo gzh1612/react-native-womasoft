@@ -80,7 +80,19 @@ export default class Tools {
         if (options.allocNegative === false && numberAmount < 0) return false;
         if (options.alloc0 === false && numberAmount === 0) return false;
         console.log('isAmount', `${numberAmount.toString()} -- ${value.toString()}`);
-        return numberAmount.toString() === value.toString();
+        numberAmount = numberAmount.toString();
+        let result = numberAmount === value;
+        if (result === false && value.length > numberAmount.length) {
+            const cutAmount = value.substring(numberAmount.length, value.length);
+            let a = '0';
+            let len = value.length - numberAmount.length;
+            for (let i = 1; i < len; i++) {
+                a += '0';
+            }
+            console.log('isAmount', `${a} -- ${cutAmount}`)
+            if (a === cutAmount) result = true;
+        }
+        return result
     }
 
     //是否是数字
