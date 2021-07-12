@@ -1,5 +1,4 @@
 import Redux from "../Redux";
-import Unmount from "../Unmount";
 
 export default class PageVerifyCode {
     #name = 'woma_framework_verify_code';
@@ -26,7 +25,7 @@ export default class PageVerifyCode {
     #forTimer = () => {
         const endTime = this.endTime;
         this.forTimerInterval = setInterval(() => {
-            if (!this.unmount.confirm(this.pageName)) return;
+            if (!this.unmount.confirm()) return;
             let time = Math.ceil((endTime - new Date().getTime()) / 1e3);
             if (time <= 0) {
                 clearInterval(this.forTimerInterval);
@@ -42,10 +41,10 @@ export default class PageVerifyCode {
 
     static name = 'woma_framework_verify_code';
 
-    constructor(_this, name) {
+    constructor(_this, unmount) {
         this._this = _this;
-        this.pageName = name;
-        this.unmount = new Unmount(this.#name);
+        if (!unmount) return console.log('unmount 不存在');
+        this.unmount = unmount;
     }
 
     set(text, timer) {
