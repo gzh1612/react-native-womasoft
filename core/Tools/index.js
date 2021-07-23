@@ -321,23 +321,50 @@ export default class Tools {
         return `${value.substring(0, count)}${unit}${value.substring(value.length - count, value.length)}`
     }
 
-    //格式化时间
-    static formatDate(date, unit = '-') {
+    /**
+     * 格式化时间返回JSON值
+     * @param date
+     * @param params
+     * @returns {string|{yy: string, MM: (number|string), dd: (number|string), HH: (number|string), hh: (number|string), mm: (number|string), ss: (number|string), yyyy: string}}
+     */
+    static formatDateJson(date, params) {
         if (!date) return '';
         if (typeof date === 'string' && date.indexOf('-') >= 0) date = date.replace(/-/g, '/');
         date = new Date(date);
-        let year = date.getFullYear(),
-            month = date.getMonth() + 1,
-            day = date.getDate(),
-            hours = date.getHours(),
-            minutes = date.getMinutes(),
-            seconds = date.getSeconds();
-        month = month > 9 ? month : `0${month}`;
-        day = day > 9 ? day : `0${day}`;
-        hours = hours > 9 ? hours : `0${hours}`;
-        minutes = minutes > 9 ? minutes : `0${minutes}`;
-        seconds = seconds > 9 ? seconds : `0${seconds}`;
-        return `${year}${unit}${month}${unit}${day} ${hours}:${minutes}:${seconds}`
+        if (typeof params.day === 'number' && !isNaN(params.day)) date = date.setDate(date.getDate() + params.day);
+        date = new Date(date);
+        let yyyy = date.getFullYear().toString(),
+            yy = yyyy.substring(0, yyyy.length - 2),
+            MM = date.getMonth() + 1,
+            dd = date.getDate(),
+            HH = date.getHours(),
+            hh = date.getHours(),
+            mm = date.getMinutes(),
+            ss = date.getSeconds();
+        MM = MM > 9 ? MM : `0${MM}`;
+        dd = dd > 9 ? dd : `0${dd}`;
+        HH = HH > 9 ? HH : `0${HH}`;
+        hh = hh > 9 ? hh : `0${hh}`;
+        mm = mm > 9 ? mm : `0${mm}`;
+        ss = ss > 9 ? ss : `0${ss}`;
+        return {yyyy, yy, MM, dd, HH, hh, mm, ss};
+    }
+
+    //格式化时间
+    static formatDate(date, format, params) {
+        // if (typeof date === 'string' && date.indexOf('0001/01/01') === 0) return '';
+        if (!params) params = params = {};
+        const formatJson = Tools.formatDateJson(date, params);
+        let result = format ?? 'yyyy-MM-dd hh:mm:ss';
+        if (result.indexOf('yyyy') >= 0) result = result.replace('yyyy', '{yyyy}');
+        else if (result.indexOf('yy') >= 0) result = result.replace('yy', '{yy}');
+        if (result.indexOf('MM') >= 0) result = result.replace('MM', '{MM}');
+        if (result.indexOf('dd') >= 0) result = result.replace('dd', '{dd}');
+        if (result.indexOf('HH') >= 0) result = result.replace('HH', '{HH}');
+        if (result.indexOf('hh') >= 0) result = result.replace('hh', '{hh}');
+        if (result.indexOf('mm') >= 0) result = result.replace('mm', '{mm}');
+        if (result.indexOf('ss') >= 0) result = result.replace('ss', '{ss}');
+        return Tools.replaceWithJson(result, formatJson)
     }
 
     //格式化时间 并且削正时区偏差
