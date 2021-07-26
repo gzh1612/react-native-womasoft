@@ -324,11 +324,12 @@ export default class Tools {
     /**
      * 格式化时间返回JSON值
      * @param date
-     * @param params
+     * @param params       day:加减天数
      * @returns {string|{yy: string, MM: (number|string), dd: (number|string), HH: (number|string), hh: (number|string), mm: (number|string), ss: (number|string), yyyy: string}}
      */
     static formatDateJson(date, params) {
         if (!date) return '';
+        if (!params) params = {};
         if (typeof date === 'string' && date.indexOf('-') >= 0) date = date.replace(/-/g, '/');
         date = new Date(date);
         if (typeof params.day === 'number' && !isNaN(params.day)) date = date.setDate(date.getDate() + params.day);
@@ -347,35 +348,64 @@ export default class Tools {
         hh = hh > 9 ? hh : `0${hh}`;
         mm = mm > 9 ? mm : `0${mm}`;
         ss = ss > 9 ? ss : `0${ss}`;
-        return {yyyy, yy, MM, dd, HH, hh, mm, ss};
+        return {
+            yyyy, yy, MM, dd, HH, hh, mm, ss,
+            time: date.getTime(),
+        };
     }
 
     //格式化时间
     static formatDate(date, format, params) {
-        // if (typeof date === 'string' && date.indexOf('0001/01/01') === 0) return '';
+        if (typeof date === 'string' && date.indexOf('0001/01/01') === 0) return '';
         if (!params) params = params = {};
         const formatJson = Tools.formatDateJson(date, params);
         let result = format ?? 'yyyy-MM-dd hh:mm:ss';
-        if (result.indexOf('yyyy') >= 0) result = result.replace('yyyy', '{yyyy}');
-        else if (result.indexOf('yy') >= 0) result = result.replace('yy', '{yy}');
-        if (result.indexOf('MM') >= 0) result = result.replace('MM', '{MM}');
-        if (result.indexOf('dd') >= 0) result = result.replace('dd', '{dd}');
-        if (result.indexOf('HH') >= 0) result = result.replace('HH', '{HH}');
-        if (result.indexOf('hh') >= 0) result = result.replace('hh', '{hh}');
-        if (result.indexOf('mm') >= 0) result = result.replace('mm', '{mm}');
-        if (result.indexOf('ss') >= 0) result = result.replace('ss', '{ss}');
+        result = _formatDateReplace(result);
         return Tools.replaceWithJson(result, formatJson)
     }
 
     //格式化时间 并且削正时区偏差
-    static formatDateTimezoneOffset(date, unit = '-') {
+    static formatDateTimezoneOffset(date, format, params) {
         if (!date) return '';
         if (typeof date === 'string' && date.indexOf('-') >= 0) date = date.replace(/-/g, '/');
         const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
         let time = new Date(date).getTime();
         time = new Date(time - timezoneOffset);
-        return Tools.formatDate(time, unit);
+        if (!params) params = params = {};
+        return Tools.formatDate(time, format, params);
     }
+
+    /**
+     * 日期格式倒计时
+     * @param endTime
+     * @param format
+     * @param func
+     */
+    static formatDateCountDown(endTime, format, func) {
+        if (!endTime) return setInterval(() => console.log(`endTime:${endTime}`));
+        const endDate = Tools.formatDateJson(endTime);
+        const end = endDate['time'];
+        let result = _formatDateReplace(format ?? 'dd天 hh:mm:ss');
+        let prev = '';//上一条数据
+        return setInterval(() => {
+            const curr = new Date().getTime();
+            const time = end - curr;
+            let dd = Math.floor(time / (1000 * 60 * 60 * 24));
+            if (dd <= 0) dd = 0;
+            let hh = Math.floor(time / (1000 * 60 * 60) % 24);
+            if (hh <= 0) hh = 0;
+            let mm = Math.floor(time / (1000 * 60) % 60);
+            if (mm <= 0) mm = 0;
+            let ss = Math.floor(time / 1000 % 60);
+            if (ss <= 0) ss = 0;
+            const resultTimeString = Tools.replaceWithJson(result, {dd, HH: hh, hh, mm, ss});
+            if (prev !== resultTimeString && typeof func === "function") {
+                prev = resultTimeString;
+                func(resultTimeString);
+            }
+        }, 100);
+    }
+
 
     //洗牌，打乱数组
     static shuffle(arr) {
@@ -489,4 +519,17 @@ const randomXYAreasCover = (areasArr, startLeft, startRight, endLeft, endRight) 
             && endRight.y >= item.startRight.y && endRight.y <= item.endRight.y) return false;
     }
     return {startLeft, startRight, endLeft, endRight};
+}
+
+//判断时间参数，并替换
+const _formatDateReplace = (result) => {
+    if (result.indexOf('yyyy') >= 0) result = result.replace('yyyy', '{yyyy}');
+    else if (result.indexOf('yy') >= 0) result = result.replace('yy', '{yy}');
+    if (result.indexOf('MM') >= 0) result = result.replace('MM', '{MM}');
+    if (result.indexOf('dd') >= 0) result = result.replace('dd', '{dd}');
+    if (result.indexOf('HH') >= 0) result = result.replace('HH', '{HH}');
+    if (result.indexOf('hh') >= 0) result = result.replace('hh', '{hh}');
+    if (result.indexOf('mm') >= 0) result = result.replace('mm', '{mm}');
+    if (result.indexOf('ss') >= 0) result = result.replace('ss', '{ss}');
+    return result
 }
