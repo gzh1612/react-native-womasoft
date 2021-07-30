@@ -335,7 +335,7 @@ export default class Tools {
         if (typeof params.day === 'number' && !isNaN(params.day)) date = date.setDate(date.getDate() + params.day);
         date = new Date(date);
         let yyyy = date.getFullYear().toString(),
-            yy = yyyy.substring(0, yyyy.length - 2),
+            yy = yyyy.substring(2, yyyy.length),
             MM = date.getMonth() + 1,
             dd = date.getDate(),
             HH = date.getHours(),
