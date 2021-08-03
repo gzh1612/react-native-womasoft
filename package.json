@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@react-native-community/async-storage": "^1.12.1",
-    "@react-navigation/native": "^5.9.4",
+    "@react-navigation/native": "^6.0.1",
     "react-native-fs": "^2.17.0",
     "react-native-localize": "^2.0.2",
     "react-native-vector-icons": "^8.1.0"
