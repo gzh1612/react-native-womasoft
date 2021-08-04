@@ -255,6 +255,18 @@ export default class Tools {
         return jsonOneString === jsonTwoString;
     }
 
+    //json转换数组
+    static JsonConvertArray(json) {
+        if (!json) return;
+        if (typeof json !== "object") return;
+        let res = [];
+        for (let item in json) {
+            if (!json.hasOwnProperty(item)) continue;
+            res.push(json[item]);
+        }
+        return res;
+    }
+
     //转换科学计数法
     static scientificCount(value) {
         let m = value.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
